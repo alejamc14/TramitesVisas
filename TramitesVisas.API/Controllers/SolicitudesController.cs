@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using TramitesVisas.API.Data;
 using TramitesVisas.Shared.Entidades;
+using Microsoft.EntityFrameworkCore;
 
 namespace TramitesVisas.API.Controllers
 {
     [ApiController]
-    [Route("/api/personas")]
-    public class PersonasController: ControllerBase
+    [Route("/api/solicitudes")]
+    public class SolicitudesController:ControllerBase
     {
         private readonly DataContext _context;
 
-        public PersonasController(DataContext context)
+        public SolicitudesController(DataContext context)
         {
             _context = context;
         }
@@ -20,7 +20,7 @@ namespace TramitesVisas.API.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAsync()
         {
-            return Ok(await _context.Personas.ToListAsync());
+            return Ok(await _context.Solicitudes.ToListAsync());
 
         }
 
@@ -29,36 +29,36 @@ namespace TramitesVisas.API.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult> GetAsync(int id)
         {
-            var persona = await _context.Personas.FirstOrDefaultAsync(x => x.Id == id);
+            var solicitud = await _context.Solicitudes.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (persona == null)
+            if (solicitud == null)
             {
                 return NotFound();
 
             }
-            return Ok(persona);
+            return Ok(solicitud);
 
         }
 
 
         //Metodo para Crear 
         [HttpPost]
-        public async Task<ActionResult> PostAsync(Persona persona)
+        public async Task<ActionResult> PostAsync(Solicitud solicitud)
         {
-            _context.Add(persona);
+            _context.Add(solicitud);
             await _context.SaveChangesAsync();
-            return Ok(persona);
+            return Ok(solicitud);
 
         }
 
 
         // Método actualizar
         [HttpPut]
-        public async Task<ActionResult> PutAsync(Persona persona)
+        public async Task<ActionResult> PutAsync(Solicitud solicitud)
         {
-            _context.Update(persona);
+            _context.Update(solicitud);
             await _context.SaveChangesAsync();
-            return Ok(persona);
+            return Ok(solicitud);
 
         }
 
@@ -66,7 +66,7 @@ namespace TramitesVisas.API.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> DeleteAsync(int id)
         {
-            var deletedrows = await _context.Personas.Where(x => x.Id == id).ExecuteDeleteAsync();
+            var deletedrows = await _context.Solicitudes.Where(x => x.Id == id).ExecuteDeleteAsync();
 
             if (deletedrows == 0)
             {

@@ -6,12 +6,13 @@ using TramitesVisas.Shared.Entidades;
 namespace TramitesVisas.API.Controllers
 {
     [ApiController]
-    [Route("/api/personas")]
-    public class PersonasController: ControllerBase
+    [Route("/api/renovaciones")]
+
+    public class RenovacionesController:ControllerBase
     {
         private readonly DataContext _context;
 
-        public PersonasController(DataContext context)
+        public RenovacionesController(DataContext context)
         {
             _context = context;
         }
@@ -20,7 +21,7 @@ namespace TramitesVisas.API.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAsync()
         {
-            return Ok(await _context.Personas.ToListAsync());
+            return Ok(await _context.Renovaciones.ToListAsync());
 
         }
 
@@ -29,36 +30,36 @@ namespace TramitesVisas.API.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult> GetAsync(int id)
         {
-            var persona = await _context.Personas.FirstOrDefaultAsync(x => x.Id == id);
+            var renovacion = await _context.Renovaciones.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (persona == null)
+            if (renovacion == null)
             {
                 return NotFound();
 
             }
-            return Ok(persona);
+            return Ok(renovacion);
 
         }
 
 
         //Metodo para Crear 
         [HttpPost]
-        public async Task<ActionResult> PostAsync(Persona persona)
+        public async Task<ActionResult> PostAsync(Renovacion renovacion)
         {
-            _context.Add(persona);
+            _context.Add(renovacion);
             await _context.SaveChangesAsync();
-            return Ok(persona);
+            return Ok(renovacion);
 
         }
 
 
         // Método actualizar
         [HttpPut]
-        public async Task<ActionResult> PutAsync(Persona persona)
+        public async Task<ActionResult> PutAsync(Renovacion renovacion)
         {
-            _context.Update(persona);
+            _context.Update(renovacion);
             await _context.SaveChangesAsync();
-            return Ok(persona);
+            return Ok(renovacion);
 
         }
 
@@ -66,7 +67,7 @@ namespace TramitesVisas.API.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> DeleteAsync(int id)
         {
-            var deletedrows = await _context.Personas.Where(x => x.Id == id).ExecuteDeleteAsync();
+            var deletedrows = await _context.Renovaciones.Where(x => x.Id == id).ExecuteDeleteAsync();
 
             if (deletedrows == 0)
             {
