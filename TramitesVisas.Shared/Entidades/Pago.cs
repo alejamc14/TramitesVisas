@@ -11,13 +11,13 @@ namespace TramitesVisas.Shared.Entidades
     {
         public int Id { get; set; }
 
-        [Display(Name = "Costo de la Visa ")]
+        [Display(Name = "Valor a pagar ")]
         [Range(0.01, double.MaxValue, ErrorMessage = "La cantidad requerida debe ser mayor que 0")]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public double Valor { get; set; }
 
 
-        [Display(Name = "Documento")]
+        [Display(Name = "Metodo de pago")]
         [MaxLength(20, ErrorMessage = "No se perimten mas de 20 digitos")]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string MetodoPago { get; set; }

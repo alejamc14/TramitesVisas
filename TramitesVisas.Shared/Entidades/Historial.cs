@@ -23,6 +23,7 @@ namespace TramitesVisas.Shared.Entidades
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string TipoEvento { get; set; }
 
+        // relaciones
         public Solicitud Solicitudes { get; set; }
 
         public int IdSolicitud { get; set; }

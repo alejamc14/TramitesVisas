@@ -29,8 +29,8 @@ namespace TramitesVisas.Shared.Entidades
         [EmailAddress(ErrorMessage = "Digite un email valido")]
         public string Email { get; set; }
 
+
         
 
-       
     }
 }
