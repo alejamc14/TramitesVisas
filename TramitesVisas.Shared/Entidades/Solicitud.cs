@@ -7,30 +7,26 @@ using System.Threading.Tasks;
 
 namespace TramitesVisas.Shared.Entidades
 {
-    public class Documento
+    public class Solicitud
     {
         public int Id { get; set; }
 
 
-        [Display(Name = "Tipo")]
+        [Display(Name = "Estado Renovacion")]
         [MaxLength(20, ErrorMessage = "No se perimten mas de 20 digitos")]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        public string Tipo { get; set; }
+        public string Estado { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd HH:mm}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        public DateTime FechaSubida { get; set; }
+        public DateTime FechaAgenda { get; set; }
 
-        [Display(Name = "Tipo")]
-        [MaxLength(100, ErrorMessage = "No se perimten mas de 100 digitos")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        public string URL { get; set; }
+        public Persona Personas { get; set; }
+        public int IdPersona { get; set; }
 
-        public Solicitud Solicitudes { get; set; }
+        public ICollection<Documento> Documentos { get; set; }
 
-        public int IdSolicitud { get; set; }
-
-
+        public ICollection<Historial> historiales { get; set; }
+        public ICollection<Pago> Pagos { get; set; }
     }
-
 }

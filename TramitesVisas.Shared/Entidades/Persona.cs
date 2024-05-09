@@ -52,5 +52,7 @@ namespace TramitesVisas.Shared.Entidades
         public int Telefono { get; set; }
         public string NombreCompleto => $"{Nombre}{Apellido}";
 
+        public ICollection<Solicitud> Solicitudes { get; set; }
+      
     }
 }

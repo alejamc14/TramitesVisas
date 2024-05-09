@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TramitesVisas.Shared.Entidades
@@ -34,6 +35,11 @@ namespace TramitesVisas.Shared.Entidades
         [MaxLength(50, ErrorMessage = "No se perimten mas de 50 digitos")]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string Descripcion { get; set; }
+
+        public ICollection<Renovacion> Renovaciones { get; set; }
+
+
+
 
 
     }

@@ -17,9 +17,6 @@ namespace TramitesVisas.Shared.Entidades
         public double Costo { get; set; }
 
 
-
-
-
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd HH:mm}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public DateTime FechaRenovacion { get; set; }
@@ -30,6 +27,8 @@ namespace TramitesVisas.Shared.Entidades
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string EstadoRenovacion { get; set; }
 
+        public Visa Visas { get; set; }
+        public int IdVisa { get; set; }
 
     }
 }

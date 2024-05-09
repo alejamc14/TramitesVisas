@@ -27,6 +27,8 @@ namespace TramitesVisas.Shared.Entidades
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public DateTime FechaPago { get; set; }
 
+        public Solicitud Solicitudes { get; set; }
+        public int IdSolicitud { get; set; }
 
     }
 }
