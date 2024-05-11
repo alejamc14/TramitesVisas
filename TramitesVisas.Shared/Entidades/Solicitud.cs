@@ -17,7 +17,7 @@ namespace TramitesVisas.Shared.Entidades
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string TipoSolicitud { get; set; }
 
-        [Display(Name = "Estado Renovacion")]
+        [Display(Name = "Estado")]
         [MaxLength(20, ErrorMessage = "No se perimten mas de 20 digitos")]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string Estado { get; set; }
@@ -31,8 +31,8 @@ namespace TramitesVisas.Shared.Entidades
         public Persona Personas { get; set; }
         public int IdPersona { get; set; }
 
-        public Visa Visas { get; set; }
-        public int IdVisa { get; set; }
+        public TipoVisa TipoVisas { get; set; }
+        public int IdTipoVisa { get; set; }
 
         //Relaciones: una solicitud puede tener Muchas documentos , Historiales ..
         //Los ICollection mandan la foranea
