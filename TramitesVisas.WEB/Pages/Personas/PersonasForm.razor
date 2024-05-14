@@ -1,0 +1,62 @@
+﻿<EditForm Model="Persona" OnValidSubmit="OnValidSubmit">
+
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label>Documento</label>
+        <div>
+            <InputText width="10" @bind-Value="@Persona.Documento"></InputText>
+            <ValidationMessage For="@(() => @Persona.Documento)" />
+        </div>
+        <label>Nombre</label>
+        <div>
+            <InputText width="10" @bind-Value="@Persona.Nombre"></InputText>
+            <ValidationMessage For="@(() => @Persona.Nombre)" />
+        </div>
+        <label>Apellido</label>
+        <div>
+            <InputText width="10" @bind-Value="@Persona.Apellido"></InputText>
+            <ValidationMessage For="@(() => @Persona.Apellido)" />
+        </div>
+        <label>Edad</label>
+        <div>
+            <InputNumber width="10" @bind-Value="@Persona.Edad"></InputNumber>
+            <ValidationMessage For="@(() => @Persona.Edad)" />
+        </div>
+        <label>Nacionalidad</label>
+        <div>
+            <InputText width="10" @bind-Value="@Persona.Nacionalidad"></InputText>
+            <ValidationMessage For="@(() => @Persona.Nacionalidad)" />
+        </div>
+        <label>Email</label>
+        <div>
+            <InputText width="10" @bind-Value="@Persona.Email"></InputText>
+            <ValidationMessage For="@(() => @Persona.Email)" />
+        </div>
+        <label>Telefono</label>
+        <div>
+            <InputNumber width="10" @bind-Value="@Persona.Telefono"></InputNumber>
+            <ValidationMessage For="@(() => @Persona.Telefono)" />
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Guardar <i class="bi bi-floppy2"></i></button>
+    <button class="btn btn-info" type="reset">Limpiar <i class="bi bi-x-octagon"></i></button>
+    <button class="btn btn-secondary" @onclick="ReturnAction">Regresar <i class="bi bi-arrow-clockwise"></i></button>
+
+</EditForm>
+@code {
+    [EditorRequired]
+    [Parameter]
+    public Persona Persona { get; set; }
+
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback ReturnAction { get; set; }
+
+
+}

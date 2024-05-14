@@ -1,0 +1,167 @@
+﻿@page "/personas"
+@using CurrieTechnologies.Razor.SweetAlert2
+@using TramitesVisas.Shared.Entidades
+@using TramitesVisas.WEB.Repositories
+@using TramitesVisas.WEB.Shared
+@inject IRepository Repository
+@inject SweetAlertService sweetAlertService
+@inject NavigationManager navigationManager
+
+
+<h3>Personas</h3>
+<div class="card">
+    <div class="card-header">
+        <span>
+            <a class="btn btn-primary btn-sm float-start" href="/personas/create"><i class="bi bi-plus-circle" /> Nueva Perosona </a>
+
+        </span>
+    </div>
+
+    <div class="card-body">
+        <GenericList MyList="Personas">
+
+            <Body>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <b>Id</b>
+                            </td>
+                            <td>
+                                <b>Documento</b>
+                            </td>
+                            <td>
+                                <b>Nombre</b>
+                            </td>
+                            <td>
+                                <b>Apellido</b>
+                            </td>
+                            <td>
+                                <b>Edad</b>
+                            </td>
+                            <td>
+                                <b>Nacionalidad</b>
+                            </td>
+                            <td>
+                                <b>Email</b>
+                            </td>
+                            <td>
+                                <b>Telefono</b>
+                            </td>
+                        </tr>
+                        @foreach (var persona in Personas!)
+                        {
+                            <tr>
+                                <td>
+                                    @persona.Id
+                                </td>
+                                <td>
+                                    @persona.Documento
+                                </td>
+                                <td>
+                                    @persona.Nombre
+                                </td>
+                                <td>
+                                    @persona.Apellido
+                                </td>
+                                <td>
+                                    @persona.Edad
+                                </td>
+                                <td>
+                                    @persona.Nacionalidad
+                                </td>
+                                <td>
+                                    @persona.Email
+                                </td>
+                                <td>
+                                    @persona.Telefono
+                                </td>
+
+                                <td>
+                                    <a href="/personas/edit/@persona.Id" class="btn btn-warning">Editar <i class="bi bi-pencil-square"></i></a>
+                                    <button class="btn btn-danger" @onclick=@(() => Delete(persona))>Borrar <i class="bi bi-trash3"></i></button>
+
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </Body>
+
+        </GenericList>
+    </div>
+</div>
+
+
+@code {
+
+    public List<Persona> Personas { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await Charging();
+    }
+
+
+    private async Task Charging()
+    {
+        var responseHTTP = await Repository.GetAsync<List<Persona>>("/api/Personas");
+        Personas = responseHTTP.Response!;
+
+    }
+
+
+    private async Task Delete(Persona persona)
+    {
+
+        var result = await sweetAlertService.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = $"¿Realmente deseas eliminar la Persona: {persona.Nombre}?",
+                Icon = SweetAlertIcon.Question,
+                ShowCancelButton = true,
+                CancelButtonText = "No",
+                ConfirmButtonText = "Si"
+            });
+
+        var confirm = string.IsNullOrEmpty(result.Value);
+        if (confirm)
+        {
+            return;
+        }
+
+        var responseHTTP = await Repository.DeleteAsync($"/api/Persona/{persona.Id}"); 
+
+        if (responseHTTP.Error)
+        {
+            if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("/Personas");
+            }
+            else
+            {
+                var mensajeError = await responseHTTP.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+            }
+        }
+        else
+        {
+            await Charging();
+
+            var toast = sweetAlertService.Mixin(new SweetAlertOptions
+                {
+                    Toast = true,
+                    ShowConfirmButton = true,
+                    Timer = 3000,
+                    Position = SweetAlertPosition.BottomEnd
+                });
+            toast.FireAsync(icon: SweetAlertIcon.Success, message: "Persona borrado con éxito.");
+        }
+    }
+}

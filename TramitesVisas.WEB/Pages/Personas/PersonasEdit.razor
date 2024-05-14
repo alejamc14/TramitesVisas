@@ -1,0 +1,83 @@
+﻿@page "/Personas/edit/{PersonaId:int}"
+@inject NavigationManager navigationManager
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+
+<h3>Editar Personas</h3>
+@if (persona is null)
+{
+    <p>La persona es Nulo</p>
+}
+else
+{
+    <PersonasForm Persona="persona" OnValidSubmit="Create" ReturnAction="Return" />
+    
+}
+
+
+@code {
+    [Parameter]
+    public int PersonaId { get; set; }
+    private Persona persona = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        var responseHTTP = await repository.GetAsync<Persona>($"api/Personas/{PersonaId}");
+
+        if (responseHTTP.Error)
+        {
+            if (responseHTTP.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("Personas");
+                return;
+            }
+            else
+            {
+                var mensajeError = await responseHTTP.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+                return;
+            }
+        }
+        else
+        {
+            persona = responseHTTP.Response;
+        }
+    }
+
+    private async Task Editar()
+    {
+
+        var responseHTTP = await repository.PutAsync("api/Personas", persona);
+
+        if (responseHTTP.Error)
+        {
+            var mensajeError = await responseHTTP.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+        }
+        else
+        {
+
+            Return();
+            var Toast = sweetAlertService.Mixin(new SweetAlertOptions
+                {
+
+                    Toast = true,
+                    Position = SweetAlertPosition.BottomEnd,
+                    ShowConfirmButton = true,
+                    Timer = 3000
+
+                });
+
+            await Toast.FireAsync(icon: SweetAlertIcon.Success, message: "Persona modificada con exito");
+        }
+
+    }
+
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("Personas");
+    }
+
+}
