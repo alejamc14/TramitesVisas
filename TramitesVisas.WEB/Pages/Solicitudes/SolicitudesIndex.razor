@@ -1,0 +1,180 @@
+﻿@page "/solicitudes"
+@using TramitesVisas.Shared.Entidades
+@using TramitesVisas.WEB.Repositories
+@using TramitesVisas.WEB.Shared
+@inject IRepository Repository
+@inject SweetAlertService sweetAlertService
+@inject NavigationManager navigationManager
+
+<h3>SolicitudesIndex</h3>
+
+<div class="card">
+    <div class="card-header">
+        <span>
+            <a class="btn btn-primary btn-sm float-start" href="/solicitud/create"><i class="bi bi-plus-circle" /> Nueva Solicitud </a>
+
+        </span>
+    </div>
+    <div class="card-body">
+        <GenericList MyList="Solicitudes">
+
+            <Body>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <b>Id</b>
+                            </td>
+                            <td>
+                                <b>TipoSolicitud</b>
+                            </td>
+                            <td>
+                                <b>Estado</b>
+                            </td>
+                            <td>
+                                <b>FechaAgenda</b>
+                            </td>
+                            <td>
+                                <b>IdPersona</b>
+                            </td>
+                            <td>
+                                <b>IdTipoVisa</b>
+                            </td>
+                        </tr>
+                        @foreach (var solicitud in Solicitudes!)
+                        {
+                            NomPersona(@solicitud.IdPersona);
+                            TipVisa(solicitud.IdTipoVisa); 
+                            <tr>
+                                <td>
+                                    @solicitud.Id
+                                </td>
+                                <td>
+                                    @nompersona
+                                </td>
+                                <td>
+                                    @tipvisa
+                                </td>
+                                <td>
+                                    <a href="/personas/edit/@solicitud.Id" class="btn btn-warning"><i class="bi bi-pencil-square">Editar</i></a>
+                                    <button class="btn btn-danger" @onclick=@(() => Delete(solicitud))><i class="bi bi-trash3">Borrar</i></button>
+
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </Body>
+
+        </GenericList>
+    </div>
+</div>
+
+@code {
+    public string nompersona { get; set; }
+
+    public string tipvisa { get; set; }
+
+    public List<Solicitud> Solicitudes { get; set; }
+    public List<Persona> Personas { get; set; }
+    public List<TipoVisa> TipoVisas { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await Charging();
+    }
+
+    private async Task Charging()
+    {
+        var responseHTTP = await Repository.GetAsync<List<Solicitud>>("/api/Solicitudes");
+        Solicitudes = responseHTTP.Response!;
+
+        var response2HTTP = await Repository.GetAsync<List<Persona>>("/api/Personas");
+        Personas = response2HTTP.Response!;
+
+        var response3HTTP = await Repository.GetAsync<List<TipoVisa>>("/api/TipoVisas");
+        TipoVisas = response3HTTP.Response!;
+
+    }
+
+
+    private async Task Delete(Solicitud solicitud)
+    {
+
+        var result = await sweetAlertService.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = $"¿Realmente deseas eliminar la Solicitud: {solicitud.TipoSolicitud}?",
+                Icon = SweetAlertIcon.Question,
+                ShowCancelButton = true,
+                CancelButtonText = "No",
+                ConfirmButtonText = "Si"
+            });
+
+        var confirm = string.IsNullOrEmpty(result.Value);
+        if (confirm)
+        {
+            return;
+        }
+
+        var responseHTTP = await Repository.DeleteAsync($"/api/Solicitud/{solicitud.Id}");
+
+        if (responseHTTP.Error)
+        {
+            if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("/Solicitudes");
+            }
+            else
+            {
+                var mensajeError = await responseHTTP.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+            }
+        }
+        else
+        {
+            await Charging();
+
+            var toast = sweetAlertService.Mixin(new SweetAlertOptions
+                {
+                    Toast = true,
+                    ShowConfirmButton = true,
+                    Timer = 3000,
+                    Position = SweetAlertPosition.BottomEnd
+                });
+            toast.FireAsync(icon: SweetAlertIcon.Success, message: "Solicitud borrado con éxito.");
+        }
+    }
+    private void NomPersona(int? selection)
+    {
+        nompersona = "";
+        foreach (var persona in Personas!)
+        {
+            if (selection == persona.Id)
+            {
+                nompersona = persona.Nombre;
+            }
+
+        }
+    }
+
+    private void TipVisa(int? selection2)
+    {
+        tipvisa = "";
+        foreach (var tipovisa in TipoVisas!)
+        {
+            if (selection2 == tipovisa.Id)
+            {
+                tipvisa = tipovisa.Tipo;
+            }
+
+        }
+    }
+
+}
