@@ -1,0 +1,83 @@
+@inject IRepository Repository 
+
+<EditForm Model="Documento" OnValidSubmit="OnValidSubmit">
+
+    <DataAnnotationsValidator />
+
+     <div class="mb-3"> 
+
+
+        <label>Nombre</label>
+        <div>
+            <InputText width="10" @bind-Value="@Documento.Nombre"></InputText>
+            <ValidationMessage For="@(() => Documento.Nombre)" />
+        </div>
+        <label>Fecha Subida</label>
+        <div>
+            <InputDate width="10" @bind-Value="@Documento.FechaSubida"></InputDate>
+            <ValidationMessage For="@(() => Documento.FechaSubida)" />
+        </div>
+        <label>URL</label>
+        <div>
+            <InputText width="10" @bind-Value="@Documento.URL"></InputText>
+            <ValidationMessage For="@(() => Documento.URL)" />
+        </div>
+        <label>Solicitud</label>
+
+            <Dropdown TItem="int" OnSelected="@OnSelected">
+                <InitialTip>Escoja una Solicitud</InitialTip>
+                <ChildContent >
+                    @foreach (var solicitud in Solicitudes!)
+                    {
+                        <DropdownListItem Context="dropContext" Item="@solicitud.Id">@solicitud.TipoSolicitud</DropdownListItem>
+                    }
+                </ChildContent>
+            </Dropdown>
+
+    </div>
+
+    <button class="btn btn-primary" type="submit">Guardar <i class="bi bi-floppy2"></i></button>
+    <button class="btn btn-info" type="reset">Limpiar <i class="bi bi-x-octagon"></i></button>
+    <button class="btn btn-secondary" @onclick="ReturnAction">Regresar <i class="bi bi-arrow-clockwise"></i></button>
+
+</EditForm>
+@code {
+
+    public List<Solicitud> Solicitudes { get; set; }
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        await Charging();
+    }
+
+    private async Task Charging()
+    {
+
+        var responseHTTP = await Repository.GetAsync<List<Solicitud>>("/api/Solicitudes");
+        Solicitudes = responseHTTP.Response!;
+
+    }
+
+
+    [EditorRequired]
+    [Parameter]
+    public Documento Documento { get; set; }
+
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback ReturnAction { get; set; }
+
+    private void OnSelected(int selection)
+    {
+        Documento.IdSolicitud = selection;
+    }
+
+
+}

@@ -1,0 +1,86 @@
+﻿@page "/documentos/edit/{DocumentoId:int}"
+@inject NavigationManager navigationManager
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+
+
+<h3>Editar Documentos</h3>
+
+@if (documentos is null)
+{
+    <p>El Documento es Nulo</p>
+}
+else
+{
+    <DocumentosForm documento="documentos" OnValidSubmit="Editar" ReturnAction="Return" />
+    
+}
+
+@code {
+
+    [Parameter]
+    public int DocumentoId { get; set; }
+    private Documento documentos = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        var responseHTTP = await repository.GetAsync<Documento>($"api/documentos/{DocumentoId}");
+
+        if (responseHTTP.Error)
+        {
+            if (responseHTTP.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("documentos");
+                return;
+            }
+            else
+            {
+                var mensajeError = await responseHTTP.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+                return;
+            }
+        }
+        else
+        {
+            documentos = responseHTTP.Response;
+        }
+    }
+
+    private async Task Editar()
+    {
+
+        var responseHTTP = await repository.PutAsync("api/documentos", documentos);
+
+        if (responseHTTP.Error)
+        {
+            var mensajeError = await responseHTTP.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+        }
+        else
+
+        {
+            Return();
+            var Toast = sweetAlertService.Mixin(new SweetAlertOptions
+                {
+
+                    Toast = true,
+                    Position = SweetAlertPosition.BottomEnd,
+                    ShowConfirmButton = true,
+                    Timer = 3000
+
+                });
+
+            await Toast.FireAsync(icon: SweetAlertIcon.Success, message: "Documento modificado con exito");
+        }
+    }
+
+
+
+    private void Return()
+    {
+
+        navigationManager.NavigateTo("documentos");
+    }
+}

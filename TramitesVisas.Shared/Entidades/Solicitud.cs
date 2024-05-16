@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace TramitesVisas.Shared.Entidades
@@ -36,10 +37,16 @@ namespace TramitesVisas.Shared.Entidades
 
         //Relaciones: una solicitud puede tener Muchas documentos , Historiales ..
         //Los ICollection mandan la foranea
+        [JsonIgnore]
         public ICollection<Documento> Documentos { get; set; }
+
+        [JsonIgnore]
         public ICollection<Renovacion> Renovaciones { get; set; }
 
+        [JsonIgnore]
         public ICollection<Historial> Historiales { get; set; }
+
+        [JsonIgnore]
         public ICollection<Pago> Pagos { get; set; }
 
       

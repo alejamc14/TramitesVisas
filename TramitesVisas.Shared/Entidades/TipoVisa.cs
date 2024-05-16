@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace TramitesVisas.Shared.Entidades
@@ -29,6 +30,7 @@ namespace TramitesVisas.Shared.Entidades
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string Requisitos { get; set; }
 
+        [JsonIgnore]
         public ICollection<Solicitud> Solicitudes { get; set; }
     }
 }

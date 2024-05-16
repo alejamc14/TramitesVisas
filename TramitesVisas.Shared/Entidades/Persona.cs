@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace TramitesVisas.Shared.Entidades
@@ -52,6 +53,8 @@ namespace TramitesVisas.Shared.Entidades
         public int Telefono { get; set; }
         public string NombreCompleto => $"{Nombre}{Apellido}";
 
+        //relacion 1:N 
+        [JsonIgnore]
         public ICollection<Solicitud> Solicitudes { get; set; }
       
     }
