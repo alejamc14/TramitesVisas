@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace TramitesVisas.Shared.Entidades
@@ -26,9 +27,10 @@ namespace TramitesVisas.Shared.Entidades
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string URL { get; set; }
 
-         // esta relacion recibe la foranea
+        // esta relacion recibe la foranea
+        [JsonIgnore]
         public Solicitud Solicitudes { get; set; }
-        public int IdSolicitud { get; set; }
+        public int SolicitudId { get; set; }
 
 
     }

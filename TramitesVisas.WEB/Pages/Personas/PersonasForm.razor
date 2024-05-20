@@ -1,4 +1,7 @@
-﻿<EditForm Model="Persona" OnValidSubmit="OnValidSubmit">
+﻿@using CurrieTechnologies.Razor.SweetAlert2
+﻿@using TramitesVisas.Shared.Entidades
+@inject SweetAlertService swal
+<EditForm Model="Persona" OnValidSubmit="OnValidSubmit">
 
     <DataAnnotationsValidator />
     <div class="mb-3">
@@ -44,6 +47,12 @@
 
 </EditForm>
 @code {
+    private EditContext editContext = null;
+    protected override void OnInitialized()
+    {
+        editContext = new(Persona);
+    }
+
     [EditorRequired]
     [Parameter]
     public Persona Persona { get; set; }
@@ -58,5 +67,38 @@
     [Parameter]
     public EventCallback ReturnAction { get; set; }
 
+    public bool FormPostedSuccessfully { get; set; } = false;
+
+    private async Task OnBeforeInternalNavigation(LocationChangingContext context)
+    {
+        var formularioFueEditado = editContext.IsModified();
+
+        if (!formularioFueEditado)
+        {
+            return;
+        }
+
+        if (FormPostedSuccessfully)
+        {
+            return;
+        }
+
+        var resultado = await swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = "¿Deseas abandonar la página y perder los cambios?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true
+            });
+
+        var confirmado = !string.IsNullOrEmpty(resultado.Value);
+
+        if (confirmado)
+        {
+            return;
+        }
+
+        context.PreventNavigation();
+    }
 
 }

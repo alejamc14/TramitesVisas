@@ -103,17 +103,21 @@
 
     public List<Persona> Personas { get; set; }
 
-    protected async override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        await Charging();
+        await LoadAsync();
     }
 
-
-    private async Task Charging()
+    private async Task LoadAsync()
     {
-        var responseHTTP = await Repository.GetAsync<List<Persona>>("/api/Personas");
-        Personas = responseHTTP.Response!;
-
+        var responseHttp = await Repository.GetAsync<List<Persona>>("/api/personas");
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+        Personas = responseHttp.Response;
     }
 
 
@@ -136,13 +140,13 @@
             return;
         }
 
-        var responseHTTP = await Repository.DeleteAsync($"/api/Persona/{persona.Id}"); 
+        var responseHTTP = await Repository.DeleteAsync($"/api/persona/{persona.Id}"); 
 
         if (responseHTTP.Error)
         {
             if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                navigationManager.NavigateTo("/Personas");
+                navigationManager.NavigateTo("/personas");
             }
             else
             {
@@ -152,7 +156,7 @@
         }
         else
         {
-            await Charging();
+            await LoadAsync();
 
             var toast = sweetAlertService.Mixin(new SweetAlertOptions
                 {

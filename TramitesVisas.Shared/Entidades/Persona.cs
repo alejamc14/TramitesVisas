@@ -30,7 +30,6 @@ namespace TramitesVisas.Shared.Entidades
 
 
         [Display(Name = "Edad")]
-        [MaxLength(10, ErrorMessage = "No se perimten mas de 10 caracteres")]
         [Required(ErrorMessage = "El campo {3} es obligatorio")]
         public int Edad { get; set; }
 
@@ -48,7 +47,6 @@ namespace TramitesVisas.Shared.Entidades
 
 
         [Display(Name = "Telefono")]
-        [MaxLength(20, ErrorMessage = "No se perimten mas de 20 caracteres")]
         [Required(ErrorMessage = "El campo {6} es obligatorio")]
         public int Telefono { get; set; }
         public string NombreCompleto => $"{Nombre}{Apellido}";

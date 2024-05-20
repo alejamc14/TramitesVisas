@@ -20,8 +20,6 @@ namespace TramitesVisas.API.Data
         public DbSet<Historial> Historiales { get; set; }
         public DbSet<Pago> Pagos { get; set; }
         public DbSet<Documento> Documentos { get; set; }
-        public DbSet<Gerente> Gerentes { get; set; }
-
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

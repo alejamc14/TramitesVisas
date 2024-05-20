@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace TramitesVisas.Shared.Entidades
@@ -27,8 +28,9 @@ namespace TramitesVisas.Shared.Entidades
 
 
         //relaciones: 
+        [JsonIgnore]
         public Solicitud Solicitudes { get; set; }
-        public int IdSolicitud { get; set; }
+        public int SolicitudId { get; set; }
 
 
 

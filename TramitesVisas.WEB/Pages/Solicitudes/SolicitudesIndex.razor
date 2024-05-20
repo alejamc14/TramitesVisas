@@ -47,8 +47,8 @@
                         </tr>
                         @foreach (var solicitud in Solicitudes!)
                         {
-                            NomPersona(@solicitud.IdPersona);
-                            TipVisa(solicitud.IdTipoVisa); 
+                            NomPersona(@solicitud.PersonaId);
+                            TipVisa(solicitud.TipoVisaId);
                             <tr>
                                 <td>
                                     @solicitud.Id

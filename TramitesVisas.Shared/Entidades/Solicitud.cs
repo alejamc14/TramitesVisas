@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace TramitesVisas.Shared.Entidades
@@ -28,18 +29,22 @@ namespace TramitesVisas.Shared.Entidades
 
 
         //  recibe el FK de persona
+        [JsonIgnore]
         public Persona Personas { get; set; }
-        public int IdPersona { get; set; }
-
+        public int PersonaId { get; set; }
+        [JsonIgnore]
         public TipoVisa TipoVisas { get; set; }
-        public int IdTipoVisa { get; set; }
+        public int TipoVisaId { get; set; }
 
         //Relaciones: una solicitud puede tener Muchas documentos , Historiales ..
         //Los ICollection mandan la foranea
+        [JsonIgnore]
         public ICollection<Documento> Documentos { get; set; }
+        [JsonIgnore]
         public ICollection<Renovacion> Renovaciones { get; set; }
-
+        [JsonIgnore]
         public ICollection<Historial> Historiales { get; set; }
+        [JsonIgnore]
         public ICollection<Pago> Pagos { get; set; }
 
       
