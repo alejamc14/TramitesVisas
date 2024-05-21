@@ -1,5 +1,4 @@
-﻿@page "/personas"
-@using CurrieTechnologies.Razor.SweetAlert2
+﻿@page "/solicitudes"
 @using TramitesVisas.Shared.Entidades
 @using TramitesVisas.WEB.Repositories
 @using TramitesVisas.WEB.Shared
@@ -7,18 +6,17 @@
 @inject SweetAlertService sweetAlertService
 @inject NavigationManager navigationManager
 
+<h3>SolicitudesIndex</h3>
 
-<h3>Personas</h3>
 <div class="card">
     <div class="card-header">
         <span>
-            <a class="btn btn-primary btn-sm float-start" href="/personas/create"><i class="bi bi-plus-circle" /> Nueva Persona </a>
+            <a class="btn btn-primary btn-sm float-start" href="/solicitud/create"><i class="bi bi-plus-circle" /> Nueva Solicitud </a>
 
         </span>
     </div>
-
     <div class="card-body">
-        <GenericList MyList="Personas">
+        <GenericList MyList="Solicitudes">
 
             <Body>
                 <table class="table table-striped">
@@ -32,58 +30,38 @@
                                 <b>Id</b>
                             </td>
                             <td>
-                                <b>Documento</b>
+                                <b>TipoSolicitud</b>
                             </td>
                             <td>
-                                <b>Nombre</b>
+                                <b>Estado</b>
                             </td>
                             <td>
-                                <b>Apellido</b>
+                                <b>FechaAgenda</b>
                             </td>
                             <td>
-                                <b>Fecha de Nacimiento</b>
+                                <b>IdPersona</b>
                             </td>
                             <td>
-                                <b>Nacionalidad</b>
-                            </td>
-                            <td>
-                                <b>Email</b>
-                            </td>
-                            <td>
-                                <b>Telefono</b>
+                                <b>IdTipoVisa</b>
                             </td>
                         </tr>
-                        @foreach (var persona in Personas!)
+                        @foreach (var solicitud in Solicitudes!)
                         {
+                            NomPersona(@solicitud.PersonaId);
+                            TipVisa(solicitud.TipoVisaId);
                             <tr>
                                 <td>
-                                    @persona.Id
+                                    @solicitud.Id
                                 </td>
                                 <td>
-                                    @persona.Documento
+                                    @nompersona
                                 </td>
                                 <td>
-                                    @persona.Nombre
+                                    @tipvisa
                                 </td>
                                 <td>
-                                    @persona.Apellido
-                                </td>
-                                <td>
-                                    @persona.FechaNacimiento
-                                </td>
-                                <td>
-                                    @persona.Nacionalidad
-                                </td>
-                                <td>
-                                    @persona.Email
-                                </td>
-                                <td>
-                                    @persona.Telefono
-                                </td>
-
-                                <td>
-                                    <a href="/personas/edit/@persona.Id" class="btn btn-warning">Editar<i class="bi bi-pencil-square"></i></a>
-                                    <button class="btn btn-danger" @onclick=@(() => Delete(persona))>Borrar<i class="bi bi-trash3"></i></button>
+                                    <a href="/personas/edit/@solicitud.Id" class="btn btn-warning"><i class="bi bi-pencil-square">Editar</i></a>
+                                    <button class="btn btn-danger" @onclick=@(() => Delete(solicitud))><i class="bi bi-trash3">Borrar</i></button>
 
                                 </td>
 
@@ -98,10 +76,14 @@
     </div>
 </div>
 
-
 @code {
+    public string nompersona { get; set; }
 
+    public string tipvisa { get; set; }
+
+    public List<Solicitud> Solicitudes { get; set; }
     public List<Persona> Personas { get; set; }
+    public List<TipoVisa> TipoVisas { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
@@ -110,24 +92,25 @@
 
     private async Task Charging()
     {
-        var responseHttp = await Repository.GetAsync<List<Persona>>("/api/personas");
-        if (responseHttp.Error)
-        {
-            var message = await responseHttp.GetErrorMessageAsync();
-            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-            return;
-        }
-        Personas = responseHttp.Response;
+        var responseHTTP = await Repository.GetAsync<List<Solicitud>>("/api/Solicitudes");
+        Solicitudes = responseHTTP.Response!;
+
+        var response2HTTP = await Repository.GetAsync<List<Persona>>("/api/Personas");
+        Personas = response2HTTP.Response!;
+
+        var response3HTTP = await Repository.GetAsync<List<TipoVisa>>("/api/TipoVisas");
+        TipoVisas = response3HTTP.Response!;
+
     }
 
 
-    private async Task Delete(Persona persona)
+    private async Task Delete(Solicitud solicitud)
     {
 
         var result = await sweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmación",
-                Text = $"¿Realmente deseas eliminar la Persona: {persona.Nombre}?",
+                Text = $"¿Realmente deseas eliminar la Solicitud: {solicitud.TipoSolicitud}?",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
                 CancelButtonText = "No",
@@ -140,13 +123,13 @@
             return;
         }
 
-        var responseHTTP = await Repository.DeleteAsync($"/api/personas/{persona.Id}"); 
+        var responseHTTP = await Repository.DeleteAsync($"/api/Solicitud/{solicitud.Id}");
 
         if (responseHTTP.Error)
         {
             if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                navigationManager.NavigateTo("/personas");
+                navigationManager.NavigateTo("/Solicitudes");
             }
             else
             {
@@ -165,7 +148,33 @@
                     Timer = 3000,
                     Position = SweetAlertPosition.BottomEnd
                 });
-            toast.FireAsync(icon: SweetAlertIcon.Success, message: "Persona borrado con éxito.");
+            toast.FireAsync(icon: SweetAlertIcon.Success, message: "Solicitud borrado con éxito.");
         }
     }
+    private void NomPersona(int? selection)
+    {
+        nompersona = "";
+        foreach (var persona in Personas!)
+        {
+            if (selection == persona.Id)
+            {
+                nompersona = persona.Nombre;
+            }
+
+        }
+    }
+
+    private void TipVisa(int? selection2)
+    {
+        tipvisa = "";
+        foreach (var tipovisa in TipoVisas!)
+        {
+            if (selection2 == tipovisa.Id)
+            {
+                tipvisa = tipovisa.Tipo;
+            }
+
+        }
+    }
+
 }

@@ -6,26 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TramitesVisas.API.Migrations
 {
     /// <inheritdoc />
-    public partial class inicial : Migration
+    public partial class Inicial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Gerentes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Documento = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Nombre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Gerentes", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Personas",
                 columns: table => new
@@ -35,10 +20,10 @@ namespace TramitesVisas.API.Migrations
                     Documento = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Nombre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Apellido = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Edad = table.Column<int>(type: "int", maxLength: 10, nullable: false),
+                    FechaNacimiento = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Nacionalidad = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Telefono = table.Column<int>(type: "int", maxLength: 20, nullable: false)
+                    Telefono = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,6 +38,7 @@ namespace TramitesVisas.API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Tipo = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Costo = table.Column<double>(type: "float", nullable: false),
+                    Duracion = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Requisitos = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
@@ -68,25 +54,26 @@ namespace TramitesVisas.API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TipoSolicitud = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Estado = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    FechaAgenda = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PersonasId = table.Column<int>(type: "int", nullable: true),
-                    IdPersona = table.Column<int>(type: "int", nullable: false),
-                    TipoVisasId = table.Column<int>(type: "int", nullable: true),
-                    IdTipoVisa = table.Column<int>(type: "int", nullable: false)
+                    FechaSolicitud = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Comentario = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    PersonaId = table.Column<int>(type: "int", nullable: false),
+                    TipoVisaId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Solicitudes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Solicitudes_Personas_PersonasId",
-                        column: x => x.PersonasId,
+                        name: "FK_Solicitudes_Personas_PersonaId",
+                        column: x => x.PersonaId,
                         principalTable: "Personas",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Solicitudes_TipoVisas_TipoVisasId",
-                        column: x => x.TipoVisasId,
+                        name: "FK_Solicitudes_TipoVisas_TipoVisaId",
+                        column: x => x.TipoVisaId,
                         principalTable: "TipoVisas",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -95,41 +82,20 @@ namespace TramitesVisas.API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    TipoDocumento = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     FechaSubida = table.Column<DateTime>(type: "datetime2", nullable: false),
                     URL = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    SolicitudesId = table.Column<int>(type: "int", nullable: true),
-                    IdSolicitud = table.Column<int>(type: "int", nullable: false)
+                    SolicitudId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Documentos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Documentos_Solicitudes_SolicitudesId",
-                        column: x => x.SolicitudesId,
+                        name: "FK_Documentos_Solicitudes_SolicitudId",
+                        column: x => x.SolicitudId,
                         principalTable: "Solicitudes",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Historiales",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FechaHora = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TipoEvento = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    SolicitudesId = table.Column<int>(type: "int", nullable: true),
-                    IdSolicitud = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Historiales", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Historiales_Solicitudes_SolicitudesId",
-                        column: x => x.SolicitudesId,
-                        principalTable: "Solicitudes",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -138,20 +104,20 @@ namespace TramitesVisas.API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Valor = table.Column<double>(type: "float", nullable: false),
+                    Monto = table.Column<double>(type: "float", nullable: false),
                     MetodoPago = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     FechaPago = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    SolicitudesId = table.Column<int>(type: "int", nullable: true),
-                    IdSolicitud = table.Column<int>(type: "int", nullable: false)
+                    SolicitudId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Pagos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Pagos_Solicitudes_SolicitudesId",
-                        column: x => x.SolicitudesId,
+                        name: "FK_Pagos_Solicitudes_SolicitudId",
+                        column: x => x.SolicitudId,
                         principalTable: "Solicitudes",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -163,48 +129,43 @@ namespace TramitesVisas.API.Migrations
                     FechaRenovacion = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Costo = table.Column<double>(type: "float", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    SolicitudesId = table.Column<int>(type: "int", nullable: true),
-                    IdSolicitud = table.Column<int>(type: "int", nullable: false)
+                    SolicitudId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Renovaciones", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Renovaciones_Solicitudes_SolicitudesId",
-                        column: x => x.SolicitudesId,
+                        name: "FK_Renovaciones_Solicitudes_SolicitudId",
+                        column: x => x.SolicitudId,
                         principalTable: "Solicitudes",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Documentos_SolicitudesId",
+                name: "IX_Documentos_SolicitudId",
                 table: "Documentos",
-                column: "SolicitudesId");
+                column: "SolicitudId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Historiales_SolicitudesId",
-                table: "Historiales",
-                column: "SolicitudesId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Pagos_SolicitudesId",
+                name: "IX_Pagos_SolicitudId",
                 table: "Pagos",
-                column: "SolicitudesId");
+                column: "SolicitudId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Renovaciones_SolicitudesId",
+                name: "IX_Renovaciones_SolicitudId",
                 table: "Renovaciones",
-                column: "SolicitudesId");
+                column: "SolicitudId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Solicitudes_PersonasId",
+                name: "IX_Solicitudes_PersonaId",
                 table: "Solicitudes",
-                column: "PersonasId");
+                column: "PersonaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Solicitudes_TipoVisasId",
+                name: "IX_Solicitudes_TipoVisaId",
                 table: "Solicitudes",
-                column: "TipoVisasId");
+                column: "TipoVisaId");
         }
 
         /// <inheritdoc />
@@ -212,12 +173,6 @@ namespace TramitesVisas.API.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Documentos");
-
-            migrationBuilder.DropTable(
-                name: "Gerentes");
-
-            migrationBuilder.DropTable(
-                name: "Historiales");
 
             migrationBuilder.DropTable(
                 name: "Pagos");

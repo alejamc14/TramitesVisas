@@ -17,11 +17,8 @@ namespace TramitesVisas.API.Data
         public DbSet<Solicitud> Solicitudes { get; set; }
         public DbSet<TipoVisa> TipoVisas { get; set; }
         public DbSet<Renovacion> Renovaciones { get; set; }
-        public DbSet<Historial> Historiales { get; set; }
         public DbSet<Pago> Pagos { get; set; }
         public DbSet<Documento> Documentos { get; set; }
-        public DbSet<Gerente> Gerentes { get; set; }
-
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

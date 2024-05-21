@@ -17,7 +17,7 @@ namespace TramitesVisas.API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0-preview.3.24172.4")
+                .HasAnnotation("ProductVersion", "8.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -33,16 +33,13 @@ namespace TramitesVisas.API.Migrations
                     b.Property<DateTime>("FechaSubida")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IdSolicitud")
+                    b.Property<int>("SolicitudId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Nombre")
+                    b.Property<string>("TipoDocumento")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
-
-                    b.Property<int?>("SolicitudesId")
-                        .HasColumnType("int");
 
                     b.Property<string>("URL")
                         .IsRequired()
@@ -51,66 +48,9 @@ namespace TramitesVisas.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SolicitudesId");
+                    b.HasIndex("SolicitudId");
 
                     b.ToTable("Documentos");
-                });
-
-            modelBuilder.Entity("TramitesVisas.Shared.Entidades.Gerente", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Documento")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Gerentes");
-                });
-
-            modelBuilder.Entity("TramitesVisas.Shared.Entidades.Historial", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("FechaHora")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("IdSolicitud")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SolicitudesId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TipoEvento")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SolicitudesId");
-
-                    b.ToTable("Historiales");
                 });
 
             modelBuilder.Entity("TramitesVisas.Shared.Entidades.Pago", b =>
@@ -124,23 +64,20 @@ namespace TramitesVisas.API.Migrations
                     b.Property<DateTime>("FechaPago")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IdSolicitud")
-                        .HasColumnType("int");
-
                     b.Property<string>("MetodoPago")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int?>("SolicitudesId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Valor")
+                    b.Property<double>("Monto")
                         .HasColumnType("float");
+
+                    b.Property<int>("SolicitudId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SolicitudesId");
+                    b.HasIndex("SolicitudId");
 
                     b.ToTable("Pagos");
                 });
@@ -163,14 +100,13 @@ namespace TramitesVisas.API.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("Edad")
-                        .HasMaxLength(10)
-                        .HasColumnType("int");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("FechaNacimiento")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Nacionalidad")
                         .IsRequired()
@@ -183,7 +119,6 @@ namespace TramitesVisas.API.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("Telefono")
-                        .HasMaxLength(20)
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -210,15 +145,12 @@ namespace TramitesVisas.API.Migrations
                     b.Property<DateTime>("FechaRenovacion")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IdSolicitud")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SolicitudesId")
+                    b.Property<int>("SolicitudId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SolicitudesId");
+                    b.HasIndex("SolicitudId");
 
                     b.ToTable("Renovaciones");
                 });
@@ -231,21 +163,20 @@ namespace TramitesVisas.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Comentario")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("Estado")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<DateTime>("FechaAgenda")
+                    b.Property<DateTime>("FechaSolicitud")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IdPersona")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdTipoVisa")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PersonasId")
+                    b.Property<int>("PersonaId")
                         .HasColumnType("int");
 
                     b.Property<string>("TipoSolicitud")
@@ -253,14 +184,14 @@ namespace TramitesVisas.API.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int?>("TipoVisasId")
+                    b.Property<int>("TipoVisaId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PersonasId");
+                    b.HasIndex("PersonaId");
 
-                    b.HasIndex("TipoVisasId");
+                    b.HasIndex("TipoVisaId");
 
                     b.ToTable("Solicitudes");
                 });
@@ -275,6 +206,11 @@ namespace TramitesVisas.API.Migrations
 
                     b.Property<double>("Costo")
                         .HasColumnType("float");
+
+                    b.Property<string>("Duracion")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Requisitos")
                         .IsRequired()
@@ -294,17 +230,10 @@ namespace TramitesVisas.API.Migrations
             modelBuilder.Entity("TramitesVisas.Shared.Entidades.Documento", b =>
                 {
                     b.HasOne("TramitesVisas.Shared.Entidades.Solicitud", "Solicitudes")
-                        .WithMany("Documentos")
-                        .HasForeignKey("SolicitudesId");
-
-                    b.Navigation("Solicitudes");
-                });
-
-            modelBuilder.Entity("TramitesVisas.Shared.Entidades.Historial", b =>
-                {
-                    b.HasOne("TramitesVisas.Shared.Entidades.Solicitud", "Solicitudes")
-                        .WithMany("Historiales")
-                        .HasForeignKey("SolicitudesId");
+                        .WithMany()
+                        .HasForeignKey("SolicitudId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Solicitudes");
                 });
@@ -312,8 +241,10 @@ namespace TramitesVisas.API.Migrations
             modelBuilder.Entity("TramitesVisas.Shared.Entidades.Pago", b =>
                 {
                     b.HasOne("TramitesVisas.Shared.Entidades.Solicitud", "Solicitudes")
-                        .WithMany("Pagos")
-                        .HasForeignKey("SolicitudesId");
+                        .WithMany()
+                        .HasForeignKey("SolicitudId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Solicitudes");
                 });
@@ -321,8 +252,10 @@ namespace TramitesVisas.API.Migrations
             modelBuilder.Entity("TramitesVisas.Shared.Entidades.Renovacion", b =>
                 {
                     b.HasOne("TramitesVisas.Shared.Entidades.Solicitud", "Solicitudes")
-                        .WithMany("Renovaciones")
-                        .HasForeignKey("SolicitudesId");
+                        .WithMany()
+                        .HasForeignKey("SolicitudId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Solicitudes");
                 });
@@ -330,37 +263,20 @@ namespace TramitesVisas.API.Migrations
             modelBuilder.Entity("TramitesVisas.Shared.Entidades.Solicitud", b =>
                 {
                     b.HasOne("TramitesVisas.Shared.Entidades.Persona", "Personas")
-                        .WithMany("Solicitudes")
-                        .HasForeignKey("PersonasId");
+                        .WithMany()
+                        .HasForeignKey("PersonaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("TramitesVisas.Shared.Entidades.TipoVisa", "TipoVisas")
-                        .WithMany("Solicitudes")
-                        .HasForeignKey("TipoVisasId");
+                        .WithMany()
+                        .HasForeignKey("TipoVisaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Personas");
 
                     b.Navigation("TipoVisas");
-                });
-
-            modelBuilder.Entity("TramitesVisas.Shared.Entidades.Persona", b =>
-                {
-                    b.Navigation("Solicitudes");
-                });
-
-            modelBuilder.Entity("TramitesVisas.Shared.Entidades.Solicitud", b =>
-                {
-                    b.Navigation("Documentos");
-
-                    b.Navigation("Historiales");
-
-                    b.Navigation("Pagos");
-
-                    b.Navigation("Renovaciones");
-                });
-
-            modelBuilder.Entity("TramitesVisas.Shared.Entidades.TipoVisa", b =>
-                {
-                    b.Navigation("Solicitudes");
                 });
 #pragma warning restore 612, 618
         }

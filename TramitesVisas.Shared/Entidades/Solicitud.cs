@@ -25,29 +25,24 @@ namespace TramitesVisas.Shared.Entidades
 
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd HH:mm}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        public DateTime FechaAgenda { get; set; }
+        public DateTime FechaSolicitud { get; set; }
+
+        [Display(Name = "Comentario")]
+        [MaxLength(100, ErrorMessage = "No se perimten mas de 100 digitos")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        public string Comentario { get; set; }
 
 
         //  recibe el FK de persona
+        [JsonIgnore]
         public Persona Personas { get; set; }
-        public int IdPersona { get; set; }
+        public int PersonaId { get; set; }
 
+
+        [JsonIgnore]
         public TipoVisa TipoVisas { get; set; }
-        public int IdTipoVisa { get; set; }
+        public int TipoVisaId { get; set; }
 
-        //Relaciones: una solicitud puede tener Muchas documentos , Historiales ..
-        //Los ICollection mandan la foranea
-        [JsonIgnore]
-        public ICollection<Documento> Documentos { get; set; }
-
-        [JsonIgnore]
-        public ICollection<Renovacion> Renovaciones { get; set; }
-
-        [JsonIgnore]
-        public ICollection<Historial> Historiales { get; set; }
-
-        [JsonIgnore]
-        public ICollection<Pago> Pagos { get; set; }
 
       
     }

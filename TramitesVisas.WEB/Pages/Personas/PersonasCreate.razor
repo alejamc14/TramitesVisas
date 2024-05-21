@@ -12,7 +12,7 @@
 
     private async Task Create()
     {
-        var responseHttp = await repository.PostAsync("/api/Personas", persona);
+        var responseHttp = await repository.PostAsync("/api/personas", persona);
 
         if (responseHttp.Error)
         {
@@ -40,7 +40,7 @@
 
     private void Return()
     {
-        navigationManager.NavigateTo("/Personas");
+        navigationManager.NavigateTo("/personas");
 
 
     }

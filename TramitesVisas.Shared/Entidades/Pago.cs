@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace TramitesVisas.Shared.Entidades
@@ -14,7 +15,7 @@ namespace TramitesVisas.Shared.Entidades
         [Display(Name = "Valor a pagar ")]
         [Range(0.01, double.MaxValue, ErrorMessage = "La cantidad requerida debe ser mayor que 0")]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        public double Valor { get; set; }
+        public double Monto{ get; set; }
 
 
         [Display(Name = "Metodo de pago")]
@@ -22,13 +23,14 @@ namespace TramitesVisas.Shared.Entidades
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string MetodoPago { get; set; }
 
-
+        [Display(Name = "Fecha de Pago")]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd HH:mm}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public DateTime FechaPago { get; set; }
 
+        [JsonIgnore]
         public Solicitud Solicitudes { get; set; }
-        public int IdSolicitud { get; set; }
+        public int SolicitudId { get; set; }
 
     }
 }
