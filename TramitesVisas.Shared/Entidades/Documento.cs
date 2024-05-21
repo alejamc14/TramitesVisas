@@ -12,12 +12,12 @@ namespace TramitesVisas.Shared.Entidades
     {
         public int Id { get; set; }
 
-
-        [Display(Name = "Nombre")]
+        [Display(Name = "Tipo de Documento")]
         [MaxLength(20, ErrorMessage = "No se perimten mas de 20 digitos")]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        public string Nombre { get; set; }
+        public string TipoDocumento{ get; set; }
 
+        [Display(Name = "Fecha de Subida")]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd HH:mm}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public DateTime FechaSubida { get; set; }

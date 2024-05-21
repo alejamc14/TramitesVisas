@@ -24,13 +24,15 @@ namespace TramitesVisas.Shared.Entidades
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public double Costo { get; set; }
 
+        [Display(Name = "Duracion de La visa")]
+        [MaxLength(20, ErrorMessage = "No se perimten mas de 20 digitos")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        public string Duracion { get; set; }
 
         [Display(Name = "Requisitos")]
         [MaxLength(50, ErrorMessage = "No se perimten mas de 50 digitos")]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string Requisitos { get; set; }
 
-        [JsonIgnore]
-        public ICollection<Solicitud> Solicitudes { get; set; }
     }
 }

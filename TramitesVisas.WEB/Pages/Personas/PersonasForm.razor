@@ -20,10 +20,10 @@
             <InputText width="10" @bind-Value="@Persona.Apellido"></InputText>
             <ValidationMessage For="@(() => @Persona.Apellido)" />
         </div>
-        <label>Edad</label>
+        <label>Fecha de nacimiento</label>
         <div>
-            <InputNumber width="10" @bind-Value="@Persona.Edad"></InputNumber>
-            <ValidationMessage For="@(() => @Persona.Edad)" />
+            <InputNumber width="10" @bind-Value="@Persona.FechaNacimiento"></InputNumber>
+            <ValidationMessage For="@(() => @Persona.FechaNacimiento)" />
         </div>
         <label>Nacionalidad</label>
         <div>

@@ -23,13 +23,13 @@ else
     protected override async Task OnInitializedAsync()
     {
 
-        var responseHTTP = await repository.GetAsync<Persona>($"api/Personas/{PersonaId}");
+        var responseHTTP = await repository.GetAsync<Persona>($"api/personas/{PersonaId}");
 
         if (responseHTTP.Error)
         {
             if (responseHTTP.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
             {
-                navigationManager.NavigateTo("Personas");
+                navigationManager.NavigateTo("personas");
                 return;
             }
             else
@@ -48,7 +48,7 @@ else
     private async Task Editar()
     {
 
-        var responseHTTP = await repository.PutAsync("api/Personas", persona);
+        var responseHTTP = await repository.PutAsync("api/personas", persona);
 
         if (responseHTTP.Error)
         {
@@ -77,7 +77,7 @@ else
 
     private void Return()
     {
-        navigationManager.NavigateTo("Personas");
+        navigationManager.NavigateTo("personas");
     }
 
 }
