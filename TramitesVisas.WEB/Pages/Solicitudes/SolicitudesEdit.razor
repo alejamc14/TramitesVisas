@@ -1,0 +1,80 @@
+﻿@page "/Solicitudes/edit/{SolicitudId:int}"
+@inject NavigationManager navigationManager
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+
+<h3>Editar Solicitudes</h3>
+@if (solicitud is null)
+{
+    <p>La persona es Nulo</p>
+}
+else
+{
+    <SolicitudesForm Solicitud="solicitud" OnValidSubmit="Editar" ReturnAction="Return" />
+    
+}
+@code {
+    [Parameter]
+    public int SolicitudId { get; set; }
+    private Solicitud solicitud = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        var responseHTTP = await repository.GetAsync<Solicitud>($"api/solicitudes/{SolicitudId}");
+
+        if (responseHTTP.Error)
+        {
+            if (responseHTTP.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("solicitudes");
+                return;
+            }
+            else
+            {
+                var mensajeError = await responseHTTP.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+                return;
+            }
+        }
+        else
+        {
+            solicitud = responseHTTP.Response;
+        }
+    }
+
+    private async Task Editar()
+    {
+
+        var responseHTTP = await repository.PutAsync("api/solicitudes", solicitud);
+
+        if (responseHTTP.Error)
+        {
+            var mensajeError = await responseHTTP.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+        }
+        else
+        {
+
+            Return();
+            var Toast = sweetAlertService.Mixin(new SweetAlertOptions
+                {
+
+                    Toast = true,
+                    Position = SweetAlertPosition.BottomEnd,
+                    ShowConfirmButton = true,
+                    Timer = 3000
+
+                });
+
+            await Toast.FireAsync(icon: SweetAlertIcon.Success, message: "La Solicitud fue modificada con exito");
+        }
+
+    }
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("solicitudes");
+    }
+
+}
