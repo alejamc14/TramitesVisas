@@ -140,7 +140,7 @@
             return;
         }
 
-        var responseHTTP = await Repository.DeleteAsync($"/api/persona/{persona.Id}"); 
+        var responseHTTP = await Repository.DeleteAsync($"/api/personas/{persona.Id}"); 
 
         if (responseHTTP.Error)
         {

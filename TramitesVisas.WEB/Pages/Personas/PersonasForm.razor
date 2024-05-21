@@ -22,7 +22,7 @@
         </div>
         <label>Fecha de nacimiento</label>
         <div>
-            <InputNumber width="10" @bind-Value="@Persona.FechaNacimiento"></InputNumber>
+            <InputDate width="10" @bind-Value="@Persona.FechaNacimiento"></InputDate>
             <ValidationMessage For="@(() => @Persona.FechaNacimiento)" />
         </div>
         <label>Nacionalidad</label>
