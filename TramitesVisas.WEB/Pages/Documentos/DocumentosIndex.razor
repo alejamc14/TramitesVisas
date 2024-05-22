@@ -1,4 +1,5 @@
 ﻿@page "/documentos"
+@using CurrieTechnologies.Razor.SweetAlert2
 @using TramitesVisas.Shared.Entidades
 @using TramitesVisas.WEB.Repositories
 @using TramitesVisas.WEB.Shared
@@ -8,12 +9,13 @@
 
 
 
-<h3>DocumentosIndex</h3>
+<h3>Documentos</h3>
 
 <div class="card">
     <div class="card-header">
         <span>
-            <a class="btn btn-primary btn-sm float-start" href="/documento/create"><i class="bi bi-plus-circle" /> Nueva Documento </a>
+           
+            <a class="btn btn-primary btn-sm float-start" href="/documentos/create"><i class="bi bi-plus-circle" /> Nuevo Documento </a>
 
         </span>
     </div>
@@ -24,6 +26,7 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -32,7 +35,7 @@
                                 <b>Id</b>
                             </td>
                             <td>
-                                <b>Nombre</b>
+                                <b>Tipo Documento</b>
                             </td>
                             <td>
                                 <b>FechaSubida</b>
@@ -40,23 +43,21 @@
                             <td>
                                 <b>URL</b>
                             </td>
-                            <td>
+                             <td>
                                 <b>Solicitud</b>
                             </td>
-                            <td>
-                                <b>Acciones</b>
-                            </td>
-                        </tr>
+                          
+                        </tr> 
                         @foreach (var documento in Documentos!)
                         {
-                            NomSolicitud(documento.IdSolicitud);
+                             NomSolicitud(documento.SolicitudId);
                             
                             <tr>
                                 <td>
                                     @documento.Id
                                 </td>
                                 <td>
-                                    @documento.Nombre
+                                    @documento.TipoDocumento
                                 </td>
                                 <td>
                                     @documento.FechaSubida
@@ -67,6 +68,9 @@
                                 <td>
                                     @nomsolicitud
                                 </td>
+                              @*   <td>
+                                    @GetSolicitudName(documento.SolicitudId)
+                                </td> *@
                                 <td>
                                     <a href="/personas/edit/@documento.Id" class="btn btn-warning"><i class="bi bi-pencil-square">Editar</i></a>
                                     <button class="btn btn-danger" @onclick=@(() => Delete(documento))><i class="bi bi-trash3">Borrar</i></button>
@@ -88,7 +92,79 @@
     public string nomsolicitud { get; set; }
 
     public List<Documento> Documentos { get; set; }
+
     public List<Solicitud> Solicitudes { get; set; }
+
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     await LoadAsync();
+    // }
+
+    // private async Task LoadAsync()
+    // {
+    //     var responseHttp = await Repository.GetAsync<List<Documento>>("api/Documentos");
+    //     if (responseHttp.Error)
+    //     {
+    //         var message = await responseHttp.GetErrorMessageAsync();
+    //         await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+    //         return;
+    //     }
+    //     Documentos = responseHttp.Response;
+
+    //     var responseProjects = await Repository.GetAsync<List<Solicitud>>("api/Solicitudes");
+    //     if (!responseProjects.Error)
+    //     {
+    //         Solicitudes = responseProjects.Response;
+    //     }
+    // }
+
+    // private string GetSolicitudName(int solicitudId)
+    // {
+    //     var solicitud = Solicitudes.FirstOrDefault(i => i.Id == solicitudId);
+    //     return solicitud != null ? solicitud.TipoSolicitud : "Solicitud no encontrada";
+    // }
+
+    // private async Task Delete(Documento documento)
+    // {
+    //     var result = await sweetAlertService.FireAsync(new SweetAlertOptions
+    //         {
+    //             Title = "Confirmación",
+    //             Text = $"¿Estas seguro de querer borrar el dicumento: {documento.TipoDocumento}?",
+    //             Icon = SweetAlertIcon.Question,
+    //             ShowCancelButton = true,
+    //         });
+    //     var confirm = string.IsNullOrEmpty(result.Value);
+    //     if (confirm)
+    //     {
+    //         return;
+    //     }
+
+    //     var responseHttp = await Repository.DeleteAsync($"api/Documentos/{documento.Id}");
+    //     if (responseHttp.Error)
+    //     {
+    //         if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+    //         {
+    //             navigationManager.NavigateTo("Documentos");
+    //         }
+    //         else
+    //         {
+    //             var mensajeError = await responseHttp.GetErrorMessageAsync();
+    //             await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+    //         }
+    //         return;
+    //     }
+
+    //     await LoadAsync();
+    //     var toast = sweetAlertService.Mixin(new SweetAlertOptions
+    //         {
+    //             Toast = true,
+    //             Position = SweetAlertPosition.BottomEnd,
+    //             ShowConfirmButton = true,
+    //             Timer = 3000
+    //         });
+    //     await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con éxito.");
+    // }
    
     protected async override Task OnInitializedAsync()
     {
@@ -99,14 +175,22 @@
 
     private async Task Charging()
     {
-        var responseHTTP = await Repository.GetAsync<List<Documento>>("/api/Documentos");
-        Documentos = responseHTTP.Response!;
+        var responseHttp = await Repository.GetAsync<List<Documento>>("/api/documentos");
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+        Documentos = responseHttp.Response;
+
+
+        // var responseHTTP = await Repository.GetAsync<List<Documento>>("/api/documentos");
+        // Documentos = responseHTTP.Response!;
 
         var response2HTTP = await Repository.GetAsync<List<Solicitud>>("/api/Solicitudes");
         Solicitudes = response2HTTP.Response!;
-
-        
-
+  
     }
 
 
@@ -117,7 +201,7 @@
         var result = await sweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmación",
-                Text = $"¿Realmente deseas eliminar la Solicitud: {documento.Nombre}?",
+                Text = $"¿Realmente deseas eliminar el documento: {documento.TipoDocumento}?",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
                 CancelButtonText = "No",
@@ -130,13 +214,13 @@
             return;
         }
 
-        var responseHTTP = await Repository.DeleteAsync($"/api/Documento/{documento.Id}");
+        var responseHTTP = await Repository.DeleteAsync($"/api/documentos/{documento.Id}");
 
         if (responseHTTP.Error)
         {
             if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                navigationManager.NavigateTo("/Documento");
+                navigationManager.NavigateTo("/documentos");
             }
             else
             {

@@ -1,28 +1,49 @@
-@inject IRepository Repository 
+@using CurrieTechnologies.Razor.SweetAlert2 *
+@using TramitesVisas.Shared.Entidades
+@* @inject IRepository Repository  *@
+@inject SweetAlertService swal
 
-<EditForm Model="Documento" OnValidSubmit="OnValidSubmit">
+
+@* new sara *@
+@* <NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"></NavigationLock> *@
+              @* new cambio sara *@
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
 
     <DataAnnotationsValidator />
 
      <div class="mb-3"> 
-
-
         <label>Nombre</label>
         <div>
-            <InputText width="10" @bind-Value="@Documento.Nombre"></InputText>
-            <ValidationMessage For="@(() => Documento.Nombre)" />
+            <InputText width="10" @bind-Value="@Documento.TipoDocumento"></InputText>
+            <ValidationMessage For="@(() => Documento.TipoDocumento)" />
         </div>
-        <label>Fecha Subida</label>
+    </div>
+
+@*     <div class="mb-3">
+        <label>Solicitud Id</label>
+        <div>
+            <InputDate width="10" @bind-Value="@Documento.SolicitudId"></InputDate>
+            <ValidationMessage For="@(() => Documento.SolicitudId)" />
+        </div>
+    </div> *@
+
+     <div class="mb-3">
+            <label>Fecha Subida</label>
         <div>
             <InputDate width="10" @bind-Value="@Documento.FechaSubida"></InputDate>
             <ValidationMessage For="@(() => Documento.FechaSubida)" />
         </div>
+    </div>
+
+    <div class="mb-3">
         <label>URL</label>
         <div>
             <InputText width="10" @bind-Value="@Documento.URL"></InputText>
             <ValidationMessage For="@(() => Documento.URL)" />
         </div>
-        <label>Solicitud</label>
+    </div>
+        
+      @*   <label>Solicitud</label>
 
             <Dropdown TItem="int" OnSelected="@OnSelected">
                 <InitialTip>Escoja una Solicitud</InitialTip>
@@ -32,31 +53,31 @@
                         <DropdownListItem Context="dropContext" Item="@solicitud.Id">@solicitud.TipoSolicitud</DropdownListItem>
                     }
                 </ChildContent>
-            </Dropdown>
+            </Dropdown> *@
+       
 
-    </div>
 
     <button class="btn btn-primary" type="submit">Guardar <i class="bi bi-floppy2"></i></button>
     <button class="btn btn-info" type="reset">Limpiar <i class="bi bi-x-octagon"></i></button>
     <button class="btn btn-secondary" @onclick="ReturnAction">Regresar <i class="bi bi-arrow-clockwise"></i></button>
-
+   @*  <button class="btn btn-primary" type="submit">Guardar</button>
+    <button class="btn btn-info" type="reset">Limpiar</button>
+    <button class="btn btn-success" @onclick="ReturnAction">Regresar</button>
+ *@
 </EditForm>
+
+
 @code {
 
-    public List<Solicitud> Solicitudes { get; set; }
 
+    // public List<Solicitud> Solicitudes { get; set; }
 
-    protected async override Task OnInitializedAsync()
+    //nuevo sara
+    private EditContext editContext = null!;
+
+    protected override void OnInitialized()
     {
-        await Charging();
-    }
-
-    private async Task Charging()
-    {
-
-        var responseHTTP = await Repository.GetAsync<List<Solicitud>>("/api/Solicitudes");
-        Solicitudes = responseHTTP.Response!;
-
+        editContext = new(Documento);
     }
 
 
@@ -74,10 +95,63 @@
     [Parameter]
     public EventCallback ReturnAction { get; set; }
 
-    private void OnSelected(int selection)
+    //nuevo
+    public bool FormPostedSuccessfully { get; set; } = false;
+
+    private async Task OnBeforeInternalNavigation(LocationChangingContext context)
     {
-        Documento.IdSolicitud = selection;
+        var formularioFueEditado = editContext.IsModified();
+
+        if (!formularioFueEditado)
+        {
+            return;
+        }
+
+        if (FormPostedSuccessfully)
+        {
+            return;
+        }
+
+        var resultado = await swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = "¿Deseas abandonar la página y perder los cambios?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true
+            });
+
+        var confirmado = !string.IsNullOrEmpty(resultado.Value);
+
+        if (confirmado)
+        {
+            return;
+        }
+
+        context.PreventNavigation();
     }
+    
+
+    // protected async override Task OnInitializedAsync()
+    // {
+    //     await Charging();
+    // }
+
+    // private async Task Charging()
+    // {
+
+    //     var responseHTTP = await Repository.GetAsync<List<Solicitud>>("/api/Solicitudes");
+    //     Solicitudes = responseHTTP.Response!;
+
+    // }
+  
 
 
+
+    // private void OnSelected(int selection)
+    // {
+    //     Documento.SolicitudId = selection;
+    // }
+
+  
+   
 }
