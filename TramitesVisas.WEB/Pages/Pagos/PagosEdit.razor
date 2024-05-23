@@ -1,0 +1,83 @@
+﻿@page "/Pagos/edit/{PagoId:int}"
+@inject NavigationManager navigationManager
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+
+<h3>Editar Pagos</h3>
+@if (pago is null)
+{
+    <p>La pago es Nulo</p>
+}
+else
+{
+    <PagosForm Pago="pago" OnValidSubmit="Editar" ReturnAction="Return" />
+    
+}
+
+
+@code {
+    [Parameter]
+    public int PagoId { get; set; }
+    private Pago pago = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        var responseHTTP = await repository.GetAsync<Pago>($"api/pagos/{PagoId}");
+
+        if (responseHTTP.Error)
+        {
+            if (responseHTTP.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("pagos");
+                return;
+            }
+            else
+            {
+                var mensajeError = await responseHTTP.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+                return;
+            }
+        }
+        else
+        {
+            pago = responseHTTP.Response;
+        }
+    }
+
+    private async Task Editar()
+    {
+
+        var responseHTTP = await repository.PutAsync("api/pagos", pago);
+
+        if (responseHTTP.Error)
+        {
+            var mensajeError = await responseHTTP.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+        }
+        else
+        {
+
+            Return();
+            var Toast = sweetAlertService.Mixin(new SweetAlertOptions
+                {
+
+                    Toast = true,
+                    Position = SweetAlertPosition.BottomEnd,
+                    ShowConfirmButton = true,
+                    Timer = 3000
+
+                });
+
+            await Toast.FireAsync(icon: SweetAlertIcon.Success, message: "Pago modificada con exito");
+        }
+
+    }
+
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("pagos");
+    }
+
+}

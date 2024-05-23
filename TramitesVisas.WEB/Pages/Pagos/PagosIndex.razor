@@ -1,0 +1,151 @@
+﻿@page "/pagos"
+@using CurrieTechnologies.Razor.SweetAlert2
+@using TramitesVisas.Shared.Entidades
+@using TramitesVisas.WEB.Repositories
+@using TramitesVisas.WEB.Shared
+@inject IRepository Repository
+@inject SweetAlertService sweetAlertService
+@inject NavigationManager navigationManager
+
+
+<h3>Pagos</h3>
+<div class="card">
+    <div class="card-header">
+        <span>
+            <a class="btn btn-primary btn-sm float-start" href="/pagos/create"><i class="bi bi-plus-circle" /> Nueva Pago </a>
+
+        </span>
+    </div>
+
+    <div class="card-body">
+        <GenericList MyList="Pagos">
+
+            <Body>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <b>Id</b>
+                            </td>
+                            <td>
+                                <b>Monto</b>
+                            </td>
+                            <td>
+                                <b>metodo de pago</b>
+                            </td>
+                            <td>
+                                <b>Fecha de pago</b>
+                            </td>
+
+                        </tr>
+                        @foreach (var pago in Pagos!)
+                        {
+                            <tr>
+                                <td>
+                                    @pago.Id
+                                </td>
+                                <td>
+                                    @pago.Monto
+                                </td>
+                                
+                                <td>
+                                    @pago.MetodoPago
+                                </td>
+                                <td>
+                                    @pago.FechaPago
+                                </td>
+                              
+
+                                <td>
+                                    <a href="/pagos/edit/@pago.Id" class="btn btn-warning">Editar<i class="bi bi-pencil-square"></i></a>
+                                    <button class="btn btn-danger" @onclick=@(() => Delete(pago))>Borrar<i class="bi bi-trash3"></i></button>
+
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </Body>
+
+        </GenericList>
+    </div>
+</div>
+
+
+@code {
+
+    public List<Pago> Pagos { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await Charging();
+    }
+
+    private async Task Charging()
+    {
+        var responseHttp = await Repository.GetAsync<List<Pago>>("/api/pagos");
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+        Pagos = responseHttp.Response;
+    }
+
+
+    private async Task Delete(Pago pago)
+    {
+
+        var result = await sweetAlertService.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = $"¿Realmente deseas eliminar la Pago: {pago.Id}?",
+                Icon = SweetAlertIcon.Question,
+                ShowCancelButton = true,
+                CancelButtonText = "No",
+                ConfirmButtonText = "Si"
+            });
+
+        var confirm = string.IsNullOrEmpty(result.Value);
+        if (confirm)
+        {
+            return;
+        }
+
+        var responseHTTP = await Repository.DeleteAsync($"/api/pagos/{pago.Id}");
+
+        if (responseHTTP.Error)
+        {
+            if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("/pagos");
+            }
+            else
+            {
+                var mensajeError = await responseHTTP.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+            }
+        }
+        else
+        {
+            await Charging();
+
+            var toast = sweetAlertService.Mixin(new SweetAlertOptions
+                {
+                    Toast = true,
+                    ShowConfirmButton = true,
+                    Timer = 3000,
+                    Position = SweetAlertPosition.BottomEnd
+                });
+            toast.FireAsync(icon: SweetAlertIcon.Success, message: "Pago borrado con éxito.");
+        }
+    }
+}
+
