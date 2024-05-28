@@ -1,0 +1,90 @@
+﻿@using CurrieTechnologies.Razor.SweetAlert2
+﻿@using TramitesVisas.Shared.Entidades
+@inject SweetAlertService swal
+
+<EditForm Model="TipoVisa" OnValidSubmit="OnValidSubmit">
+
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label>Tipo de Visa</label>
+        <div>
+            <InputText width="10" @bind-Value="@TipoVisa.Tipo"></InputText>
+            <ValidationMessage For="@(() => @TipoVisa.Tipo)" />
+        </div>
+        <label>Costo</label>
+        <div>
+            <InputNumber width="10" @bind-Value="@TipoVisa.Costo"></InputNumber>
+            <ValidationMessage For="@(() => @TipoVisa.Costo)" />
+        </div>
+        <label>Duracion</label>
+        <div>
+            <InputText width="10" @bind-Value="@TipoVisa.Duracion"></InputText>
+            <ValidationMessage For="@(() => @TipoVisa.Duracion)" />
+        </div>
+        <label>Requisitos</label>
+        <div>
+            <InputText width="10" @bind-Value="@TipoVisa.Requisitos"></InputText>
+            <ValidationMessage For="@(() => @TipoVisa.Requisitos)" />
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Guardar <i class="bi bi-floppy2"></i></button>
+    <button class="btn btn-info" type="reset">Limpiar <i class="bi bi-x-octagon"></i></button>
+    <button class="btn btn-secondary" @onclick="ReturnAction">Regresar <i class="bi bi-arrow-clockwise"></i></button>
+
+</EditForm>
+@code {
+    private EditContext editContext = null;
+    protected override void OnInitialized()
+    {
+        editContext = new(TipoVisa);
+    }
+
+    [EditorRequired]
+    [Parameter]
+    public TipoVisa TipoVisa { get; set; }
+
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback ReturnAction { get; set; }
+
+    public bool FormPostedSuccessfully { get; set; } = false;
+
+    private async Task OnBeforeInternalNavigation(LocationChangingContext context)
+    {
+        var formularioFueEditado = editContext.IsModified();
+
+        if (!formularioFueEditado)
+        {
+            return;
+        }
+
+        if (FormPostedSuccessfully)
+        {
+            return;
+        }
+
+        var resultado = await swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = "¿Deseas abandonar la página y perder los cambios?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true
+            });
+
+        var confirmado = !string.IsNullOrEmpty(resultado.Value);
+
+        if (confirmado)
+        {
+            return;
+        }
+
+        context.PreventNavigation();
+    }
+
+}
