@@ -1,5 +1,7 @@
-@using CurrieTechnologies.Razor.SweetAlert2 *
+@using CurrieTechnologies.Razor.SweetAlert2 
 @using TramitesVisas.Shared.Entidades
+
+@inject IRepository Repository
 @* @inject IRepository Repository  *@
 @inject SweetAlertService swal
 
@@ -19,13 +21,6 @@
         </div>
     </div>
 
-@*     <div class="mb-3">
-        <label>Solicitud Id</label>
-        <div>
-            <InputDate width="10" @bind-Value="@Documento.SolicitudId"></InputDate>
-            <ValidationMessage For="@(() => Documento.SolicitudId)" />
-        </div>
-    </div> *@
 
      <div class="mb-3">
             <label>Fecha Subida</label>
@@ -42,8 +37,20 @@
             <ValidationMessage For="@(() => Documento.URL)" />
         </div>
     </div>
+@* 
+
+    <div class="mb-3">
+        <label>Solicitud Id</label>
+        <div>
+            <InputDate width="10" @bind-Value="@Documento.SolicitudId"></InputDate>
+            <ValidationMessage For="@(() => Documento.SolicitudId)" />
+        </div>
+    </div> *@
+
+@* 
         
-      @*   <label>Solicitud</label>
+        <div>
+        <label>Solicitud</label>
 
             <Dropdown TItem="int" OnSelected="@OnSelected">
                 <InitialTip>Escoja una Solicitud</InitialTip>
@@ -53,7 +60,8 @@
                         <DropdownListItem Context="dropContext" Item="@solicitud.Id">@solicitud.TipoSolicitud</DropdownListItem>
                     }
                 </ChildContent>
-            </Dropdown> *@
+            </Dropdown>
+         </div> *@
        
 
 
@@ -70,9 +78,9 @@
 @code {
 
 
-    // public List<Solicitud> Solicitudes { get; set; }
+    public List<Solicitud> Solicitudes { get; set; }
 
-    //nuevo sara
+    
     private EditContext editContext = null!;
 
     protected override void OnInitialized()
@@ -130,6 +138,12 @@
         context.PreventNavigation();
     }
     
+    private void OnSelected(int selection)
+    {
+        Documento.SolicitudId = selection;
+    }
+
+
 
     // protected async override Task OnInitializedAsync()
     // {
@@ -147,10 +161,7 @@
 
 
 
-    // private void OnSelected(int selection)
-    // {
-    //     Documento.SolicitudId = selection;
-    // }
+   
 
   
    

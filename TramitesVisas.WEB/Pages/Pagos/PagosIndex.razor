@@ -40,10 +40,14 @@
                             <td>
                                 <b>Fecha de pago</b>
                             </td>
-
+                            <td>
+                                <b>Solicitud</b>
+                            </td>
                         </tr>
                         @foreach (var pago in Pagos!)
                         {
+                            NomSolicitud(pago.SolicitudId);
+
                             <tr>
                                 <td>
                                     @pago.Id
@@ -57,6 +61,9 @@
                                 </td>
                                 <td>
                                     @pago.FechaPago
+                                </td>
+                                <td>
+                                    @nomsolicitud
                                 </td>
                               
 
@@ -80,7 +87,11 @@
 
 @code {
 
+    public string nomsolicitud { get; set; }
+
     public List<Pago> Pagos { get; set; }
+
+    public List<Solicitud> Solicitudes { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
@@ -97,6 +108,10 @@
             return;
         }
         Pagos = responseHttp.Response;
+
+        var response2HTTP = await Repository.GetAsync<List<Solicitud>>("/api/Solicitudes");
+        Solicitudes = response2HTTP.Response!;
+
     }
 
 
@@ -144,7 +159,20 @@
                     Timer = 3000,
                     Position = SweetAlertPosition.BottomEnd
                 });
-            toast.FireAsync(icon: SweetAlertIcon.Success, message: "Pago borrado con éxito.");
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Pago borrado con éxito.");
+        }
+    }
+
+    private void NomSolicitud(int? selection)
+    {
+        nomsolicitud = "";
+        foreach (var solicitud in Solicitudes!)
+        {
+            if (selection == solicitud.Id)
+            {
+                nomsolicitud = solicitud.TipoSolicitud;
+            }
+
         }
     }
 }

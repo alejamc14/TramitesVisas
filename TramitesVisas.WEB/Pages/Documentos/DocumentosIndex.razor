@@ -96,76 +96,6 @@
     public List<Solicitud> Solicitudes { get; set; }
 
 
-    // protected override async Task OnInitializedAsync()
-    // {
-    //     await LoadAsync();
-    // }
-
-    // private async Task LoadAsync()
-    // {
-    //     var responseHttp = await Repository.GetAsync<List<Documento>>("api/Documentos");
-    //     if (responseHttp.Error)
-    //     {
-    //         var message = await responseHttp.GetErrorMessageAsync();
-    //         await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-    //         return;
-    //     }
-    //     Documentos = responseHttp.Response;
-
-    //     var responseProjects = await Repository.GetAsync<List<Solicitud>>("api/Solicitudes");
-    //     if (!responseProjects.Error)
-    //     {
-    //         Solicitudes = responseProjects.Response;
-    //     }
-    // }
-
-    // private string GetSolicitudName(int solicitudId)
-    // {
-    //     var solicitud = Solicitudes.FirstOrDefault(i => i.Id == solicitudId);
-    //     return solicitud != null ? solicitud.TipoSolicitud : "Solicitud no encontrada";
-    // }
-
-    // private async Task Delete(Documento documento)
-    // {
-    //     var result = await sweetAlertService.FireAsync(new SweetAlertOptions
-    //         {
-    //             Title = "Confirmación",
-    //             Text = $"¿Estas seguro de querer borrar el dicumento: {documento.TipoDocumento}?",
-    //             Icon = SweetAlertIcon.Question,
-    //             ShowCancelButton = true,
-    //         });
-    //     var confirm = string.IsNullOrEmpty(result.Value);
-    //     if (confirm)
-    //     {
-    //         return;
-    //     }
-
-    //     var responseHttp = await Repository.DeleteAsync($"api/Documentos/{documento.Id}");
-    //     if (responseHttp.Error)
-    //     {
-    //         if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
-    //         {
-    //             navigationManager.NavigateTo("Documentos");
-    //         }
-    //         else
-    //         {
-    //             var mensajeError = await responseHttp.GetErrorMessageAsync();
-    //             await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
-    //         }
-    //         return;
-    //     }
-
-    //     await LoadAsync();
-    //     var toast = sweetAlertService.Mixin(new SweetAlertOptions
-    //         {
-    //             Toast = true,
-    //             Position = SweetAlertPosition.BottomEnd,
-    //             ShowConfirmButton = true,
-    //             Timer = 3000
-    //         });
-    //     await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con éxito.");
-    // }
-   
     protected async override Task OnInitializedAsync()
     {
         await Charging();
@@ -239,7 +169,7 @@
                     Timer = 3000,
                     Position = SweetAlertPosition.BottomEnd
                 });
-            toast.FireAsync(icon: SweetAlertIcon.Success, message: "Documento borrado con éxito.");
+           await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Documento borrado con éxito.");
         }
     }
 

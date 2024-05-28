@@ -14,6 +14,7 @@
 
         Task<HttpResponseWrapper<TActionResponse>> PutAsync<T, TActionResponse>(string url, T model);
 
+        //falta el metodo get sin async
 
     }
 }
