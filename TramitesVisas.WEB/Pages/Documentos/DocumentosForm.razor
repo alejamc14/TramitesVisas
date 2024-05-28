@@ -37,17 +37,19 @@
             <ValidationMessage For="@(() => Documento.URL)" />
         </div>
     </div>
-@* 
 
-    <div class="mb-3">
+
+    @* <div class="mb-3">
         <label>Solicitud Id</label>
         <div>
-            <InputDate width="10" @bind-Value="@Documento.SolicitudId"></InputDate>
+            <InputNumber width="10" @bind-Value="@Documento.SolicitudId"></InputNumber>
             <ValidationMessage For="@(() => Documento.SolicitudId)" />
         </div>
-    </div> *@
+    </div>  *@
 
-@* 
+
+
+
         
         <div>
         <label>Solicitud</label>
@@ -61,7 +63,7 @@
                     }
                 </ChildContent>
             </Dropdown>
-         </div> *@
+         </div>
        
 
 
@@ -145,18 +147,18 @@
 
 
 
-    // protected async override Task OnInitializedAsync()
-    // {
-    //     await Charging();
-    // }
+     protected async override Task OnInitializedAsync()
+     {
+         await Charging();
+     }
 
-    // private async Task Charging()
-    // {
+     private async Task Charging()
+     {
 
-    //     var responseHTTP = await Repository.GetAsync<List<Solicitud>>("/api/Solicitudes");
-    //     Solicitudes = responseHTTP.Response!;
+         var responseHTTP = await Repository.GetAsync<List<Solicitud>>("/api/Solicitudes");
+        Solicitudes = responseHTTP.Response!;
 
-    // }
+     }
   
 
 
