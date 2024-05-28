@@ -8,7 +8,12 @@
     <div class="mb-3">
         <label>Tipo de Visa</label>
         <div>
-            <InputText width="10" @bind-Value="@TipoVisa.Tipo"></InputText>
+            <InputSelect @bind-Value="@TipoVisa.Tipo">
+                <option value="">Selecciona una opción</option>
+                <option value="Residente">Residente</option>
+                <option value="Migrante">Migrante</option>
+                <option value="Visitante">Visitante</option>
+            </InputSelect>
             <ValidationMessage For="@(() => @TipoVisa.Tipo)" />
         </div>
         <label>Costo</label>

@@ -31,34 +31,35 @@
                                 <b>Id</b>
                             </td>
                             <td>
-                                <b>TipoSolicitud</b>
+                                <b>Tipo Solicitud</b>
                             </td>
                             <td>
                                 <b>Estado</b>
                             </td>
                             <td>
-                                <b>FechaAgenda</b>
+                                <b>Fecha de la Solicitud</b>
                             </td>
                             <td>
-                                <b>IdPersona</b>
-                            </td>
-                            <td>
-                                <b>IdTipoVisa</b>
+                                <b>Comentario</b>
                             </td>
                         </tr>
                         @foreach (var solicitud in Solicitudes!)
                         {
-                            NomPersona(@solicitud.PersonaId);
-                            TipVisa(solicitud.TipoVisaId);
                             <tr>
                                 <td>
                                     @solicitud.Id
                                 </td>
                                 <td>
-                                    @nompersona
+                                    @solicitud.TipoSolicitud
                                 </td>
                                 <td>
-                                    @tipvisa
+                                    @solicitud.Estado
+                                </td>
+                                <td>
+                                    @solicitud.FechaSolicitud
+                                </td>
+                                <td>
+                                    @solicitud.Comentario
                                 </td>
                                 <td>
                                     <a href="/personas/edit/@solicitud.Id" class="btn btn-warning"><i class="bi bi-pencil-square">Editar</i></a>
@@ -78,13 +79,8 @@
 </div>
 
 @code {
-    public string nompersona { get; set; }
-
-    public string tipvisa { get; set; }
 
     public List<Solicitud> Solicitudes { get; set; }
-    public List<Persona> Personas { get; set; }
-    public List<TipoVisa> TipoVisas { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
@@ -95,13 +91,6 @@
     {
         var responseHTTP = await Repository.GetAsync<List<Solicitud>>("/api/Solicitudes");
         Solicitudes = responseHTTP.Response!;
-
-        var response2HTTP = await Repository.GetAsync<List<Persona>>("/api/Personas");
-        Personas = response2HTTP.Response!;
-
-        var response3HTTP = await Repository.GetAsync<List<TipoVisa>>("/api/TipoVisas");
-        TipoVisas = response3HTTP.Response!;
-
     }
 
 
@@ -150,31 +139,6 @@
                     Position = SweetAlertPosition.BottomEnd
                 });
             toast.FireAsync(icon: SweetAlertIcon.Success, message: "Solicitud borrado con éxito.");
-        }
-    }
-    private void NomPersona(int? selection)
-    {
-        nompersona = "";
-        foreach (var persona in Personas!)
-        {
-            if (selection == persona.Id)
-            {
-                nompersona = persona.Nombre;
-            }
-
-        }
-    }
-
-    private void TipVisa(int? selection2)
-    {
-        tipvisa = "";
-        foreach (var tipovisa in TipoVisas!)
-        {
-            if (selection2 == tipovisa.Id)
-            {
-                tipvisa = tipovisa.Tipo;
-            }
-
         }
     }
 

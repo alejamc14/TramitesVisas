@@ -9,7 +9,11 @@
     <div class="mb-3">
         <label>TipoSolicitud</label>
         <div>
-            <InputText width="10" @bind-Value="@Solicitud.TipoSolicitud"></InputText>
+            <InputSelect @bind-Value="@Solicitud.TipoSolicitud">
+                <option value="">Selecciona una opción</option>
+                <option value="Revocacion">Revocación</option>
+                <option value="Visa">Visa</option>
+            </InputSelect>
             <ValidationMessage For="@(() => @Solicitud.TipoSolicitud)" />
         </div>
         <label>Estado</label>
@@ -27,7 +31,7 @@
             <InputText width="10" @bind-Value="@Solicitud.Comentario"></InputText>
             <ValidationMessage For="@(() => @Solicitud.Comentario)" />
         </div>
-     @*    <label>Nombre de la Persona</label>
+@*      <label>Nombre de la Persona</label>
         <div>
             <InputText width="10" @bind-Value="@Persona.Nombre"></InputText>
             <ValidationMessage For="@(() => @Persona.)" />
@@ -36,7 +40,7 @@
         <div>
             <InputText width="10" @bind-Value="@TipoVisa.Tipo"></InputText>
             <ValidationMessage For="@(() => @TipoVisa.Tipo)" />
-        </div> *@
+        </div>  *@
     </div>
     <button class="btn btn-primary" type="submit">Guardar <i class="bi bi-floppy2"></i></button>
     <button class="btn btn-info" type="reset">Limpiar <i class="bi bi-x-octagon"></i></button>
@@ -45,9 +49,6 @@
 </EditForm>
 
 @code {
-
-    public Persona Personas { get; set; }
-    public List<TipoVisa> TipoVisas { get; set; }
 
     private EditContext editContext = null;
     protected override void OnInitialized()
