@@ -1,0 +1,52 @@
+﻿@page "/documentos/create"
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+<h3>Creacion de Documentos</h3>
+
+              
+<DocumentosForm  Documento="documento" OnValidSubmit="Create" ReturnAction="Return" />
+
+@code {
+    private Documento documento = new();
+
+
+
+    private async Task Create()
+    {
+        var responseHttp = await repository.PostAsync("/api/documentos", documento);
+
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+        }
+        else
+            Return();
+        {
+            var Toast = sweetAlertService.Mixin(new SweetAlertOptions
+                {
+
+                    Toast = true,
+                    Position = SweetAlertPosition.BottomEnd,
+                    ShowConfirmButton = true,
+                    Timer = 3000
+
+                });
+
+            await Toast.FireAsync(icon: SweetAlertIcon.Success, message: "Documento creada con exito");
+        }
+
+    }
+
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("/documentos");
+
+
+    }
+
+
+}

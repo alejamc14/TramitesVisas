@@ -2,6 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using TramitesVisas.API.Data;
 using TramitesVisas.Shared.Entidades;
+using System.Threading.Tasks;
+using System.Linq;
+
 
 namespace TramitesVisas.API.Controllers
 {
