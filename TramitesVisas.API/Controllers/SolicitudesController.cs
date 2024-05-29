@@ -45,6 +45,10 @@ namespace TramitesVisas.API.Controllers
         [HttpPost]
         public async Task<ActionResult> PostAsync(Solicitud solicitud)
         {
+            if(solicitud.Estado == null)
+            {
+                solicitud.Estado = "Pendiente";
+            }
             _context.Add(solicitud);
             await _context.SaveChangesAsync();
             return Ok(solicitud);

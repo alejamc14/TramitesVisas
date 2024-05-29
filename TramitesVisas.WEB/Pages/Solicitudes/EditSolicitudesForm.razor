@@ -16,7 +16,11 @@
             </InputSelect>
             <ValidationMessage For="@(() => @Solicitud.TipoSolicitud)" />
         </div>
- 
+        <label>Estado</label>
+         <div>
+        <InputText width="10" @bind-Value="@Solicitud.Estado"></InputText>
+        <ValidationMessage For="@(() => @Solicitud.Estado)" />
+        </div>  
         <label>Fecha de Solicitud</label>
         <div>
             <InputDate width="10" @bind-Value="@Solicitud.FechaSolicitud"></InputDate>
@@ -27,16 +31,16 @@
             <InputText width="10" @bind-Value="@Solicitud.Comentario"></InputText>
             <ValidationMessage For="@(() => @Solicitud.Comentario)" />
         </div>
-         <label>Id Persona </label>
+        <label>Id Persona </label>
         <div>
             <InputNumber width="10" @bind-Value="@Solicitud.PersonaId"></InputNumber>
             <ValidationMessage For="@(() => @Solicitud.PersonaId)" />
         </div>
-         <label>Tipo De Visa</label>
+        <label>Tipo De Visa</label>
         <div>
             <InputNumber width="10" @bind-Value="@Solicitud.TipoVisaId"></InputNumber>
             <ValidationMessage For="@(() => @Solicitud.TipoVisaId)" />
-        </div>   
+        </div>
     </div>
     <button class="btn btn-primary" type="submit">Guardar <i class="bi bi-floppy2"></i></button>
     <button class="btn btn-info" type="reset">Limpiar <i class="bi bi-x-octagon"></i></button>

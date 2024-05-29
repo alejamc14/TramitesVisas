@@ -18,9 +18,8 @@ namespace TramitesVisas.Shared.Entidades
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string TipoSolicitud { get; set; }
 
-        [Display(Name = "Estado")]
-        [MaxLength(20, ErrorMessage = "No se perimten mas de 20 digitos")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        
+        //[Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string Estado { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd HH:mm}", ApplyFormatInEditMode = true)]
