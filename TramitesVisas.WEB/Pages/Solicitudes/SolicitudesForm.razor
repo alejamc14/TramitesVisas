@@ -31,16 +31,16 @@
             <InputText width="10" @bind-Value="@Solicitud.Comentario"></InputText>
             <ValidationMessage For="@(() => @Solicitud.Comentario)" />
         </div>
-@*      <label>Nombre de la Persona</label>
+@*         <label>Id Persona </label>
         <div>
-            <InputText width="10" @bind-Value="@Persona.Nombre"></InputText>
-            <ValidationMessage For="@(() => @Persona.)" />
+            <InputText width="10" @bind-Value="@Solicitud.PersonaId"></InputText>
+            <ValidationMessage For="@(() => @Solicitud.PersonaId)" />
         </div>
-        <label>Tipo De Visa</label>
+       @*  <label>Tipo De Visa</label>
         <div>
-            <InputText width="10" @bind-Value="@TipoVisa.Tipo"></InputText>
+            <InputText width="10" @bind-Value="@"></InputText>
             <ValidationMessage For="@(() => @TipoVisa.Tipo)" />
-        </div>  *@
+        </div>   *@ 
     </div>
     <button class="btn btn-primary" type="submit">Guardar <i class="bi bi-floppy2"></i></button>
     <button class="btn btn-info" type="reset">Limpiar <i class="bi bi-x-octagon"></i></button>
