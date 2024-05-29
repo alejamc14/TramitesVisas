@@ -10,7 +10,8 @@ main[b-yw8fgglugr] {
 }
 
 .sidebar[b-yw8fgglugr] {
-    background-color: #60A0A1;
+    background: linear-gradient(to right, #1E3A8A, #2C5282, #2B6CB0, #2A4365);
+ 
 }
 
 .top-row[b-yw8fgglugr] {
