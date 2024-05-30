@@ -34,5 +34,6 @@ namespace TramitesVisas.Shared.Entidades
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string Requisitos { get; set; }
 
+
     }
 }
