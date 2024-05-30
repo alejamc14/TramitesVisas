@@ -21,6 +21,11 @@
             <InputDate width="10" @bind-Value="@Pago.FechaPago"></InputDate>
             <ValidationMessage For="@(() => @Pago.FechaPago)" />
         </div>
+        <label>Id de solicitud</label>
+        <div>
+            <InputNumber width="10" @bind-Value="@Pago.SolicitudId"></InputNumber>
+            <ValidationMessage For="@(() => @Pago.SolicitudId)" />
+        </div>
     </div>
     <button class="btn btn-primary" type="submit">Guardar <i class="bi bi-floppy2"></i></button>
     <button class="btn btn-info" type="reset">Limpiar <i class="bi bi-x-octagon"></i></button>

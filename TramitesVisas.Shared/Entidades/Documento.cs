@@ -18,7 +18,7 @@ namespace TramitesVisas.Shared.Entidades
         public string TipoDocumento{ get; set; }
 
         [Display(Name = "Fecha de Subida")]
-        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd HH:mm}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd }", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public DateTime FechaSubida { get; set; }
 

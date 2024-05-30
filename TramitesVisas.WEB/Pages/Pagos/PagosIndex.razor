@@ -46,7 +46,7 @@
                         </tr>
                         @foreach (var pago in Pagos!)
                         {
-                            NomSolicitud(pago.SolicitudId);
+                        @*     NomSolicitud(pago.SolicitudId); *@
 
                             <tr>
                                 <td>
@@ -63,7 +63,7 @@
                                     @pago.FechaPago
                                 </td>
                                 <td>
-                                    @nomsolicitud
+                                    @pago.SolicitudId
                                 </td>
                               
 
@@ -87,11 +87,11 @@
 
 @code {
 
-    public string nomsolicitud { get; set; }
+    // public string nomsolicitud { get; set; }
 
     public List<Pago> Pagos { get; set; }
 
-    public List<Solicitud> Solicitudes { get; set; }
+    // public List<Solicitud> Solicitudes { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
@@ -109,8 +109,8 @@
         }
         Pagos = responseHttp.Response;
 
-        var response2HTTP = await Repository.GetAsync<List<Solicitud>>("/api/Solicitudes");
-        Solicitudes = response2HTTP.Response!;
+        // var response2HTTP = await Repository.GetAsync<List<Solicitud>>("/api/Solicitudes");
+        // Solicitudes = response2HTTP.Response!;
 
     }
 
@@ -163,17 +163,17 @@
         }
     }
 
-    private void NomSolicitud(int? selection)
-    {
-        nomsolicitud = "";
-        foreach (var solicitud in Solicitudes!)
-        {
-            if (selection == solicitud.Id)
-            {
-                nomsolicitud = solicitud.TipoSolicitud;
-            }
+    // private void NomSolicitud(int? selection)
+    // {
+    //     nomsolicitud = "";
+    //     foreach (var solicitud in Solicitudes!)
+    //     {
+    //         if (selection == solicitud.Id)
+    //         {
+    //             nomsolicitud = solicitud.TipoSolicitud;
+    //         }
 
-        }
-    }
+    //     }
+    // }
 }
 

@@ -39,19 +39,19 @@
     </div>
 
 
-    @* <div class="mb-3">
+    <div class="mb-3">
         <label>Solicitud Id</label>
         <div>
             <InputNumber width="10" @bind-Value="@Documento.SolicitudId"></InputNumber>
             <ValidationMessage For="@(() => Documento.SolicitudId)" />
         </div>
-    </div>  *@
+    </div> 
 
 
 
 
         
-        <div>
+       @*  <div>
         <label>Solicitud</label>
 
             <Dropdown TItem="int" OnSelected="@OnSelected">
@@ -63,8 +63,8 @@
                     }
                 </ChildContent>
             </Dropdown>
-         </div>
-       
+         </div> 
+        *@
 
 
     <button class="btn btn-primary" type="submit">Guardar <i class="bi bi-floppy2"></i></button>
@@ -80,7 +80,7 @@
 @code {
 
 
-    public List<Solicitud> Solicitudes { get; set; }
+    // public List<Solicitud> Solicitudes { get; set; }
 
     
     private EditContext editContext = null!;
@@ -140,25 +140,25 @@
         context.PreventNavigation();
     }
     
-    private void OnSelected(int selection)
-    {
-        Documento.SolicitudId = selection;
-    }
+    // private void OnSelected(int selection)
+    // {
+    //     Documento.SolicitudId = selection;
+    // }
 
 
 
-     protected async override Task OnInitializedAsync()
-     {
-         await Charging();
-     }
+     // protected async override Task OnInitializedAsync()
+     // {
+     //     await Charging();
+     // }
 
-     private async Task Charging()
-     {
+     // private async Task Charging()
+     // {
 
-         var responseHTTP = await Repository.GetAsync<List<Solicitud>>("/api/Solicitudes");
-        Solicitudes = responseHTTP.Response!;
+     //     var responseHTTP = await Repository.GetAsync<List<Solicitud>>("/api/Solicitudes");
+     //    Solicitudes = responseHTTP.Response!;
 
-     }
+     // }
   
 
 

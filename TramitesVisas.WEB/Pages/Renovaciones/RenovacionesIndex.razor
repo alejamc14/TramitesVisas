@@ -77,7 +77,11 @@
 
 @code {
 
+    public string nomsolicitud { get; set; }
+
     public List<Renovacion> Renovaciones { get; set; }
+
+    public List<Solicitud> Solicitudes { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
@@ -94,6 +98,9 @@
             return;
         }
         Renovaciones = responseHttp.Response;
+
+        var response2HTTP = await Repository.GetAsync<List<Solicitud>>("/api/solicitudes");
+        Solicitudes = response2HTTP.Response!;
     }
 
 

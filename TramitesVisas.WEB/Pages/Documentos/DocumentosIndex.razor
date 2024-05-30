@@ -50,7 +50,7 @@
                         </tr> 
                         @foreach (var documento in Documentos!)
                         {
-                             NomSolicitud(documento.SolicitudId);
+                          @*    NomSolicitud(documento.SolicitudId); *@
                             
                             <tr>
                                 <td>
@@ -66,7 +66,7 @@
                                     @documento.URL
                                 </td>
                                 <td>
-                                    @nomsolicitud
+                                    @documento.SolicitudId
                                 </td>
                               @*   <td>
                                     @GetSolicitudName(documento.SolicitudId)
@@ -89,11 +89,11 @@
 </div>
 
 @code {
-    public string nomsolicitud { get; set; }
+    // public string nomsolicitud { get; set; }
 
     public List<Documento> Documentos { get; set; }
 
-    public List<Solicitud> Solicitudes { get; set; }
+    // public List<Solicitud> Solicitudes { get; set; }
 
 
     protected async override Task OnInitializedAsync()
@@ -118,8 +118,8 @@
         // var responseHTTP = await Repository.GetAsync<List<Documento>>("/api/documentos");
         // Documentos = responseHTTP.Response!;
 
-        var response2HTTP = await Repository.GetAsync<List<Solicitud>>("/api/Solicitudes");
-        Solicitudes = response2HTTP.Response!;
+        // var response2HTTP = await Repository.GetAsync<List<Solicitud>>("/api/Solicitudes");
+        // Solicitudes = response2HTTP.Response!;
   
     }
 
@@ -174,16 +174,16 @@
     }
 
 
-    private void NomSolicitud(int? selection)
-    {
-        nomsolicitud = "";
-        foreach (var solicitud in Solicitudes!)
-        {
-            if (selection == solicitud.Id)
-            {
-                nomsolicitud = solicitud.TipoSolicitud;
-            }
+    // private void NomSolicitud(int? selection)
+    // {
+    //     nomsolicitud = "";
+    //     foreach (var solicitud in Solicitudes!)
+    //     {
+    //         if (selection == solicitud.Id)
+    //         {
+    //             nomsolicitud = solicitud.TipoSolicitud;
+    //         }
 
-        }
-    }
+    //     }
+    // }
 }
