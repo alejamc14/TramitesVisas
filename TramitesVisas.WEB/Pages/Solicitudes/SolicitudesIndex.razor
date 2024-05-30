@@ -43,14 +43,16 @@
                                 <b>Comentario</b>
                             </td>
                             <td>
-                                <b>Id Persona</b>
+                                <b>Nombre de la Persona</b>
                             </td>
                             <td>
-                                <b>Id tipo visa</b>
+                                <b>Tipo de visa</b>
                             </td>
                         </tr>
                         @foreach (var solicitud in Solicitudes!)
                         {
+                            NomPersona(@solicitud.PersonaId);
+                            TipVisa(@solicitud.TipoVisaId);
                             <tr>
                                 <td>
                                     @solicitud.Id
@@ -68,10 +70,10 @@
                                     @solicitud.Comentario
                                 </td>
                                 <td>
-                                    @solicitud.PersonaId
+                                    @nompersona
                                 </td>
                                 <td>
-                                    @solicitud.TipoVisaId
+                                    @tipvisa
                                 </td>
                                 <td>
                                     <a href="/solicitudes/edit/@solicitud.Id" class="btn btn-warning"><i class="bi bi-pencil-square">Editar</i></a>
@@ -92,7 +94,13 @@
 
 @code {
 
+    public string nompersona { get; set; }
+
+    public string tipvisa { get; set; }
+
     public List<Solicitud> Solicitudes { get; set; }
+    public List<Persona> Personas { get; set; }
+    public List<TipoVisa> TipoVisas { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
@@ -101,8 +109,15 @@
 
     private async Task Charging()
     {
-        var responseHTTP = await Repository.GetAsync<List<Solicitud>>("/api/Solicitudes");
+        var responseHTTP = await Repository.GetAsync<List<Solicitud>>("/api/solicitudes");
         Solicitudes = responseHTTP.Response!;
+
+        var response2HTTP = await Repository.GetAsync<List<Persona>>("/api/personas");
+        Personas = response2HTTP.Response!;
+
+        var response3HTTP = await Repository.GetAsync<List<TipoVisa>>("/api/tipovisas");
+        TipoVisas = response3HTTP.Response!;
+
     }
 
 
@@ -112,7 +127,7 @@
         var result = await sweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmación",
-                Text = $"¿Realmente deseas eliminar la Solicitud: {solicitud.TipoSolicitud}?",
+                Text = $"¿Realmente deseas eliminar la Solicitud: {solicitud.Id}?",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
                 CancelButtonText = "No",
@@ -125,13 +140,13 @@
             return;
         }
 
-        var responseHTTP = await Repository.DeleteAsync($"/api/Solicitud/{solicitud.Id}");
+        var responseHTTP = await Repository.DeleteAsync($"/api/solicitudes/{solicitud.Id}");
 
         if (responseHTTP.Error)
         {
             if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                navigationManager.NavigateTo("/Solicitudes");
+                navigationManager.NavigateTo("/solicitudes");
             }
             else
             {
@@ -153,5 +168,31 @@
             toast.FireAsync(icon: SweetAlertIcon.Success, message: "Solicitud borrado con éxito.");
         }
     }
+    private void NomPersona(int? selection)
+    {
+        nompersona = "";
+        foreach (var persona in Personas!)
+        {
+            if (selection == persona.Id)
+            {
+                nompersona = persona.Nombre;
+            }
+
+        }
+    }
+
+    private void TipVisa(int? selection2)
+    {
+        tipvisa = "";
+        foreach (var tipovisa in TipoVisas!)
+        {
+            if (selection2 == tipovisa.Id)
+            {
+                tipvisa = tipovisa.Tipo;
+            }
+
+        }
+    }
+
 
 }

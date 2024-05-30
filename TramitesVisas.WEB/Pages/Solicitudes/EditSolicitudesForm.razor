@@ -1,6 +1,7 @@
 ﻿@using CurrieTechnologies.Razor.SweetAlert2
 ﻿@using TramitesVisas.Shared.Entidades
 @using TramitesVisas.WEB.Repositories
+@inject IRepository Repository
 @inject SweetAlertService swal
 
 <EditForm Model="Solicitud" OnValidSubmit="OnValidSubmit">
@@ -12,15 +13,16 @@
             <InputSelect @bind-Value="@Solicitud.TipoSolicitud">
                 <option value="">Selecciona una opción</option>
                 <option value="Revocacion">Revocación</option>
-                <option value="Visa">Visa</option>
+                <option value="Visa Nueva">Visa Nueva</option>
             </InputSelect>
             <ValidationMessage For="@(() => @Solicitud.TipoSolicitud)" />
         </div>
         <label>Estado</label>
-         <div>
-        <InputText width="10" @bind-Value="@Solicitud.Estado"></InputText>
-        <ValidationMessage For="@(() => @Solicitud.Estado)" />
-        </div>  
+        <div>
+            <InputText width="10" @bind-Value="@Solicitud.Estado"></InputText>
+            <ValidationMessage For="@(() => @Solicitud.Estado)" />
+        </div>
+
         <label>Fecha de Solicitud</label>
         <div>
             <InputDate width="10" @bind-Value="@Solicitud.FechaSolicitud"></InputDate>
@@ -31,15 +33,33 @@
             <InputText width="10" @bind-Value="@Solicitud.Comentario"></InputText>
             <ValidationMessage For="@(() => @Solicitud.Comentario)" />
         </div>
-        <label>Id Persona </label>
         <div>
-            <InputNumber width="10" @bind-Value="@Solicitud.PersonaId"></InputNumber>
-            <ValidationMessage For="@(() => @Solicitud.PersonaId)" />
+            <label>Nombre de Persona</label>
+
+            <Dropdown TItem="int" OnSelected="@OnSelected">
+                <InitialTip>Escoja un Nombre</InitialTip>
+                <ChildContent>
+                    @foreach (var persona in Personas!)
+                    {
+                        <DropdownListItem Context="dropContext" Item="@persona.Id">@persona.Nombre</DropdownListItem>
+                    }
+                </ChildContent>
+            </Dropdown>
         </div>
-        <label>Tipo De Visa</label>
+
         <div>
-            <InputNumber width="10" @bind-Value="@Solicitud.TipoVisaId"></InputNumber>
-            <ValidationMessage For="@(() => @Solicitud.TipoVisaId)" />
+            <label>Tipo visa</label>
+
+            <Dropdown TItem="int" OnSelected="@OnSelected2">
+                <InitialTip>Escoja un Tipo de Visa</InitialTip>
+                <ChildContent>
+                    @foreach (var tipovisa in TipoVisas!)
+                    {
+                        <DropdownListItem Context="dropContext" Item="@tipovisa.Id">@tipovisa.Tipo</DropdownListItem>
+                    }
+                </ChildContent>
+            </Dropdown>
+
         </div>
     </div>
     <button class="btn btn-primary" type="submit">Guardar <i class="bi bi-floppy2"></i></button>
@@ -49,6 +69,25 @@
 </EditForm>
 
 @code {
+
+    public List<Persona> Personas { get; set; }
+    public List<TipoVisa> TipoVisas { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await Charging();
+    }
+
+    private async Task Charging()
+    {
+
+        var responseHTTP = await Repository.GetAsync<List<Persona>>("/api/personas");
+        Personas = responseHTTP.Response!;
+
+        var response2HTTP = await Repository.GetAsync<List<TipoVisa>>("/api/tipoVisas");
+        TipoVisas = response2HTTP.Response!;
+
+    }
 
     private EditContext editContext = null;
     protected override void OnInitialized()
@@ -69,6 +108,17 @@
     [EditorRequired]
     [Parameter]
     public EventCallback ReturnAction { get; set; }
+
+
+    private void OnSelected(int selection)
+    {
+        Solicitud.PersonaId = selection;
+    }
+
+    private void OnSelected2(int selection2)
+    {
+        Solicitud.TipoVisaId = selection2;
+    }
 
     public bool FormPostedSuccessfully { get; set; } = false;
 
@@ -104,3 +154,4 @@
         context.PreventNavigation();
     }
 }
+
