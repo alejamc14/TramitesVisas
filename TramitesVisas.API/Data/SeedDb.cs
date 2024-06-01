@@ -38,7 +38,7 @@ namespace TramitesVisas.API.Data
 
             await CheckRoleAsync();
 
-            await CheckUserAsync("1010", "Super", "Admin", "orlapez@gnmail.com", "3015555555", "Cr 25 8965", UserType.Admin);
+            await CheckUserAsync("10235", "Paula", "Calderon", "calderonpaula781@gmail.com", "3135555555", "Cr 25 8965", UserType.Admin);
 
 
         }
@@ -214,7 +214,7 @@ namespace TramitesVisas.API.Data
                     PhoneNumber = phone,
                     UserName = email,
                     Address = address,
-                    UserType = userType,
+                    UserType = userType ,
 
 
 

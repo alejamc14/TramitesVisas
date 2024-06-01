@@ -27,9 +27,15 @@ namespace TramitesVisas.Shared.Entidades
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string LastName { get; set; }
 
-
+        [Display(Name = "Dirección")]
+        [MaxLength(200, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
         public string Address { get; set; }
 
+
+        [Display(Name = "Foto")]
+        public string? Photo { get; set; }
+
+        [Display(Name = "Tipo de usuario")]
         public UserType UserType { get; set; }
 
         public string FullName => $"{FirstName}{LastName}";

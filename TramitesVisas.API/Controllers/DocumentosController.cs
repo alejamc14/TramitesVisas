@@ -4,11 +4,14 @@ using TramitesVisas.API.Data;
 using TramitesVisas.Shared.Entidades;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace TramitesVisas.API.Controllers
 {
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("/api/documentos")]
     public class DocumentosController : ControllerBase
     {

@@ -3,13 +3,14 @@ using TramitesVisas.API.Helpers;
 using TramitesVisas.Shared.Entidades;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-
-// Add services to the container.
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -27,7 +28,20 @@ builder.Services.AddIdentity<User, IdentityRole>(x =>
     x.Password.RequireUppercase = false;
     x.Password.RequireLowercase = false;
     x.Password.RequireNonAlphanumeric = false;
-}).AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
+}).AddEntityFrameworkStores<DataContext>()
+.AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+.AddJwtBearer(x => x.TokenValidationParameters = new TokenValidationParameters
+{
+    ValidateIssuer = false,
+    ValidateAudience = false,
+    ValidateLifetime = true,
+    ValidateIssuerSigningKey = true,
+    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["jwtKey"]!)),
+    ClockSkew = TimeSpan.Zero
+});
+
 
 builder.Services.AddScoped<IUserHelper, UserHelper>();
 

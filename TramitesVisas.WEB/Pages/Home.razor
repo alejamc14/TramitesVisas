@@ -1,6 +1,16 @@
 ﻿@page "/"
 
 <PageTitle>Home</PageTitle>
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <p>Estas autenticado,@context.User.Identity?.Name</p>
+    </Authorized>
+    <NotAuthorized>
+        <p>No estas autorizado</p>
+    </NotAuthorized>
+
+</AuthorizeView>
+
 <div class="container mt-5">
     <div class="jumbotron text-center">
         <h1 class="display-4">¡Bienvenido a Tramites Visas!</h1>
@@ -10,8 +20,7 @@
         div {
             text-align: center;
             justify-content: center;
-            max-width: 1000px;
-            width: 100%;
+
         }
     </style>
     <div>

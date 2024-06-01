@@ -1,0 +1,99 @@
+﻿@page "/Register"
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+@inject NavigationManager navigationManager
+@inject ILoginService loginService
+
+<h3>Registrar Nuevo Usuario</h3>
+<EditForm Model="userDTO" OnValidSubmit="CreteUserAsync">
+    <DataAnnotationsValidator />
+    <div class="card">
+        <div class="card-header">
+            <span>
+                <i class="bi bi-person" /> Registrar Persona
+                <button class="btn btn-dark float-end" type="submit">Enviar Registro</button>
+            </span>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-floating mb-3">
+                        <InputText class="form-control" id="floatingInput" placeholder="FirstName " @bind-Value="@userDTO.FirstName" />
+                        <label for="floatingInput">Primer Nombre:</label>
+                        <ValidationMessage For="@(() => userDTO.FirstName)" />
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText class="form-control" id="floatingInput2" placeholder="Last Name" @bind-Value="@userDTO.LastName" />
+                        <label for="floatingInput2">Apellido:</label>
+                        <ValidationMessage For="@(() => userDTO.LastName)" />
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText class="form-control" id="floatingInput3" placeholder="Identification Number :" @bind-Value="@userDTO.Document" />
+                        <label for="floatingInput3">Numero de Identificacion:</label>
+                        <ValidationMessage For="@(() => userDTO.Document)" />
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText class="form-control" id="floatingInput4" placeholder="Phone Number " @bind-Value="@userDTO.PhoneNumber" />
+                        <label for="floatingInput4">Phone Number :</label>
+                        <ValidationMessage For="@(() => userDTO.PhoneNumber)" />
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText class="form-control" id="floatingInput5" placeholder="Address" @bind-Value="@userDTO.Address" />
+                        <label for="floatingInput5">Address :</label>
+                        <ValidationMessage For="@(() => userDTO.Address)" />
+                    </div>
+                    <div class="col-6">
+                        <div class="form-floating mb-3">
+                            <InputText type="email" class="form-control" id="floatingInput6" placeholder="Email" @bind-Value="@userDTO.Email" />
+                            <label for="floatingInput6">Email :</label>
+                            <ValidationMessage For="@(() => userDTO.Email)" />
+                        </div>
+                        <div class="form-floating mb-3">
+                            <label>Foto:</label>
+                            <div>
+                                <InputText class="form-control" @bind-Value="@userDTO.Photo" />
+                                <ValidationMessage For="@(() => userDTO.Photo)" />
+                            </div>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <InputText type="password" class="form-control" id="floatingInput7" placeholder="Password" @bind-Value="@userDTO.Password" />
+                            <label for="floatingInput7">Password :</label>
+                            <ValidationMessage For="@(() => userDTO.Password)" />
+                        </div>
+                        <div class="form-floating mb-3">
+                            <InputText type="password" class="form-control" id="floatingInput7" placeholder="Password Confirmation" @bind-Value="@userDTO.PasswordConfirm" />
+                            <label for="floatingInput7">Password Confirmation :</label>
+                            <ValidationMessage For="@(() => userDTO.PasswordConfirm)" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+
+@code {
+
+    private UserDTO userDTO = new();
+
+
+        private async Task CreteUserAsync()
+        {
+            userDTO.UserName = userDTO.Email;
+            userDTO.UserType = UserType.User;
+        var responseHttp = await repository.PostAsync<UserDTO, TokenDTO>("/api/accounts/CreateUser", userDTO);
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return;
+            }
+
+            await loginService.LoginAsync(responseHttp.Response!.Token);
+            navigationManager.NavigateTo("/");
+        }
+}

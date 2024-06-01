@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TramitesVisas.API.Data;
 using TramitesVisas.Shared.Entidades;
@@ -6,6 +8,7 @@ using TramitesVisas.Shared.Entidades;
 namespace TramitesVisas.API.Controllers
 {
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("/api/tipovisas")]
     public class TipoVisasController:ControllerBase
     {

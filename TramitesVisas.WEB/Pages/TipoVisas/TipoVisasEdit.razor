@@ -3,6 +3,8 @@
 @inject IRepository repository
 @inject SweetAlertService sweetAlertService
 
+@attribute [Authorize(Roles = "Admin")]
+
 <h3>Editar Tipo de Visa</h3>
 @if (tipovisa is null)
 {
