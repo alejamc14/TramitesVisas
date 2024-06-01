@@ -9,12 +9,12 @@ namespace TramitesVisas.API.Controllers
 {
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Route("/api/tipovisas")]
-    public class TipoVisasController:ControllerBase
+    [Route("/api/historiales")]
+    public class HistorialesController : ControllerBase
     {
         private readonly DataContext _context;
 
-        public TipoVisasController(DataContext context)
+        public HistorialesController(DataContext context)
         {
             _context = context;
         }
@@ -23,7 +23,7 @@ namespace TramitesVisas.API.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAsync()
         {
-            return Ok(await _context.TipoVisas.ToListAsync());
+            return Ok(await _context.Historiales.ToListAsync());
 
         }
 
@@ -32,36 +32,36 @@ namespace TramitesVisas.API.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult> GetAsync(int id)
         {
-            var tipovisa = await _context.TipoVisas.FirstOrDefaultAsync(x => x.Id == id);
+            var historial = await _context.Historiales.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (tipovisa == null)
+            if (historial == null)
             {
                 return NotFound();
 
             }
-            return Ok(tipovisa);
+            return Ok(historial);
 
         }
 
 
         //Metodo para Crear 
         [HttpPost]
-        public async Task<ActionResult> PostAsync(TipoVisa tipovisa)
+        public async Task<ActionResult> PostAsync(Historial historial)
         {
-            _context.Add(tipovisa);
+            _context.Add(historial);
             await _context.SaveChangesAsync();
-            return Ok(tipovisa);
+            return Ok(historial);
 
         }
 
 
         // Método actualizar
         [HttpPut]
-        public async Task<ActionResult> PutAsync(TipoVisa tipovisa)
+        public async Task<ActionResult> PutAsync(Historial historial)
         {
-            _context.Update(tipovisa);
+            _context.Update(historial);
             await _context.SaveChangesAsync();
-            return Ok(tipovisa);
+            return Ok(historial);
 
         }
 
@@ -69,7 +69,7 @@ namespace TramitesVisas.API.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> DeleteAsync(int id)
         {
-            var deletedrows = await _context.TipoVisas.Where(x => x.Id == id).ExecuteDeleteAsync();
+            var deletedrows = await _context.Historiales.Where(x => x.Id == id).ExecuteDeleteAsync();
 
             if (deletedrows == 0)
             {

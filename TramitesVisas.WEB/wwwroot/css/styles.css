@@ -13,6 +13,11 @@ main[b-yw8fgglugr] {
     background: linear-gradient(to right, #1E3A8A, #2C5282, #2B6CB0, #2A4365);
  
 }
+.btn-black {
+    background-color: black; /* Color de fondo negro */
+    color: white; /* Texto blanco para contrastar */
+    border-color: black; /* Color del borde negro */
+}
 
 .top-row[b-yw8fgglugr] {
     background-color: #f7f7f7;

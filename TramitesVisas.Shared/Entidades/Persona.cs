@@ -53,5 +53,6 @@ namespace TramitesVisas.Shared.Entidades
         public string NombreCompleto => $"{Nombre}{Apellido}";
 
 
+
     }
 }
