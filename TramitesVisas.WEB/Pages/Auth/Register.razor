@@ -4,96 +4,101 @@
 @inject NavigationManager navigationManager
 @inject ILoginService loginService
 
-<h3>Registrar Nuevo Usuario</h3>
 <EditForm Model="userDTO" OnValidSubmit="CreteUserAsync">
     <DataAnnotationsValidator />
-    <div class="card">
-        <div class="card-header">
-            <span>
-                <i class="bi bi-person" /> Registrar Persona
-                <button class="btn btn-dark float-end" type="submit">Enviar Registro</button>
-            </span>
-        </div>
+    <div class="card mx-auto my-5" style="max-width:900px;">
+        <div class="card-header text-center">
+             <h3><i class="bi bi-person"></i> Registrar Persona</h3>
+        </div> 
 
         <div class="card-body">
             <div class="row">
-                <div class="col-6">
+                <div class="col-md-6">
                     <div class="form-floating mb-3">
-                        <InputText class="form-control" id="floatingInput" placeholder="FirstName " @bind-Value="@userDTO.FirstName" />
-                        <label for="floatingInput">Primer Nombre:</label>
+                        <InputText class="form-control" id="floatingInput1" placeholder="Primer Nombre" @bind-Value="@userDTO.FirstName" />
+                        <label for="floatingInput1">Primer Nombre:</label>
                         <ValidationMessage For="@(() => userDTO.FirstName)" />
                     </div>
                     <div class="form-floating mb-3">
-                        <InputText class="form-control" id="floatingInput2" placeholder="Last Name" @bind-Value="@userDTO.LastName" />
+                        <InputText class="form-control" id="floatingInput2" placeholder="Apellido" @bind-Value="@userDTO.LastName" />
                         <label for="floatingInput2">Apellido:</label>
                         <ValidationMessage For="@(() => userDTO.LastName)" />
                     </div>
                     <div class="form-floating mb-3">
-                        <InputText class="form-control" id="floatingInput3" placeholder="Identification Number :" @bind-Value="@userDTO.Document" />
-                        <label for="floatingInput3">Numero de Identificacion:</label>
+                        <InputText class="form-control" id="floatingInput3" placeholder="Número de Identificación" @bind-Value="@userDTO.Document" />
+                        <label for="floatingInput3">Número de Identificación:</label>
                         <ValidationMessage For="@(() => userDTO.Document)" />
                     </div>
                     <div class="form-floating mb-3">
-                        <InputText class="form-control" id="floatingInput4" placeholder="Phone Number " @bind-Value="@userDTO.PhoneNumber" />
-                        <label for="floatingInput4">Phone Number :</label>
+                        <InputText class="form-control" id="floatingInput4" placeholder="Número de Teléfono" @bind-Value="@userDTO.PhoneNumber" />
+                        <label for="floatingInput4">Número de Teléfono:</label>
                         <ValidationMessage For="@(() => userDTO.PhoneNumber)" />
                     </div>
                     <div class="form-floating mb-3">
-                        <InputText class="form-control" id="floatingInput5" placeholder="Address" @bind-Value="@userDTO.Address" />
-                        <label for="floatingInput5">Address :</label>
+                        <InputText class="form-control" id="floatingInput5" placeholder="Dirección" @bind-Value="@userDTO.Address" />
+                        <label for="floatingInput5">Dirección:</label>
                         <ValidationMessage For="@(() => userDTO.Address)" />
                     </div>
-                    <div class="col-6">
-                        <div class="form-floating mb-3">
-                            <InputText type="email" class="form-control" id="floatingInput6" placeholder="Email" @bind-Value="@userDTO.Email" />
-                            <label for="floatingInput6">Email :</label>
-                            <ValidationMessage For="@(() => userDTO.Email)" />
-                        </div>
-                        <div class="form-floating mb-3">
-                            <label>Foto:</label>
-                            <div>
-                                <InputText class="form-control" @bind-Value="@userDTO.Photo" />
-                                <ValidationMessage For="@(() => userDTO.Photo)" />
-                            </div>
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <InputText type="password" class="form-control" id="floatingInput7" placeholder="Password" @bind-Value="@userDTO.Password" />
-                            <label for="floatingInput7">Password :</label>
-                            <ValidationMessage For="@(() => userDTO.Password)" />
-                        </div>
-                        <div class="form-floating mb-3">
-                            <InputText type="password" class="form-control" id="floatingInput7" placeholder="Password Confirmation" @bind-Value="@userDTO.PasswordConfirm" />
-                            <label for="floatingInput7">Password Confirmation :</label>
-                            <ValidationMessage For="@(() => userDTO.PasswordConfirm)" />
-                        </div>
-
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <InputText type="email" class="form-control" id="floatingInput6" placeholder="Correo Electrónico" @bind-Value="@userDTO.Email" />
+                        <label for="floatingInput6">Correo Electrónico:</label>
+                        <ValidationMessage For="@(() => userDTO.Email)" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="photoInput">Foto:</label>
+                        <InputFile id="photoInput" OnChange="HandleSelected" />
+                        <img src="@userDTO.Photo" class="img-thumbnail mt-2" style="max-width: 150px;" alt="Foto de perfil" />
+                        <ValidationMessage For="@(() => userDTO.Photo)" />
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText type="password" class="form-control" id="floatingInput7" placeholder="Contraseña" @bind-Value="@userDTO.Password" />
+                        <label for="floatingInput7">Contraseña:</label>
+                        <ValidationMessage For="@(() => userDTO.Password)" />
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText type="password" class="form-control" id="floatingInput8" placeholder="Confirmación de Contraseña" @bind-Value="@userDTO.PasswordConfirm" />
+                        <label for="floatingInput8">Confirmación de Contraseña:</label>
+                        <ValidationMessage For="@(() => userDTO.PasswordConfirm)" />
                     </div>
                 </div>
             </div>
+            <div class="text-center mt-3">
+                <button class="btn btn-dark" type="submit">Enviar Registro</button>
+            </div>
         </div>
     </div>
+
 </EditForm>
 
-
 @code {
-
     private UserDTO userDTO = new();
 
-
-        private async Task CreteUserAsync()
-        {
-            userDTO.UserName = userDTO.Email;
-            userDTO.UserType = UserType.User;
+    private async Task CreteUserAsync()
+    {
+        userDTO.UserName = userDTO.Email;
+        userDTO.UserType = UserType.User;
         var responseHttp = await repository.PostAsync<UserDTO, TokenDTO>("/api/accounts/CreateUser", userDTO);
-            if (responseHttp.Error)
-            {
-                var message = await responseHttp.GetErrorMessageAsync();
-                await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-                return;
-            }
-
-            await loginService.LoginAsync(responseHttp.Response!.Token);
-            navigationManager.NavigateTo("/");
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
         }
+
+        await loginService.LoginAsync(responseHttp.Response!.Token);
+        navigationManager.NavigateTo("/");
+    }
+    private async Task HandleSelected(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        var buffer = new byte[file.Size];
+        await file.OpenReadStream().ReadAsync(buffer);
+
+        // Convert buffer to Base64 and assign it to the Photo property of userDTO
+        userDTO.Photo = $"data:{file.ContentType};base64,{Convert.ToBase64String(buffer)}";
+    }
 }
+
+
