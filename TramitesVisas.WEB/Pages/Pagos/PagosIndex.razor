@@ -50,6 +50,7 @@
                         @foreach (var pago in Pagos!)
                         {
                             @* TipVisa(@pago.tipo); *@
+                            NomSolicitud(pago.SolicitudId);
 
                             <tr>
                                 <td>
@@ -89,15 +90,15 @@
 
 @code {
 
-    // public string nomsolicitud { get; set; }
-    public string tipvisa { get; set; }
+    public string nomsolicitud { get; set; }
+
 
     public List<Solicitud> Solicitudes { get; set; }
 
     public List<Pago> Pagos { get; set; }
 
 
-    // public List<Solicitud> Solicitudes { get; set; }
+ 
 
     protected async override Task OnInitializedAsync()
     {
@@ -183,17 +184,17 @@
     //     }
     // }
 
-    // private void NomSolicitud(int? selection)
-    // {
-    //     nomsolicitud = "";
-    //     foreach (var solicitud in Solicitudes!)
-    //     {
-    //         if (selection == solicitud.Id)
-    //         {
-    //             nomsolicitud = solicitud.TipoSolicitud;
-    //         }
+    private void NomSolicitud(int? selection)
+    {
+        nomsolicitud = "";
+        foreach (var solicitud in Solicitudes!)
+        {
+            if (selection == solicitud.Id)
+            {
+                nomsolicitud = solicitud.TipoSolicitud;
+            }
 
-    //     }
-    // }
+        }
+    }
 }
 

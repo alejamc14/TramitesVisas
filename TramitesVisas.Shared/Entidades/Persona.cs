@@ -52,9 +52,6 @@ namespace TramitesVisas.Shared.Entidades
         public int Telefono { get; set; }
         public string NombreCompleto => $"{Nombre}{Apellido}";
 
-        [JsonIgnore]
-        public User Users { get; set; }
-        public int UserId { get; set; }
-
+       
     }
 }

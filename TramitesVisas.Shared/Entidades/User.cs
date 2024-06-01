@@ -41,9 +41,7 @@ namespace TramitesVisas.Shared.Entidades
 
         public string FullName => $"{FirstName}{LastName}";
 
-        [JsonIgnore]
-        public Persona Personas { get; set; }
-        public int PersonaId { get; set; }
+        
 
 
     }
