@@ -27,6 +27,12 @@ namespace TramitesVisas.API.Controllers
 
         }
 
+        [HttpGet("Persona/{id:int}")]
+        public async Task<ActionResult> GetPersonaAsync(int id)
+        {
+            return Ok(await _context.Solicitudes.Where(x => x.PersonaId == id).ToListAsync());
+
+        }
 
         // Método Get- por Id
         [HttpGet("{id:int}")]
@@ -61,6 +67,7 @@ namespace TramitesVisas.API.Controllers
 
         // Método actualizar
         [HttpPut]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult> PutAsync(Solicitud solicitud)
         {
             _context.Update(solicitud);
@@ -71,6 +78,7 @@ namespace TramitesVisas.API.Controllers
 
         //Médoro eliminar registro
         [HttpDelete("{id:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult> DeleteAsync(int id)
         {
             var deletedrows = await _context.Solicitudes.Where(x => x.Id == id).ExecuteDeleteAsync();

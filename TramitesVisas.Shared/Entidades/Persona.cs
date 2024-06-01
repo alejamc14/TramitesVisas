@@ -39,7 +39,6 @@ namespace TramitesVisas.Shared.Entidades
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string Nacionalidad { get; set; }
 
-
         [Display(Name = "Email")]
         [MaxLength(50, ErrorMessage = "No se perimten mas de 50 caracteres")]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
@@ -50,11 +49,10 @@ namespace TramitesVisas.Shared.Entidades
         [Display(Name = "Telefono")]
         [Required(ErrorMessage = "El campo {6} es obligatorio")]
         public int Telefono { get; set; }
+
         public string NombreCompleto => $"{Nombre}{Apellido}";
 
-        [JsonIgnore]
-        public User Users { get; set; }
-        public int UserId { get; set; }
+
 
     }
 }

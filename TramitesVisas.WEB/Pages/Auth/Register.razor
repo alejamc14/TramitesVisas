@@ -30,17 +30,27 @@
                         <ValidationMessage For="@(() => userDTO.Document)" />
                     </div>
                     <div class="form-floating mb-3">
-                        <InputText class="form-control" id="floatingInput4" placeholder="Número de Teléfono" @bind-Value="@userDTO.PhoneNumber" />
+                        <InputNumber class="form-control" id="floatingInput4" placeholder="Número de Teléfono" @bind-Value="@userDTO.Telefono" />
                         <label for="floatingInput4">Número de Teléfono:</label>
-                        <ValidationMessage For="@(() => userDTO.PhoneNumber)" />
+                        <ValidationMessage For="@(() => userDTO.Telefono)" />
                     </div>
                     <div class="form-floating mb-3">
-                        <InputText class="form-control" id="floatingInput5" placeholder="Dirección" @bind-Value="@userDTO.Address" />
+                        <InputText class="form-control" id="floatingInput5" placeholder="Direccion" @bind-Value="@userDTO.Address" />
                         <label for="floatingInput5">Dirección:</label>
                         <ValidationMessage For="@(() => userDTO.Address)" />
                     </div>
+                    <div class="form-floating mb-3">
+                        <InputText class="form-control" id="floatingInput5" placeholder="Nacionalidad" @bind-Value="@userDTO.Nacionalidad" />
+                        <label for="floatingInput5">Nacionalidad:</label>
+                        <ValidationMessage For="@(() => userDTO.Nacionalidad)" />
+                    </div>
                 </div>
                 <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <InputDate type="email" class="form-control" id="floatingInput6" placeholder="Fecha Nacimiento" @bind-Value="@userDTO.FechaNacimiento" />
+                        <label for="floatingInput6">Fecha Nacimiento:</label>
+                        <ValidationMessage For="@(() => userDTO.FechaNacimiento)" />
+                    </div>
                     <div class="form-floating mb-3">
                         <InputText type="email" class="form-control" id="floatingInput6" placeholder="Correo Electrónico" @bind-Value="@userDTO.Email" />
                         <label for="floatingInput6">Correo Electrónico:</label>

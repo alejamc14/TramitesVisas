@@ -43,6 +43,21 @@ namespace TramitesVisas.API.Controllers
 
         }
 
+        // Método Get- por Id
+        [HttpGet("user/{cedula}")]
+        public async Task<ActionResult> GetDocumentAsync(string cedula)
+        {
+            var persona = await _context.Personas.FirstOrDefaultAsync(x => x.Documento.Equals(cedula));
+
+            if (persona == null)
+            {
+                return NotFound();
+
+            }
+            return Ok(persona);
+
+        }
+
 
         //Metodo para Crear 
         [HttpPost]

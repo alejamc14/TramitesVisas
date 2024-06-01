@@ -56,6 +56,7 @@ namespace TramitesVisas.API.Data
                     Nacionalidad = "Colombiana",
                     Email = "Calderonpaula@gmail.com",
                     Telefono = 12435
+
                 });
 
                 _context.Personas.Add(new Persona
