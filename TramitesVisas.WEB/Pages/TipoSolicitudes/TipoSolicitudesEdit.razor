@@ -1,0 +1,83 @@
+﻿@page "/TipoSolicitudes/edit/{TipoSolicitudId:int}"
+@inject NavigationManager navigationManager
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+
+<h3>Editar TipoSolicitudes</h3>
+@if (tiposolicitud is null)
+{
+    <p>La tiposolicitud es Nulo</p>
+}
+else
+{
+    <TipoSolicitudesForm TipoSolicitud="tiposolicitud" OnValidSubmit="Editar" ReturnAction="Return" />
+    
+}
+
+
+@code {
+    [Parameter]
+    public int TipoSolicitudId { get; set; }
+    private TipoSolicitud tiposolicitud = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        var responseHTTP = await repository.GetAsync<TipoSolicitud>($"api/tiposolicitudes/{TipoSolicitudId}");
+
+        if (responseHTTP.Error)
+        {
+            if (responseHTTP.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("tiposolicitudes");
+                return;
+            }
+            else
+            {
+                var mensajeError = await responseHTTP.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+                return;
+            }
+        }
+        else
+        {
+            tiposolicitud = responseHTTP.Response;
+        }
+    }
+
+    private async Task Editar()
+    {
+
+        var responseHTTP = await repository.PutAsync("api/tiposolicitudes", tiposolicitud);
+
+        if (responseHTTP.Error)
+        {
+            var mensajeError = await responseHTTP.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+        }
+        else
+        {
+
+            Return();
+            var Toast = sweetAlertService.Mixin(new SweetAlertOptions
+                {
+
+                    Toast = true,
+                    Position = SweetAlertPosition.BottomEnd,
+                    ShowConfirmButton = true,
+                    Timer = 3000
+
+                });
+
+            await Toast.FireAsync(icon: SweetAlertIcon.Success, message: "TipoSolicitud modificada con exito");
+        }
+
+    }
+
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("tiposolicitudes");
+    }
+
+}

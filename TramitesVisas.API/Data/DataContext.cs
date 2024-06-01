@@ -21,6 +21,7 @@ namespace TramitesVisas.API.Data
         public DbSet<Pago> Pagos { get; set; }
         public DbSet<Documento> Documentos { get; set; }
         public DbSet<Visa> Visas { get; set; }
+        public DbSet<TipoSolicitud> TipoSolicitudes { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

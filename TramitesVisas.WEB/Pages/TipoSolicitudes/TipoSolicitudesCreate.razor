@@ -1,0 +1,47 @@
+﻿@page "/tiposolicitudes/create"
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+<h3>Crear TipoSolicitud</h3>
+
+<TipoSolicitudesForm TipoSolicitud="tiposolicitud" OnValidSubmit="Create" ReturnAction="Return" />
+
+@code {
+    private TipoSolicitud tiposolicitud = new();
+
+    private async Task Create()
+    {
+        var responseHttp = await repository.PostAsync("/api/tiposolicitudes", tiposolicitud);
+
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+        }
+        else
+            Return();
+        {
+            var Toast = sweetAlertService.Mixin(new SweetAlertOptions
+                {
+
+                    Toast = true,
+                    Position = SweetAlertPosition.BottomEnd,
+                    ShowConfirmButton = true,
+                    Timer = 3000
+
+                });
+
+            await Toast.FireAsync(icon: SweetAlertIcon.Success, message: "Tipo Solicitud creada con exito");
+        }
+
+    }
+
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("/tiposolicitudes");
+
+
+    }
+}

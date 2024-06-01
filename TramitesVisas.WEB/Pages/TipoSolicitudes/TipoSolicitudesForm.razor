@@ -1,33 +1,16 @@
 ﻿@using CurrieTechnologies.Razor.SweetAlert2
 ﻿@using TramitesVisas.Shared.Entidades
 @inject SweetAlertService swal
-<EditForm Model="Pago" OnValidSubmit="OnValidSubmit">
+
+<EditForm Model="TipoSolicitud" OnValidSubmit="OnValidSubmit">
 
     <DataAnnotationsValidator />
     <div class="mb-3">
-        <label>Monto</label>
+        <label>Tipo Solicitud</label>
         <div>
-            <InputNumber width="10" @bind-Value="@Pago.Monto"></InputNumber>
-            <ValidationMessage For="@(() => @Pago.Monto)" />
+            <InputText width="10" @bind-Value="@TipoSolicitud.Tipo"></InputText>
+            <ValidationMessage For="@(() => @TipoSolicitud.Tipo)" />
         </div>
-        <label>Metodo de pago</label>
-        <div>
-            <InputText width="10" @bind-Value="@Pago.MetodoPago"></InputText>
-            <ValidationMessage For="@(() => @Pago.MetodoPago)" />
-        </div>
- 
-        <label>Fecha de pago</label>
-        <div>
-            <InputDate width="10" @bind-Value="@Pago.FechaPago"></InputDate>
-            <ValidationMessage For="@(() => @Pago.FechaPago)" />
-        </div>
-        <label>Id de solicitud</label>
-        <div>
-            <InputNumber width="10" @bind-Value="@Pago.SolicitudId"></InputNumber>
-            <ValidationMessage For="@(() => @Pago.SolicitudId)" />
-        </div>
-
-
         
     </div>
     <button class="btn btn-primary" type="submit">Guardar <i class="bi bi-floppy2"></i></button>
@@ -39,12 +22,12 @@
     private EditContext editContext = null;
     protected override void OnInitialized()
     {
-        editContext = new(Pago);
+        editContext = new(TipoSolicitud);
     }
 
     [EditorRequired]
     [Parameter]
-    public Pago Pago { get; set; }
+    public TipoSolicitud TipoSolicitud { get; set; }
 
 
     [EditorRequired]
