@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using TramitesVisas.Shared.Enums;
 
@@ -39,6 +40,10 @@ namespace TramitesVisas.Shared.Entidades
         public UserType UserType { get; set; }
 
         public string FullName => $"{FirstName}{LastName}";
+
+        [JsonIgnore]
+        public Persona Personas { get; set; }
+        public int PersonaId { get; set; }
 
 
     }

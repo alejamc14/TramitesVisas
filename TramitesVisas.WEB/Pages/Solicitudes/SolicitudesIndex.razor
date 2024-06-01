@@ -6,6 +6,7 @@
 @inject IRepository Repository
 @inject SweetAlertService sweetAlertService
 @inject NavigationManager navigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <h3>SolicitudesIndex</h3>
 
@@ -13,12 +14,10 @@
     <div class="card-header">
         <span>
             <a class="btn btn-primary btn-sm float-start" href="/solicitud/create"><i class="bi bi-plus-circle" /> Nueva Solicitud </a>
-
         </span>
     </div>
     <div class="card-body">
         <GenericList MyList="Solicitudes">
-
             <Body>
                 <table class="table table-striped">
                     <thead>
@@ -27,103 +26,92 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>
-                                <b>Id</b>
-                            </td>
-                            <td>
-                                <b>Tipo Solicitud</b>
-                            </td>
-                            <td>
-                                <b>Estado</b>
-                            </td>
-                            <td>
-                                <b>Fecha de la Solicitud</b>
-                            </td>
-                            <td>
-                                <b>Comentario</b>
-                            </td>
-                            <td>
-                                <b>Nombre de la Persona</b>
-                            </td>
-                            <td>
-                                <b>Tipo de visa</b>
-                            </td>
+                            <td><b>Id</b></td>
+                            <td><b>Tipo Solicitud</b></td>
+                            <td><b>Estado</b></td>
+                            <td><b>Fecha de la Solicitud</b></td>
+                            <td><b>Comentario</b></td>
+                            <td><b>Nombre de la Persona</b></td>
+                            <td><b>Tipo de visa</b></td>
                         </tr>
                         @foreach (var solicitud in Solicitudes!)
                         {
-                            NomPersona(@solicitud.PersonaId);
-                            TipVisa(@solicitud.TipoVisaId);
+                            NomPersona(solicitud.PersonaId);
+                            TipVisa(solicitud.TipoVisaId);
                             <tr>
-                                <td>
-                                    @solicitud.Id
-                                </td>
-                                <td>
-                                    @solicitud.TipoSolicitud
-                                </td>
-                                <td>
-                                    @solicitud.Estado
-                                </td>
-                                <td>
-                                    @solicitud.FechaSolicitud
-                                </td>
-                                <td>
-                                    @solicitud.Comentario
-                                </td>
-                                <td>
-                                    @nompersona
-                                </td>
-                                <td>
-                                    @tipvisa
-                                </td>
+                                <td>@solicitud.Id</td>
+                                <td>@solicitud.TipoSolicitud</td>
+                                <td>@solicitud.Estado</td>
+                                <td>@solicitud.FechaSolicitud</td>
+                                <td>@solicitud.Comentario</td>
+                                <td>@nompersona</td>
+                                <td>@tipvisa</td>
                                 <td>
                                     <a href="/solicitudes/edit/@solicitud.Id" class="btn btn-warning"><i class="bi bi-pencil-square">Editar</i></a>
                                     <button class="btn btn-danger" @onclick=@(() => Delete(solicitud))><i class="bi bi-trash3">Borrar</i></button>
-
                                 </td>
-
                             </tr>
                         }
                     </tbody>
                 </table>
-
             </Body>
-
         </GenericList>
     </div>
 </div>
 
 @code {
-
     public string nompersona { get; set; }
-
     public string tipvisa { get; set; }
-
     public List<Solicitud> Solicitudes { get; set; }
     public List<Persona> Personas { get; set; }
     public List<TipoVisa> TipoVisas { get; set; }
 
-    protected async override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         await Charging();
     }
 
     private async Task Charging()
     {
-        var responseHTTP = await Repository.GetAsync<List<Solicitud>>("/api/solicitudes");
-        Solicitudes = responseHTTP.Response!;
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
 
-        var response2HTTP = await Repository.GetAsync<List<Persona>>("/api/personas");
-        Personas = response2HTTP.Response!;
+        if (user.Identity.IsAuthenticated)
+        {
+            var userId = user.FindFirst(c => c.Type == "sub")?.Value;
+            if (int.TryParse(userId, out var userIdInt))
+            {
+                var responseHTTP = await Repository.GetAsync<List<Solicitud>>("/api/solicitudes");
+                var allSolicitudes = responseHTTP.Response!;
 
-        var response3HTTP = await Repository.GetAsync<List<TipoVisa>>("/api/tipovisas");
-        TipoVisas = response3HTTP.Response!;
+                // Filtrar las solicitudes por el ID del usuario
+                Solicitudes = allSolicitudes.Where(s => s.UserId == userIdInt).ToList();
 
+                var response2HTTP = await Repository.GetAsync<List<Persona>>("/api/personas");
+                Personas = response2HTTP.Response!;
+
+                var response3HTTP = await Repository.GetAsync<List<TipoVisa>>("/api/tipovisas");
+                TipoVisas = response3HTTP.Response!;
+            }
+            else
+            {
+                // Manejo de usuario con ID no convertible a int
+                Solicitudes = new List<Solicitud>();
+                Personas = new List<Persona>();
+                TipoVisas = new List<TipoVisa>();
+            }
+        }
+        else
+        {
+            // Manejo de usuario no autenticado
+            Solicitudes = new List<Solicitud>();
+            Personas = new List<Persona>();
+            TipoVisas = new List<TipoVisa>();
+        }
     }
-
 
     private async Task Delete(Solicitud solicitud)
     {
-
         var result = await sweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmación",
@@ -168,6 +156,7 @@
             toast.FireAsync(icon: SweetAlertIcon.Success, message: "Solicitud borrado con éxito.");
         }
     }
+
     private void NomPersona(int? selection)
     {
         nompersona = "";
@@ -177,7 +166,6 @@
             {
                 nompersona = persona.Nombre;
             }
-
         }
     }
 
@@ -190,9 +178,7 @@
             {
                 tipvisa = tipovisa.Tipo;
             }
-
         }
     }
-
-
 }
+
