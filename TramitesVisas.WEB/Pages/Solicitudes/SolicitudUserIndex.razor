@@ -1,4 +1,4 @@
-﻿@page "/solicitudes"
+﻿@page "/solicitudesUser/{documento}"
 @using CurrieTechnologies.Razor.SweetAlert2
 @using TramitesVisas.Shared.Entidades
 @using TramitesVisas.WEB.Repositories
@@ -6,7 +6,6 @@
 @inject IRepository Repository
 @inject SweetAlertService sweetAlertService
 @inject NavigationManager navigationManager
-@attribute [Authorize(Roles = "Admin")]
 
 <h3>SolicitudesIndex</h3>
 
@@ -76,14 +75,14 @@
                                 <td>
                                     @tipvisa
                                 </td>
-                                    <AuthorizeView Roles="Admin">
-                                        <Authorized>
-                                          <td>
+                                <AuthorizeView Roles="Admin">
+                                    <Authorized>
+                                        <td>
                                             <a href="/solicitudes/edit/@solicitud.Id" class="btn btn-warning"><i class="bi bi-pencil-square"></i>Editar</a>
                                             <button class="btn btn-danger" @onclick=@(() => Delete(solicitud))><i class="bi bi-trash3"></i>Borrar</button>
-                                          </td>
-                                       </Authorized>
-                                    </AuthorizeView>
+                                        </td>
+                                    </Authorized>
+                                </AuthorizeView>
                             </tr>
                         }
                     </tbody>
@@ -101,6 +100,10 @@
 
     public string tipvisa { get; set; }
 
+    [Parameter]
+
+    public string documento { get; set; }
+
     public List<Solicitud> Solicitudes { get; set; }
     public List<Persona> Personas { get; set; }
     public List<TipoVisa> TipoVisas { get; set; }
@@ -112,7 +115,11 @@
 
     private async Task Charging()
     {
-        var responseHTTP = await Repository.GetAsync<List<Solicitud>>("/api/solicitudes");
+
+        var response4HTTP = await Repository.GetAsync<Persona>($"/api/personas/user/{documento}");
+        var id = response4HTTP.Response.Id;
+
+        var responseHTTP = await Repository.GetAsync<List<Solicitud>>($"/api/solicitudes/Persona/{id}");
         Solicitudes = responseHTTP.Response!;
 
         var response2HTTP = await Repository.GetAsync<List<Persona>>("/api/personas");

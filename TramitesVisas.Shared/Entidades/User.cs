@@ -22,8 +22,6 @@ namespace TramitesVisas.Shared.Entidades
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string FirstName { get; set; }
 
-
-
         [MaxLength(50, ErrorMessage = "No se permiten más de 50 Caracteres")]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string LastName { get; set; }
@@ -40,8 +38,6 @@ namespace TramitesVisas.Shared.Entidades
         public UserType UserType { get; set; }
 
         public string FullName => $"{FirstName}{LastName}";
-
-        
 
 
     }

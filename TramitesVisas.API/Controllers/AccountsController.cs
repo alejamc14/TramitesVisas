@@ -6,6 +6,7 @@ using System.Text;
 using TramitesVisas.API.Helpers;
 using TramitesVisas.Shared.DTOs;
 using TramitesVisas.Shared.Entidades;
+using TramitesVisas.API.Data;
 
 namespace Sales.API.Controllers
 {
@@ -13,11 +14,13 @@ namespace Sales.API.Controllers
     [Route("/api/accounts")]
     public class AccountsController : ControllerBase
     {
+        private readonly DataContext _dataContext;  
         private readonly IUserHelper _userHelper;
         private readonly IConfiguration _configuration;
 
-        public AccountsController(IUserHelper userHelper, IConfiguration configuration)
+        public AccountsController(IUserHelper userHelper, IConfiguration configuration, DataContext dataContext)
         {
+            _dataContext = dataContext; 
             _userHelper = userHelper;
             _configuration = configuration;
         }
@@ -29,6 +32,19 @@ namespace Sales.API.Controllers
             var result = await _userHelper.AddUserAsync(user, model.Password);
             if (result.Succeeded)
             {
+                await _dataContext.Personas.AddAsync(new Persona
+                {
+                    Documento = model.Document,
+                    Nombre = model.FirstName,
+                    Apellido = model.LastName,
+                    FechaNacimiento= model.FechaNacimiento,
+                    Nacionalidad = model.Nacionalidad,
+                    Email = model.Email,
+                    Telefono=model.Telefono,
+                        
+                });
+                await _dataContext.SaveChangesAsync();
+
                 await _userHelper.AddUserToRoleAsync(user, user.UserType.ToString());
                 return Ok(BuildToken(user));
             }

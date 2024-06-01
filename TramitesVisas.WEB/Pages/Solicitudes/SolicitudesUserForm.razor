@@ -4,6 +4,7 @@
 @inject IRepository Repository
 @inject SweetAlertService swal
 
+
 <EditForm Model="Solicitud" OnValidSubmit="OnValidSubmit">
 
     <DataAnnotationsValidator />
@@ -24,20 +25,6 @@
             <ValidationMessage For="@(() => @Solicitud.FechaSolicitud)" />
         </div>
         <div>
-            <label>Nombre de Persona</label>
-
-            <Dropdown TItem="int" OnSelected="@OnSelected">
-                <InitialTip>Escoja un Nombre</InitialTip>
-                <ChildContent>
-                    @foreach (var persona in Personas!)
-                    {
-                        <DropdownListItem Context="dropContext" Item="@persona.Id">@persona.Nombre</DropdownListItem>
-                    }
-                </ChildContent>
-            </Dropdown>
-        </div>
-
-        <div>
             <label>Tipo visa</label>
 
             <Dropdown TItem="int" OnSelected="@OnSelected2">
@@ -49,23 +36,22 @@
                     }
                 </ChildContent>
             </Dropdown>
-
         </div>
-            <label>Comentarios</label>
+
+        <label>Comentarios</label>
         <div>
             <InputText width="10" @bind-Value="@Solicitud.Comentario"></InputText>
             <ValidationMessage For="@(() => @Solicitud.Comentario)" />
         </div>
+
     </div>
-        <button class="btn btn-primary" type="submit">Guardar <i class="bi bi-floppy2"></i></button>
-        <button class="btn btn-info" type="reset">Limpiar <i class="bi bi-x-octagon"></i></button>
-        <button class="btn btn-secondary" @onclick="ReturnAction">Regresar <i class="bi bi-arrow-clockwise"></i></button>
+    <button class="btn btn-primary" type="submit">Guardar <i class="bi bi-floppy2"></i></button>
+    <button class="btn btn-info" type="reset">Limpiar <i class="bi bi-x-octagon"></i></button>
+    <button class="btn btn-secondary" @onclick="ReturnAction">Regresar <i class="bi bi-arrow-clockwise"></i></button>
 
 </EditForm>
 
 @code {
-
-    public List<Persona> Personas { get; set; }
     public List<TipoVisa> TipoVisas { get; set; }
 
     protected async override Task OnInitializedAsync()
@@ -75,9 +61,6 @@
 
     private async Task Charging()
     {
-
-        var responseHTTP = await Repository.GetAsync<List<Persona>>("/api/personas");
-        Personas = responseHTTP.Response!;
 
         var response2HTTP = await Repository.GetAsync<List<TipoVisa>>("/api/tipoVisas");
         TipoVisas = response2HTTP.Response!;

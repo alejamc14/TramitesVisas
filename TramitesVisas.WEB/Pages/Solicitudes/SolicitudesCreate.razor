@@ -1,16 +1,33 @@
 ﻿@page "/solicitud/create"
+@using System.Security.Claims
+@using TramitesVisas.Shared.Enums
 @inject IRepository repository
 @inject NavigationManager navigationManager
 @inject SweetAlertService sweetAlertService
 
 <h3>Crea Solicitud</h3>
-<SolicitudesForm Solicitud="solicitud" OnValidSubmit="Create" ReturnAction="Return" />
+
+<AuthorizeView Roles="Admin">
+    @{
+        autstate = context; 
+    }
+    <SolicitudesForm Solicitud="solicitud" OnValidSubmit="Create" ReturnAction="Return" />
+</AuthorizeView>
+
+<AuthorizeView Roles="User">
+    @{
+        autstate = context;
+    }
+    <SolicitudesUserForm Solicitud="solicitud" OnValidSubmit="Create" ReturnAction="Return" />
+</AuthorizeView>
 
 @code {
     private Solicitud solicitud = new();
+    private AuthenticationState autstate; 
 
     private async Task Create()
     {
+        await GetName();
         var responseHttp = await repository.PostAsync("/api/solicitudes", solicitud);
 
         if (responseHttp.Error)
@@ -36,11 +53,30 @@
 
     }
 
+    private async Task GetName()
+    {
+        var Role = autstate.User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimTypes.Role))!.Value;
+
+        if (Role.Equals(UserType.Admin.ToString()))
+            return;
+
+        var responseHttp = await repository.GetAsync<Persona>($"/api/personas/user/{autstate.User.Claims.FirstOrDefault(x => x.Type.Equals("Document"))!.Value}");
+        solicitud.PersonaId = responseHttp.Response.Id; 
+    }
 
     private void Return()
     {
-        navigationManager.NavigateTo("/solicitudes");
+        var Role = autstate.User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimTypes.Role))!.Value;
 
+        if (Role.Equals(UserType.Admin.ToString()))
+        {
+            navigationManager.NavigateTo("/solicitudes");
+        }
+        else if (Role.Equals(UserType.User.ToString()))
+        {
+            var documento = autstate.User.Claims.FirstOrDefault(x => x.Type.Equals("Document"))!.Value;
+            navigationManager.NavigateTo($"/solicitudesUser/{documento}");
+        }
 
     }
 }
