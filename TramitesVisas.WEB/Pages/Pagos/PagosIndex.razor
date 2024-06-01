@@ -8,8 +8,6 @@
 @inject SweetAlertService sweetAlertService
 @inject NavigationManager navigationManager
 
-@attribute [Authorize(Roles = "Admin")]
-
 <h3>Pagos</h3>
 <div class="card">
     <div class="card-header">
@@ -67,10 +65,9 @@
                                 <td>
                                     @pago.FechaPago
                                 </td>
-                                
-
-                                
-                              
+                                <td>
+                                    @nomsolicitud
+                                </td>
 
                                 <td>
                                     <a href="/pagos/edit/@pago.Id" class="btn btn-warning">Editar<i class="bi bi-pencil-square"></i></a>

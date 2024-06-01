@@ -42,7 +42,9 @@ namespace TramitesVisas.Shared.Entidades
         public TipoVisa TipoVisas { get; set; }
         public int TipoVisaId { get; set; }
 
+        [JsonIgnore]
+        public User Users { get; set; }
+        public int UserId { get; set; }
 
-      
     }
 }
