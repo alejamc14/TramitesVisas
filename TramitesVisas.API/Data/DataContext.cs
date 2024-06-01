@@ -24,6 +24,7 @@ namespace TramitesVisas.API.Data
         public DbSet<TipoSolicitud> TipoSolicitudes { get; set; }
 
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
