@@ -14,44 +14,106 @@
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
             </NavLink>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="personas">
-                <span aria-hidden="true">
-                    <i class="bi bi-person-fill"></i>
-                </span>Persona
-            </NavLink>
-        </div>
+
         <AuthorizeView Roles="Admin">
             <Authorized>
                 <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="personas">
+                        <span aria-hidden="true">
+                            <i class="bi bi-person-fill"></i>
+                        </span>Persona
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
                     <NavLink class="nav-link" href="tipovisas">
                         <span class="oi oi-list-rich" aria-hidden="true"></span> Tipo de Visas
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="renovaciones">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Renovaciones
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="solicitudes">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Solicitud
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="documentos">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Documentos
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="pagos">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Pagos
                     </NavLink>
                 </div>
             </Authorized>
         </AuthorizeView>
 
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="solicitudes">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Solicitud
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="renovaciones">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Renovaciones
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="documentos">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Documentos
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="pagos">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Pagos
-            </NavLink>
-        </div>
+        <AuthorizeView Roles="User">
+            <Authorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="personas">
+                        <span aria-hidden="true">
+                            <i class="bi bi-person-fill"></i>
+                        </span>Persona
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="solicitudes">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Solicitud
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="documentos">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Documentos
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="pagos">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Pagos
+                    </NavLink>
+                </div>
+            </Authorized>
+        </AuthorizeView>
+
+        
+                    @* <AuthorizeView>
+                        <Authorized>
+                            <div class="d-flex justify-content-end">
+                                @if (!string.IsNullOrEmpty(photoUser))
+                                {
+                                    <div class="btn-group dropstart">
+                                        <button class="dropdown-toggle rounded-circle" data-bs-toggle="dropdown" aria-expanded="false" style=" border: 0px; background: transparent;">
+                                            <img src="@photoUser" width="55" height="55" class="rounded-circle" />
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="">@context.User.Identity!.Name</a></li>
+                                            <li><button class="dropdown-item" @onclick=@(() => ShowModal()) type="button"><i class="bi bi-person-slash"></i>&nbsp; &nbsp; Edit User</button></li>
+                                            <li><button class="dropdown-item" @onclick="Logout" type="button"><i class="bi bi-box-arrow-left"></i>&nbsp; &nbsp; Logout</button></li>
+                                        </ul>
+                                    </div>
+                                }
+
+                                @if (string.IsNullOrEmpty(photoUser))
+                                {
+                                    <div class="btn-group dropstart">
+                                        <button class="dropdown-toggle rounded-circle" data-bs-toggle="dropdown" aria-expanded="false" style=" border: 0px; background: transparent;">
+                                            <img src="https://tradingjournalphotos.blob.core.windows.net/users/c5f44e7e-474f-4f15-b3f0-105908d56df7.jpg" width="55" height="55" class="rounded-circle" />
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="">@context.User.Identity!.Name</a></li>
+                                            <li><button class="dropdown-item" @onclick=@(() => ShowModal()) type="button"><i class="bi bi-person-slash"></i>&nbsp; &nbsp; Edit User</button></li>
+                                            <li><button class="dropdown-item" @onclick="Logout" type="button"><i class="bi bi-box-arrow-left"></i>&nbsp; &nbsp; Logout</button></li>
+                                        </ul>
+                                    </div>
+                                }
+                            </div>
+                        </Authorized>
+                    </AuthorizeView> *@
     </nav>
 </div>
 
