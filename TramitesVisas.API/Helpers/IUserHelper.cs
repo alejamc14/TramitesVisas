@@ -22,5 +22,7 @@ namespace TramitesVisas.API.Helpers
 
         Task LogoutAsync();
 
+
+
     }
 }

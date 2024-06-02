@@ -74,7 +74,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     ClockSkew = TimeSpan.Zero
 });
 
-
+builder.Services.AddScoped<IFileStorage, FileStorage>();
 builder.Services.AddScoped<IUserHelper, UserHelper>();
 
 //this is for the seed of the database
@@ -84,6 +84,8 @@ builder.Services.AddTransient<SeedDb>();
 var app = builder.Build();
 
 SeedData(app);
+
+
 
 static void SeedData(WebApplication app)
 {

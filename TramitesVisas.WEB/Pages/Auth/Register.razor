@@ -56,12 +56,7 @@
                         <label for="floatingInput6">Correo Electrónico:</label>
                         <ValidationMessage For="@(() => userDTO.Email)" />
                     </div>
-                    <div class="mb-3">
-                        <label for="photoInput">Foto:</label>
-                        <InputFile id="photoInput" OnChange="HandleSelected" />
-                        <img src="@userDTO.Photo" class="img-thumbnail mt-2" style="max-width: 150px;" alt="Foto de perfil" />
-                        <ValidationMessage For="@(() => userDTO.Photo)" />
-                    </div>
+                 
                     <div class="form-floating mb-3">
                         <InputText type="password" class="form-control" id="floatingInput7" placeholder="Contraseña" @bind-Value="@userDTO.Password" />
                         <label for="floatingInput7">Contraseña:</label>
@@ -72,6 +67,17 @@
                         <label for="floatingInput8">Confirmación de Contraseña:</label>
                         <ValidationMessage For="@(() => userDTO.PasswordConfirm)" />
                     </div>
+
+                    <div class="mb-3">
+                        <InputImg Label="Foto" ImageSelected="ImageSelected" ImageURL="@imageUrl" />
+                    </div>
+
+                 @*    <div class="mb-3">
+                        <label for="photoInput">Foto:</label>
+                        <InputFile id="photoInput" OnChange="HandleSelected" />
+                        <img src="@userDTO.Photo" class="img-thumbnail mt-2" style="max-width: 150px;" alt="Foto de perfil" />
+                        <ValidationMessage For="@(() => userDTO.Photo)" />
+                    </div> *@
                 </div>
             </div>
             <div class="text-center mt-3">
@@ -84,6 +90,29 @@
 
 @code {
     private UserDTO userDTO = new();
+
+    private string? imageUrl;
+
+    private List<UserType> TraderTypes;
+    private User Users = new();
+
+
+    // private async Task Charging()
+    // {
+    //     var responseHTTP = await repository.GetAsync<List<UserType>>("/api/TraderTypes/combo");
+    //     TraderTypes = responseHTTP.Response!;
+    // }
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     await Charging();
+    //     if (!string.IsNullOrEmpty(userDTO.Photo))
+    //     {
+    //         imageUrl = userDTO.Photo;
+    //         userDTO.Photo = null;
+    //     }
+    // }
+
 
     private async Task CreteUserAsync()
     {
@@ -100,6 +129,14 @@
         await loginService.LoginAsync(responseHttp.Response!.Token);
         navigationManager.NavigateTo("/");
     }
+
+
+    private void ImageSelected(string imagenBase64)
+    {
+        userDTO.Photo = imagenBase64;
+        imageUrl = null;
+    }
+
     private async Task HandleSelected(InputFileChangeEventArgs e)
     {
         var file = e.File;
