@@ -3,6 +3,7 @@
 @inject SweetAlertService sweetAlertService
 @inject NavigationManager navigationManager
 @inject ILoginService loginService
+@inject AuthenticationStateProvider GetAuthenticationStateAsync
 
 @if (user is null)
 {
@@ -10,16 +11,81 @@
 }
 else
 {
-    <EditUserForm user="user" OnSubmit="SaveUserAsync" />
+    <EditForm Model="user" OnValidSubmit="SaveUserAsync">
+        <DataAnnotationsValidator />
+
+        <div class="card">
+            <div class="card-header">
+                <span>
+                    <i class="oi oi-key" /> Cambiar Contraseña
+                    <a class="btn btn-sm btn-success float-end" href="/"><i class="oi oi-arrow-thick-left" /> Regresar</a>
+                    <button class="btn btn-sm btn-primary float-end mx-2" type="submit"><i class="oi oi-check" /> Guardar Cambios</button>
+                </span>
+
+            </div>
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label>Nombres:</label>
+                            <div>
+                                <InputText class="form-control" @bind-Value="user.FirstName" />
+                                <ValidationMessage For="@(() => user.FirstName)" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Apellidos:</label>
+                            <div>
+                                <InputText class="form-control" @bind-Value="user.LastName" />
+                                <ValidationMessage For="@(() => user.LastName)" />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Teléfono:</label>
+                            <div>
+                                <InputText class="form-control" @bind-Value="user.PhoneNumber" />
+                                <ValidationMessage For="@(() => user.PhoneNumber)" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Nacionalidad:</label>
+                            <div>
+                                <InputText class="form-control" @bind-Value="user.Nacionalidad" />
+                                <ValidationMessage For="@(() => user.Nacionalidad)" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Dirección:</label>
+                            <div>
+                                <InputText class="form-control" @bind-Value="user.Address" />
+                                <ValidationMessage For="@(() => user.Address)" />
+                            </div>
+                        </div>
+                        @* <div class="mb-3">
+                    <InputImg Label="Foto" ImageSelected="ImageSelected" ImageURL="@imageUrl" />
+                    </div> *@
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+
+    </EditForm>
 }
 
 @code {
-    private UserDTO? user;
+    private User user;
+    private Persona persona;
 
-    private string? imageUrl;
+    private string imageUrl;
 
     protected override async Task OnInitializedAsync()
     {
+
         await LoadUserAsyc();
 
         if (!string.IsNullOrEmpty(user!.Photo))
@@ -27,13 +93,15 @@ else
             imageUrl = user.Photo;
             user.Photo = null;
         }
-
     }
+
+
 
     private async Task LoadUserAsyc()
     {
 
-        var responseHTTP = await repository.GetAsync<UserDTO>($"/api/accounts");
+
+        var responseHTTP = await repository.GetAsync<User>($"/api/accounts");
         if (responseHTTP.Error)
         {
             if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -47,23 +115,9 @@ else
             return;
         }
         user = responseHTTP.Response;
-        Console.WriteLine(user.Document);
-        var responseHTTP2 = await repository.GetAsync<Persona>($"/api/personas/user/{user.Document}");
-        if (responseHTTP2.Error)
-        {
-            if (responseHTTP2.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
-            {
-                navigationManager.NavigateTo("/");
-                return;
-            }
-
-            var messageError = await responseHTTP2.GetErrorMessageAsync();
-            await sweetAlertService.FireAsync("Error", messageError, SweetAlertIcon.Error);
-            return;
-        }
-        user.Nacionalidad = responseHTTP2.Response.Nacionalidad;
-        user.Telefono = responseHTTP2.Response.Telefono;
     }
+
+
 
     private void ImageSelected(string imagenBase64)
     {
@@ -72,42 +126,36 @@ else
     }
 
 
-
-    public async Task SaveUserAsync()
+    private async Task SaveUserAsync()
     {
-        await LoadUserAsyc();
-        Console.WriteLine("sucedio5");
-        var responseHttp = await repository.PutAsync<User>("/api/accounts", new User
-        {
-            FirstName=user.FirstName,
-            LastName=user.LastName,
-            Document=user.Document,
-            Address=user.Address
-        });
+
+        //await  Personaasync();
+        var responseHttp = await repository.Put<User, TokenDTO>("/api/accounts", user);
         if (responseHttp.Error)
-        {
-            var message = await responseHttp.GetErrorMessageAsync();
+        {     var message = await responseHttp.GetErrorMessageAsync();
             await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-            return;
-        }
-        Console.WriteLine("sucedio");
-
-        var responseHttp2 = await repository.PutAsync<Persona>("/api/personas", new Persona
-        {
-            Nacionalidad=user.Nacionalidad,
-            Telefono=user.Telefono
-        });
-        if (responseHttp.Error)
-        {
-            var message = await responseHttp.GetErrorMessageAsync();
-            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-            return;
-        }
-        Console.WriteLine("sucedio2");
-
-
-        // await loginService.LoginAsync(responseHttp.Response!.Token);
+            return;           
+        }        
+        await loginService.LoginAsync(responseHttp.Response!.Token);
         navigationManager.NavigateTo("/");
     }
+
+   /* private async Task Personaasync()
+    {
+        persona =( new Persona
+        {
+        Nombre=user.FirstName    
+        });
+        var responseHttp2 = await repository.PutAsync<Persona>("/api/personas", persona);
+        if (responseHttp2.Error)
+        {
+            var message = await responseHttp2.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+     
+    }*/
+
+    
 }
 

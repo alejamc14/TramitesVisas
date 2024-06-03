@@ -47,7 +47,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating mb-3">
-                        <InputDate type="email" class="form-control" id="floatingInput6" placeholder="Fecha Nacimiento" @bind-Value="@userDTO.FechaNacimiento" />
+                        <InputDate class="form-control" id="floatingInput6" placeholder="Fecha Nacimiento" @bind-Value="@userDTO.FechaNacimiento" />
                         <label for="floatingInput6">Fecha Nacimiento:</label>
                         <ValidationMessage For="@(() => userDTO.FechaNacimiento)" />
                     </div>

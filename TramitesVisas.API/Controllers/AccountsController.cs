@@ -51,18 +51,19 @@ namespace Sales.API.Controllers
                     return NotFound();
                 }
 
-                currentUser.Document = user.Document;
+           
                 currentUser.FirstName = user.FirstName;
                 currentUser.LastName = user.LastName;
                 currentUser.Address = user.Address;
-                //currentUser.PhoneNumber = user.PhoneNumber;
+                currentUser.PhoneNumber = user.PhoneNumber;
+                currentUser.Nacionalidad = user.Nacionalidad;
                 currentUser.Photo = !string.IsNullOrEmpty(user.Photo) && user.Photo != currentUser.Photo ? user.Photo : currentUser.Photo;
                 
 
                 var result = await _userHelper.UpdateUserAsync(currentUser);
                 if (result.Succeeded)
                 {
-                    return NoContent();
+                    return Ok(BuildToken(currentUser));
                 }
 
                 return BadRequest(result.Errors.FirstOrDefault());

@@ -30,6 +30,16 @@ namespace TramitesVisas.Shared.Entidades
         [MaxLength(200, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
         public string Address { get; set; }
 
+        [Display(Name = "Fecha de Nacimiento")]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
+        //[Required(ErrorMessage = "El campo {0} es obligatorio")]
+        public DateTime FechaNacimiento { get; set; }
+
+        [Display(Name = "Nacionalidad")]
+        [MaxLength(40, ErrorMessage = "No se perimten mas de 40 caracteres")]
+        //[Required(ErrorMessage = "El campo {0} es obligatorio")]
+        public string Nacionalidad { get; set; }
+
 
         [Display(Name = "Foto")]
         public string? Photo { get; set; }

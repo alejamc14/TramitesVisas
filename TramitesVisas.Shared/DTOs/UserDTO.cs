@@ -12,15 +12,7 @@ namespace TramitesVisas.Shared.DTOs
     {
 
 
-        [Display(Name = "Fecha de Nacimiento")]
-        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
-        [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        public DateTime FechaNacimiento { get; set; }
-
-        [Display(Name = "Nacionalidad")]
-        [MaxLength(40, ErrorMessage = "No se perimten mas de 40 caracteres")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        public string Nacionalidad { get; set; }
+       
 
         [Display(Name = "Telefono")]
         [Required(ErrorMessage = "El campo {6} es obligatorio")]
