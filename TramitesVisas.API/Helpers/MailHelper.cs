@@ -5,7 +5,7 @@ using System;
 using TramitesVisas.Shared.Responses;
 
 
-namespace TradingJournal.API.Helpers
+namespace TramitesVisas.API.Helpers
 {
     public class MailHelper : IMailHelper
     {
