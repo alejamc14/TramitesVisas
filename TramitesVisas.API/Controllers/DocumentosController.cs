@@ -31,8 +31,22 @@ namespace TramitesVisas.API.Controllers
         }
 
 
-        // Método Get- por Id
-        [HttpGet("{id:int}")]
+        //[HttpGet("Persona/{id:int}")]
+        //public async Task<ActionResult> GetPersonaAsync(int id)
+        //{
+        //    return Ok(await _context.Documentos
+        //        .Join(_context.Users,
+        //        task => task.SolicitudId,
+        //        user => user.Id,
+        //        (task)
+        //        )
+                
+        //        Where(x => x.SolicitudId == id).ToListAsync());
+        //}
+
+
+            // Método Get- por Id
+            [HttpGet("{id:int}")]
         public async Task<ActionResult> GetAsync(int id)
         {
             var documento = await _context.Documentos.FirstOrDefaultAsync(x => x.Id == id);

@@ -1,4 +1,4 @@
-﻿@page "/documentos/edit/{DocumentoId:int}"
+﻿@page "/Documentos/edit/{DocumentoId:int}"
 @inject NavigationManager navigationManager
 @inject IRepository repository
 @inject SweetAlertService sweetAlertService
@@ -25,7 +25,7 @@ else
     protected override async Task OnInitializedAsync()
     {
 
-        var responseHTTP = await repository.GetAsync<Documento>($"api/personas/{DocumetoId}");
+        var responseHTTP = await repository.GetAsync<Documento>($"api/documentos/{DocumetoId}");
 
         if (responseHTTP.Error)
         {

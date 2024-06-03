@@ -1,4 +1,4 @@
-﻿ @page "/documentos"
+﻿@page "/documentos"
 @using CurrieTechnologies.Razor.SweetAlert2
 @using TramitesVisas.Shared.Entidades
 @using TramitesVisas.WEB.Repositories
@@ -6,7 +6,7 @@
 @inject IRepository Repository
 @inject SweetAlertService sweetAlertService
 @inject NavigationManager navigationManager
-@attribute [Authorize(Roles = "Admin")]
+
 
 
 <h3>Documentos</h3>
@@ -14,7 +14,7 @@
 <div class="card">
     <div class="card-header">
         <span>
-           
+
             <a class="btn btn-primary btn-sm float-start" href="/documentos/create"><i class="bi bi-plus-circle" /> Nuevo Documento </a>
 
         </span>
@@ -43,15 +43,15 @@
                             <td>
                                 <b>URL</b>
                             </td>
-                             <td>
+                            <td>
                                 <b>Solicitud</b>
                             </td>
-                          
-                        </tr> 
+
+                        </tr>
                         @foreach (var documento in Documentos!)
                         {
-                          @*    NomSolicitud(documento.SolicitudId); *@
-                            
+                            @*    NomSolicitud(documento.SolicitudId); *@
+
                             <tr>
                                 <td>
                                     @documento.Id
@@ -68,9 +68,9 @@
                                 <td>
                                     @documento.SolicitudId
                                 </td>
-                              @*   <td>
-                                    @GetSolicitudName(documento.SolicitudId)
-                                </td> *@
+                                @*   <td>
+                            @GetSolicitudName(documento.SolicitudId)
+                            </td> *@
                                 <td>
                                     <a href="/documentos/edit/@documento.Id" class="btn btn-warning"><i class="bi bi-pencil-square">Editar</i></a>
                                     <button class="btn btn-danger" @onclick=@(() => Delete(documento))><i class="bi bi-trash3">Borrar</i></button>
@@ -93,8 +93,10 @@
 
     public List<Documento> Documentos { get; set; }
 
-    // public List<Solicitud> Solicitudes { get; set; }
 
+    // public List<Solicitud> Solicitudes { get; set; }
+    [Parameter]
+    public string documento { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
@@ -105,6 +107,9 @@
 
     private async Task Charging()
     {
+        var response4HTTP = await Repository.GetAsync<Persona>($"/api/personas/user/{documento}");
+        var id = response4HTTP.Response.Id;
+
         var responseHttp = await Repository.GetAsync<List<Documento>>("/api/documentos");
         if (responseHttp.Error)
         {
@@ -120,7 +125,7 @@
 
         // var response2HTTP = await Repository.GetAsync<List<Solicitud>>("/api/Solicitudes");
         // Solicitudes = response2HTTP.Response!;
-  
+
     }
 
 
@@ -169,7 +174,7 @@
                     Timer = 3000,
                     Position = SweetAlertPosition.BottomEnd
                 });
-           await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Documento borrado con éxito.");
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Documento borrado con éxito.");
         }
     }
 

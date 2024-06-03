@@ -1,0 +1,113 @@
+﻿@page "/EditUser"
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+@inject NavigationManager navigationManager
+@inject ILoginService loginService
+
+@if (user is null)
+{
+    <div class="spinner" />
+}
+else
+{
+    <EditUserForm user="user" OnSubmit="SaveUserAsync" />
+}
+
+@code {
+    private UserDTO? user;
+
+    private string? imageUrl;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadUserAsyc();
+
+        if (!string.IsNullOrEmpty(user!.Photo))
+        {
+            imageUrl = user.Photo;
+            user.Photo = null;
+        }
+
+    }
+
+    private async Task LoadUserAsyc()
+    {
+
+        var responseHTTP = await repository.GetAsync<UserDTO>($"/api/accounts");
+        if (responseHTTP.Error)
+        {
+            if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("/");
+                return;
+            }
+
+            var messageError = await responseHTTP.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", messageError, SweetAlertIcon.Error);
+            return;
+        }
+        user = responseHTTP.Response;
+        Console.WriteLine(user.Document);
+        var responseHTTP2 = await repository.GetAsync<Persona>($"/api/personas/user/{user.Document}");
+        if (responseHTTP2.Error)
+        {
+            if (responseHTTP2.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("/");
+                return;
+            }
+
+            var messageError = await responseHTTP2.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", messageError, SweetAlertIcon.Error);
+            return;
+        }
+        user.Nacionalidad = responseHTTP2.Response.Nacionalidad;
+        user.Telefono = responseHTTP2.Response.Telefono;
+    }
+
+    private void ImageSelected(string imagenBase64)
+    {
+        user!.Photo = imagenBase64;
+        imageUrl = null;
+    }
+
+
+
+    public async Task SaveUserAsync()
+    {
+        await LoadUserAsyc();
+        Console.WriteLine("sucedio5");
+        var responseHttp = await repository.PutAsync<User>("/api/accounts", new User
+        {
+            FirstName=user.FirstName,
+            LastName=user.LastName,
+            Document=user.Document,
+            Address=user.Address
+        });
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+        Console.WriteLine("sucedio");
+
+        var responseHttp2 = await repository.PutAsync<Persona>("/api/personas", new Persona
+        {
+            Nacionalidad=user.Nacionalidad,
+            Telefono=user.Telefono
+        });
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+        Console.WriteLine("sucedio2");
+
+
+        // await loginService.LoginAsync(responseHttp.Response!.Token);
+        navigationManager.NavigateTo("/");
+    }
+}
+
