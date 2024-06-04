@@ -1,5 +1,4 @@
-﻿@page "/Solicitudes/edit/{SolicitudId:int}"
-@using System.Security.Claims
+﻿@page "/SolicitudesUser/edit/{SolicitudId:int}"
 @inject NavigationManager navigationManager
 @inject IRepository repository
 @inject SweetAlertService sweetAlertService
@@ -10,16 +9,14 @@
 }
 else
 {
-    <EditSolicitudesForm Solicitud="solicitud" OnValidSubmit="Editar" ReturnAction="Return" />
-    
-    
+    <SolicitudesForm Solicitud="solicitud" OnValidSubmit="Editar" ReturnAction="Return" />
+
+
 }
 @code {
     [Parameter]
     public int SolicitudId { get; set; }
     private Solicitud solicitud = new();
-    private AuthenticationState autstate;
-
 
     protected override async Task OnInitializedAsync()
     {
@@ -43,19 +40,7 @@ else
         else
         {
             solicitud = responseHTTP.Response;
-            await GetName();
         }
-    }
-
-    private async Task GetName()
-    {
-        var Role = autstate.User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimTypes.Role))!.Value;
-
-        if (Role.Equals(UserType.Admin.ToString()))
-            return;
-
-        var responseHttp = await repository.GetAsync<Persona>($"/api/personas/user/{autstate.User.Claims.FirstOrDefault(x => x.Type.Equals("Document"))!.Value}");
-        solicitud.PersonaId = responseHttp.Response.Id;
     }
 
     private async Task Editar()
@@ -89,7 +74,7 @@ else
 
     private void Return()
     {
-        navigationManager.NavigateTo("solicitudes");
+        navigationManager.NavigateTo("/");
     }
 
 }

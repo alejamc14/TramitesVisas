@@ -1,17 +1,6 @@
 ﻿@page "/"
 
 
-
-
-<AuthorizeView Roles="Admin">
-    <Authorized>
-        <p>Estas autenticado, @context.User.Identity?.Name</p>
-    </Authorized>
-    <NotAuthorized>
-        <p>No estás autorizado</p>
-    </NotAuthorized>
-</AuthorizeView>
-
 <div class="container mt-5">
     <div class="jumbotron text-center bg-light text-dark">
         <h1 class="display-4">¡Bienvenido a Tramites Visas!</h1>

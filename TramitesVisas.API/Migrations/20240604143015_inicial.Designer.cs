@@ -12,8 +12,8 @@ using TramitesVisas.API.Data;
 namespace TramitesVisas.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240604063307_Inicial")]
-    partial class Inicial
+    [Migration("20240604143015_inicial")]
+    partial class inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

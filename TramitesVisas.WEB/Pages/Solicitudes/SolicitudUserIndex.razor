@@ -78,7 +78,7 @@
                                 <AuthorizeView Roles="User">
                                     <Authorized>
                                         <td>
-                                            <a href="/solicitudes/edit/@solicitud.Id" class="btn btn-warning"><i class="bi bi-pencil-square"></i>Editar</a>
+                                            <a href="/solicitudesUser/edit/@solicitud.Id" class="btn btn-warning"><i class="bi bi-pencil-square"></i>Editar</a>
                                             <button class="btn btn-danger" @onclick=@(() => Delete(solicitud))><i class="bi bi-trash3"></i>Borrar</button>
                                         </td>
                                     </Authorized>

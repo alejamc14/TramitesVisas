@@ -13,7 +13,8 @@
 <div class="card">
     <div class="card-header">
         <span>
-            <a class="btn btn-primary btn-sm float-start" href="/personas/create"><i class="bi bi-plus-circle" /> Nueva Persona </a>
+            <a class="btn btn-primary btn-sm float-start" href="/register/?IsAdmin=true"><i class="bi bi-plus-circle" /> Nueva Admin </a>
+
 
         </span>
     </div>
@@ -116,6 +117,7 @@
 @code {
     private int currentPage = 1;
     private int totalPages;
+   
 
     public List<Persona> Personas { get; set; }
 
