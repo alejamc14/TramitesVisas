@@ -44,6 +44,23 @@
                         <label for="floatingInput5">Nacionalidad:</label>
                         <ValidationMessage For="@(() => userDTO.Nacionalidad)" />
                     </div>
+
+               @*      <div>
+                    <label>Pais de nacimiento</label>
+
+                    <Dropdown TItem="string" OnSelected="@OnSelected4">
+                        <InitialTip>Escoja el pais</InitialTip>
+                        <ChildContent>
+                            <DropdownListItem Context="dropContext" Item="select[0] ">Mantenimiento Recien Realizado</DropdownListItem>
+                            <DropdownListItem Context="dropContext" Item="select[1] ">Mantenimiento Recien Realizado</DropdownListItem>
+                            <DropdownListItem Context="dropContext" Item="select[2] ">Proximo a Mantenimiento Preventivo</DropdownListItem>
+                            <DropdownListItem Context="dropContext" Item="select[3] ">En Mantenimiento</DropdownListItem>
+                            <DropdownListItem Context="dropContext" Item="select[4] ">En Mantenimiento</DropdownListItem>
+
+                        </ChildContent>
+                    </Dropdown>
+                </div> *@
+
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating mb-3">
@@ -89,6 +106,8 @@
 </EditForm>
 
 @code {
+
+    public List<string> select = new List<string> { "Peru", "Ecuador", "Panama", "Mexico", "Argentina" };
     private UserDTO userDTO = new();
 
     private string? imageUrl;
@@ -137,6 +156,12 @@
     {
         userDTO.Photo = imagenBase64;
         imageUrl = null;
+    }
+
+    private void OnSelected4(string selection4)
+    {
+        Users.Nacionalidad = selection4;
+        
     }
 
     // private async Task HandleSelected(InputFileChangeEventArgs e)
