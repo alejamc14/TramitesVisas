@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
-namespace Sales.API.Controllers
+namespace TramitesVisas.API.Controllers
 {
     [ApiController]
     [Route("/api/accounts")]

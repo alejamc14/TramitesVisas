@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TramitesVisas.API.Data;
+using TramitesVisas.API.Helpers;
+using TramitesVisas.Shared.DTOs;
 using TramitesVisas.Shared.Entidades;
 
 namespace TramitesVisas.API.Controllers
@@ -17,6 +19,36 @@ namespace TramitesVisas.API.Controllers
         {
             _context = context;
         }
+
+        ////para paginar y filtro
+        //[HttpGet]
+        //public async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
+        //{
+        //    var queryable = _context.Personas
+        //     .AsQueryable();
+        //    if (!string.IsNullOrWhiteSpace(pagination.Filter))
+        //    {
+        //        queryable = queryable.Where(x => x.NombreCompleto.ToLower().Contains(pagination.Filter.ToLower()));
+        //    }
+        //    return Ok(await queryable
+        //    .OrderBy(x => x.NombreCompleto)
+        //    .Paginate(pagination)
+        //    .ToListAsync());
+        //}
+
+        //[HttpGet("totalPages")]
+        //public async Task<ActionResult> GetPages([FromQuery] PaginationDTO pagination)
+
+        //{
+        //    var queryable = _context.Personas.AsQueryable();
+        //    if (!string.IsNullOrWhiteSpace(pagination.Filter))
+        //    {
+        //        queryable = queryable.Where(x => x.NombreCompleto.ToLower().Contains(pagination.Filter.ToLower()));
+        //    }
+        //    double count = await queryable.CountAsync();
+        //    double totalPages = Math.Ceiling(count / pagination.RecordsNumber);
+        //    return Ok(totalPages);
+        //}
 
         // Método Get- Lista
         [HttpGet]

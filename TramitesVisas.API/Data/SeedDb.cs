@@ -79,15 +79,22 @@ namespace TramitesVisas.API.Data
             {
                 _context.TipoVisas.Add(new TipoVisa
                 {
-                    Tipo = "Turismo",
-                    Costo = 100.50,
+                    Tipo = "Visitante",
+                    Costo = 200.000,
                     Duracion = "6 meses",
                     Requisitos = "Pasaporte, Foto"
                 });
                 _context.TipoVisas.Add(new TipoVisa
                 {
+                    Tipo = "Migrante",
+                    Costo = 300.000,
+                    Duracion = "1 año",
+                    Requisitos = "Pasaporte,cedula"
+                });
+                _context.TipoVisas.Add(new TipoVisa
+                {
                     Tipo = "Residencia",
-                    Costo = 250.75,
+                    Costo = 500.000,
                     Duracion = "1 año",
                     Requisitos = "Pasaporte, Pruebas de residencia"
                 });
@@ -125,14 +132,23 @@ namespace TramitesVisas.API.Data
             {
                 _context.Renovaciones.Add(new Renovacion
                 {
-                    Costo = 200.00,
+                    Costo = 160.000,
+                    Duracion= "6 meses",
                     Descripcion = "Renovación anual de visa de trabajo",
-                    SolicitudId = 1
+                    TipoVisaId = 1
                 });
                 _context.Renovaciones.Add(new Renovacion{
-                    Costo = 300.00,
+                    Costo = 270.000,
+                    Duracion = "1 año",
                     Descripcion = "Renovación de visa de residencia",
-                    SolicitudId = 2
+                    TipoVisaId = 2
+                });
+                _context.Renovaciones.Add(new Renovacion
+                {
+                    Costo = 460.000,
+                    Duracion = "1 año",
+                    Descripcion = "Renovación de visa de residencia",
+                    TipoVisaId = 3
                 });
             }
             await _context.SaveChangesAsync();

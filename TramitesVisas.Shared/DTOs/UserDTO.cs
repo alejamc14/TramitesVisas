@@ -12,8 +12,6 @@ namespace TramitesVisas.Shared.DTOs
     {
 
 
-       
-
         [Display(Name = "Telefono")]
         [Required(ErrorMessage = "El campo {6} es obligatorio")]
         public int Telefono { get; set; }
