@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace TramitesVisas.API.Controllers
 {
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("/api/solicitudes")]
     public class SolicitudesController:ControllerBase
     {
@@ -67,7 +67,7 @@ namespace TramitesVisas.API.Controllers
 
         // Método actualizar
         [HttpPut]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        
         public async Task<ActionResult> PutAsync(Solicitud solicitud)
         {
             _context.Update(solicitud);
@@ -78,7 +78,7 @@ namespace TramitesVisas.API.Controllers
 
         //Médoro eliminar registro
         [HttpDelete("{id:int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+       
         public async Task<ActionResult> DeleteAsync(int id)
         {
             var deletedrows = await _context.Solicitudes.Where(x => x.Id == id).ExecuteDeleteAsync();

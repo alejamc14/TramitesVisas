@@ -7,7 +7,7 @@
 @inject SweetAlertService sweetAlertService
 @inject NavigationManager navigationManager
 
-<h3>SolicitudesIndex</h3>
+<h3>Solicitudes</h3>
 
 <div class="card">
     <div class="card-header">
@@ -75,7 +75,7 @@
                                 <td>
                                     @tipvisa
                                 </td>
-                                <AuthorizeView Roles="Admin">
+                                <AuthorizeView Roles="User">
                                     <Authorized>
                                         <td>
                                             <a href="/solicitudes/edit/@solicitud.Id" class="btn btn-warning"><i class="bi bi-pencil-square"></i>Editar</a>

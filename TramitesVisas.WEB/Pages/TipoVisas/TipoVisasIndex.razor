@@ -6,17 +6,22 @@
 @inject IRepository Repository
 @inject SweetAlertService sweetAlertService
 @inject NavigationManager navigationManager
-@attribute [Authorize(Roles = "Admin")]
 
-<h3>TipoVisasIndex</h3>
+
+<h3>Tipos de Visas</h3>
 
 <div class="card">
-    <div class="card-header">
-        <span>
-            <a class="btn btn-primary btn-sm float-start" href="/tipovisa/create"><i class="bi bi-plus-circle" /> Nueva Tipovisa </a>
+    <AuthorizeView Roles="Admin">
+        <Authorized>
+                                   
+        <div class="card-header">
+            <span>
+                <a class="btn btn-primary btn-sm float-start" href="/tipovisa/create"><i class="bi bi-plus-circle" /> Nueva Tipovisa </a>
 
-        </span>
-    </div>
+            </span>
+        </div>
+        </Authorized>
+    </AuthorizeView>
     <div class="card-body">
         <GenericList MyList="TipoVisas">
 
@@ -82,7 +87,7 @@
     </div>
 </div>
 @code {
-
+    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public List<TipoVisa> TipoVisas { get; set; }
 
     protected async override Task OnInitializedAsync()

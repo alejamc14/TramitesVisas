@@ -8,17 +8,19 @@
 @inject SweetAlertService sweetAlertService
 @inject NavigationManager navigationManager
 
-@attribute [Authorize(Roles = "Admin")]
-
-
 <h3>Renovaciones</h3>
+
 <div class="card">
+    <AuthorizeView Roles="Admin">
+        <Authorized>
     <div class="card-header">
         <span>
             <a class="btn btn-primary btn-sm float-start" href="/renovaciones/create"><i class="bi bi-plus-circle" /> Nueva Renovacion </a>
 
         </span>
     </div>
+        </Authorized>
+    </AuthorizeView>
 
     <div class="card-body">
         <GenericList MyList="Renovaciones">

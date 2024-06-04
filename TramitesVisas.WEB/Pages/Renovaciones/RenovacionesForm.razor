@@ -10,10 +10,28 @@
             <InputNumber width="10" @bind-Value="@Renovacion.Costo"></InputNumber>
             <ValidationMessage For="@(() => @Renovacion.Costo)" />
         </div>
+        <label>Duracion</label>
+        <div>
+            <InputText width="10" @bind-Value="@Renovacion.Duracion"></InputText>
+            <ValidationMessage For="@(() => @Renovacion.Duracion)" />
+        </div>
         <label>Descripcion</label>
         <div>
             <InputText width="10" @bind-Value="@Renovacion.Descripcion"></InputText>
             <ValidationMessage For="@(() => @Renovacion.Descripcion)" />
+        </div>
+        
+        <div>
+            <label>Tipo de renovacion</label>
+             <Dropdown TItem="int" OnSelected="@OnSelected2">
+                <InitialTip>Escoja un Tipo de renovación</InitialTip>
+                <ChildContent>
+                    @foreach (var tipovisa in TipoVisas!)
+                    {
+                        <DropdownListItem Context="dropContext" Item="@tipovisa.Id">@tipovisa.Tipo</DropdownListItem>
+                    }
+                </ChildContent>
+            </Dropdown>
         </div>
 
     </div>
@@ -24,6 +42,7 @@
 </EditForm>
 @code {
     private EditContext editContext = null;
+    public List<TipoVisa> TipoVisas { get; set; }
     protected override void OnInitialized()
     {
         editContext = new(Renovacion);
@@ -75,6 +94,13 @@
         }
 
         context.PreventNavigation();
+
+       
+    }
+
+    private void OnSelected2(int selection2)
+    {
+        Renovacion.TipoVisaId = selection2;
     }
 
 }
