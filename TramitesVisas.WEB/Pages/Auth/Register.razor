@@ -45,13 +45,13 @@
                         <ValidationMessage For="@(() => userDTO.Nacionalidad)" />
                     </div>
 
-               @*      <div>
+                    @* <div>
                     <label>Pais de nacimiento</label>
 
                     <Dropdown TItem="string" OnSelected="@OnSelected4">
                         <InitialTip>Escoja el pais</InitialTip>
                         <ChildContent>
-                            <DropdownListItem Context="dropContext" Item="select[0] ">Mantenimiento Recien Realizado</DropdownListItem>
+                                <DropdownListItem Context="dropContext" Item="select[0] ">Peru</DropdownListItem>
                             <DropdownListItem Context="dropContext" Item="select[1] ">Mantenimiento Recien Realizado</DropdownListItem>
                             <DropdownListItem Context="dropContext" Item="select[2] ">Proximo a Mantenimiento Preventivo</DropdownListItem>
                             <DropdownListItem Context="dropContext" Item="select[3] ">En Mantenimiento</DropdownListItem>
