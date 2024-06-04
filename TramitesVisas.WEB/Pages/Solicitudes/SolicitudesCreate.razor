@@ -76,7 +76,7 @@
         else if (Role.Equals(UserType.User.ToString()))
         {
             var documento = autstate.User.Claims.FirstOrDefault(x => x.Type.Equals("Document"))!.Value;
-            navigationManager.NavigateTo($"/solicitudesUser/{documento}");
+            navigationManager.NavigateTo("/pagos");
         }
 
     }

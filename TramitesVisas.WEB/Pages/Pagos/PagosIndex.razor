@@ -8,16 +8,18 @@
 @inject SweetAlertService sweetAlertService
 @inject NavigationManager navigationManager
 
-<h3>Pagos</h3>
+<h3>Realiza el Pagos</h3>
 <div class="card">
     <div class="card-header">
         <span>
-            <a class="btn btn-primary btn-sm float-start" href="/pagos/create"><i class="bi bi-plus-circle" /> Nueva Pago </a>
+            <a class="btn btn-primary btn-sm float-start" href="/pagos/create"><i class="bi bi-plus-circle" /> Nuevo Pago </a>
 
         </span>
     </div>
 
     <div class="card-body">
+        <AuthorizeView Roles="Admin">
+            <Authorized>
         <GenericList MyList="Pagos">
 
             <Body>
@@ -41,15 +43,11 @@
                                 <b>Fecha de pago</b>
                             </td>
                             <td>
-                                <b>Solicitud</b>
-                            </td>
-                            <td>
-                                <b>Tipo de visa</b>
+                                <b>Id Solicitud</b>
                             </td>
                         </tr>
                         @foreach (var pago in Pagos!)
                         {
-                            @* TipVisa(@pago.tipo); *@
                             NomSolicitud(pago.SolicitudId);
 
                             <tr>
@@ -69,13 +67,15 @@
                                 <td>
                                     @nomsolicitud
                                 </td>
+                                 <td>
+                                    @nomsolicitud
+                                 </td>
 
-                                <td>
-                                    <a href="/pagos/edit/@pago.Id" class="btn btn-warning">Editar<i class="bi bi-pencil-square"></i></a>
-                                    <button class="btn btn-danger" @onclick=@(() => Delete(pago))>Borrar<i class="bi bi-trash3"></i></button>
+                                    <td>
+                                        <a href="/pagos/edit/@pago.Id" class="btn btn-warning">Editar<i class="bi bi-pencil-square"></i></a>
+                                        <button class="btn btn-danger" @onclick=@(() => Delete(pago))>Borrar<i class="bi bi-trash3"></i></button>
 
-                                </td>
-
+                                    </td>
                             </tr>
                         }
                     </tbody>
@@ -84,6 +84,9 @@
             </Body>
 
         </GenericList>
+       </Authorized>
+    </AuthorizeView>
+
     </div>
 </div>
 
@@ -91,7 +94,6 @@
 @code {
 
     public string nomsolicitud { get; set; }
-
 
     public List<Solicitud> Solicitudes { get; set; }
 
@@ -116,8 +118,6 @@
         }
         Pagos = responseHttp.Response;
 
-        // var response2HTTP = await Repository.GetAsync<List<Solicitud>>("/api/Solicitudes");
-        // Solicitudes = response2HTTP.Response!;
         var response2HTTP = await Repository.GetAsync<List<Solicitud>>("/api/solicitudes");
         Solicitudes = response2HTTP.Response!;
     }
@@ -170,19 +170,6 @@
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Pago borrado con éxito.");
         }
     }
-
-    // private void TipVisa(int? selection2)
-    // {
-    //     tipvisa = "";
-    //     foreach (var solicitud in Solicitudes!)
-    //     {
-    //         if (selection2 == solicitud.Id)
-    //         {
-    //             tipvisa = solicitud.TipoVisas;
-    //         }
-
-    //     }
-    // }
 
     private void NomSolicitud(int? selection)
     {

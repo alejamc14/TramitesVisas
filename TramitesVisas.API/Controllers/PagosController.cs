@@ -27,6 +27,7 @@ namespace TramitesVisas.API.Controllers
 
         }
 
+       
 
         // Método Get- por Id
         [HttpGet("{id:int}")]
@@ -53,6 +54,7 @@ namespace TramitesVisas.API.Controllers
             return Ok(pago);
 
         }
+
 
 
         // Método actualizar
