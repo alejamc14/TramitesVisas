@@ -23,6 +23,7 @@ namespace TramitesVisas.WEB.Repositories
 
         }
 
+
         //method get
         public async Task<HttpResponseWrapper<T>> GetAsync<T>(string url)
         {

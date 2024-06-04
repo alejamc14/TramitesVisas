@@ -9,6 +9,7 @@ using TramitesVisas.Shared.Entidades;
 using TramitesVisas.API.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace Sales.API.Controllers
 {
@@ -20,15 +21,17 @@ namespace Sales.API.Controllers
         private readonly IUserHelper _userHelper;
         private readonly IConfiguration _configuration;
         private readonly IFileStorage _fileStorage;
+        private readonly IMailHelper _mailHelper;
         private readonly string _container;
 
 
-        public AccountsController(IUserHelper userHelper, IConfiguration configuration, DataContext dataContext, IFileStorage fileStorage)
+        public AccountsController(IUserHelper userHelper, IConfiguration configuration, DataContext dataContext, IFileStorage fileStorage, IMailHelper mailHelper)
         {
             _dataContext = dataContext; 
             _userHelper = userHelper;
             _configuration = configuration;
             _fileStorage = fileStorage;
+            _mailHelper = mailHelper;
             _container = "users";
 
         }
@@ -169,25 +172,66 @@ namespace Sales.API.Controllers
             var result = await _userHelper.AddUserAsync(user, model.Password);
             if (result.Succeeded)
             {
+                await _userHelper.AddUserToRoleAsync(user, user.UserType.ToString());
+
+                var myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+                var tokenLink = Url.Action("ConfirmEmail", "accounts", new
+                {
+                    userid = user.Id,
+                    token = myToken
+                }, HttpContext.Request.Scheme, _configuration["UrlWEB"]);
+
+                var response = _mailHelper.SendMail(user.FullName, user.Email!,
+                    $"TramitesVisas - Confirmación de cuenta",
+                    $"<h1>TramitesVisas - Confirmación de cuenta</h1>" +
+                    $"<p>Para habilitar el usuario, por favor hacer clic 'Confirmar Email':</p>" +
+                    $"<b><a href ={tokenLink}>Confirmar Email</a></b>");
+
                 await _dataContext.Personas.AddAsync(new Persona
                 {
                     Documento = model.Document,
                     Nombre = model.FirstName,
                     Apellido = model.LastName,
-                    FechaNacimiento= model.FechaNacimiento,
+                    FechaNacimiento = model.FechaNacimiento,
                     Nacionalidad = model.Nacionalidad,
                     Email = model.Email,
-                    Telefono=model.Telefono,
-                        
+                    Telefono = model.Telefono,
+
                 });
                 await _dataContext.SaveChangesAsync();
 
-                await _userHelper.AddUserToRoleAsync(user, user.UserType.ToString());
-                return Ok(BuildToken(user));
+                if (response.IsSuccess)
+                {
+                    return NoContent();
+                }
+
+                return BadRequest(response.Message);
+
             }
 
             return BadRequest(result.Errors.FirstOrDefault());
         }
+
+
+        [HttpGet("ConfirmEmail")]
+        public async Task<ActionResult> ConfirmEmailAsync(string userId, string token)
+        {
+            token = token.Replace(" ", "+");
+            var user = await _userHelper.GetUserAsync(new Guid(userId));
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userHelper.ConfirmEmailAsync(user, token);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors.FirstOrDefault());
+            }
+
+            return NoContent();
+        }
+
 
 
         [HttpPost("Login")]
@@ -198,6 +242,15 @@ namespace Sales.API.Controllers
             {
                 var user = await _userHelper.GetUserAsync(model.Email);
                 return Ok(BuildToken(user));
+            }
+            if (result.IsLockedOut)
+            {
+                return BadRequest("Ha superado el máximo número de intentos, su cuenta está bloqueada, intente de nuevo en 5 minutos.");
+            }
+
+            if (result.IsNotAllowed)
+            {
+                return BadRequest("El usuario no ha sido habilitado, debes de seguir las instrucciones del correo enviado para poder habilitar el usuario.");
             }
 
             return BadRequest("Email o contraseña incorrectos.");
@@ -232,5 +285,20 @@ namespace Sales.API.Controllers
                 Expiration = expiration
             };
         }
+
+
+        //[HttpGet("totalPages")]
+        //public async Task<ActionResult> GetPages([FromQuery] UserDTO pagination)
+
+        //{
+        //    var queryable = _context.Accounts.AsQueryable();
+        //    if (!string.IsNullOrWhiteSpace(pagination.Filter))
+        //    {
+        //        queryable = queryable.Where(x => x.AccNumber.ToString().Contains(pagination.Filter.ToLower()));
+        //    }
+        //    double count = await queryable.CountAsync();
+        //    double totalPages = Math.Ceiling(count / pagination.RecordsNumber);
+        //    return Ok(totalPages);
+        //}
     }
 }

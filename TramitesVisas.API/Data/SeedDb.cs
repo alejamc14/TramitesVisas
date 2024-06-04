@@ -125,13 +125,11 @@ namespace TramitesVisas.API.Data
             {
                 _context.Renovaciones.Add(new Renovacion
                 {
-                    FechaRenovacion = new DateTime(2023, 12, 1),
                     Costo = 200.00,
                     Descripcion = "Renovación anual de visa de trabajo",
                     SolicitudId = 1
                 });
                 _context.Renovaciones.Add(new Renovacion{
-                    FechaRenovacion = new DateTime(2024, 6, 15),
                     Costo = 300.00,
                     Descripcion = "Renovación de visa de residencia",
                     SolicitudId = 2
@@ -204,7 +202,6 @@ namespace TramitesVisas.API.Data
             {
 
 
-
                 user = new User
                 {
 
@@ -224,7 +221,8 @@ namespace TramitesVisas.API.Data
                 await _userHelper.AddUserAsync(user, "123456");
                 await _userHelper.AddUserToRoleAsync(user, userType.ToString());
 
-
+                var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+                await _userHelper.ConfirmEmailAsync(user, token);
 
             }
 

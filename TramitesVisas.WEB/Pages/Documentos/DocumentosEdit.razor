@@ -19,13 +19,13 @@ else
 @code {
 
     [Parameter]
-    public int DocumetoId { get; set; }
+    public int DocumentoId { get; set; }
     private Documento documento = new();
 
     protected override async Task OnInitializedAsync()
     {
 
-        var responseHTTP = await repository.GetAsync<Documento>($"api/documentos/{DocumetoId}");
+        var responseHTTP = await repository.GetAsync<Documento>($"api/documentos/{DocumentoId}");
 
         if (responseHTTP.Error)
         {
