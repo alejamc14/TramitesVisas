@@ -17,6 +17,11 @@ namespace TramitesVisas.Shared.Entidades
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public double Costo { get; set; }
 
+        [Display(Name = "Duracion de La visa")]
+        [MaxLength(20, ErrorMessage = "No se perimten mas de 20 digitos")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        public string Duracion { get; set; }
+
         [Display(Name = "Descripcion")]
         [MaxLength(50, ErrorMessage = "No se perimten mas de 50 digitos")]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
@@ -25,8 +30,8 @@ namespace TramitesVisas.Shared.Entidades
 
         //relaciones: 
         [JsonIgnore]
-        public Solicitud Solicitudes { get; set; }
-        public int SolicitudId { get; set; }
+        public TipoVisa TipoVisas { get; set; }
+        public int TipoVisaId { get; set; }
 
 
 

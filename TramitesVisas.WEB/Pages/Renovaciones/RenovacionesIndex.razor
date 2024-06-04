@@ -38,16 +38,20 @@
                                 <b>Costo</b>
                             </td>
                             <td>
+                                <b>Duracion</b>
+                            </td>
+                            <td>
                                 <b>Descripcion</b>
                             </td>
                             <td>
-                                <b>Id Solicitud</b>
+                                <b>Tipo Renovacion</b>
                             </td>
 
 
                         </tr>
                         @foreach (var renovacion in Renovaciones!)
                         {
+                            TipVisa(@renovacion.TipoVisaId);
                             <tr>
                                 <td>
                                     @renovacion.Id
@@ -56,17 +60,25 @@
                                     @renovacion.Costo
                                 </td>
                                 <td>
+                                    @renovacion.Duracion
+                                </td>
+                                <td>
                                     @renovacion.Descripcion
                                 </td>
                                 <td>
-                                    @renovacion.SolicitudId
+                                    @tipvisa
                                 </td>
-                                <td>
+                                <AuthorizeView Roles="Admin">
+                                    <Authorized>
+                                    <td>
+                            
                                     <a href="/renovaciones/edit/@renovacion.Id" class="btn btn-warning">Editar<i class="bi bi-pencil-square"></i></a>
                                     <button class="btn btn-danger" @onclick=@(() => Delete(renovacion))>Borrar<i class="bi bi-trash3"></i></button>
 
-                                </td>
-
+                                    </td>
+                                
+                                    </Authorized>
+                                </AuthorizeView>
                             </tr>
                         }
                     </tbody>
@@ -81,11 +93,11 @@
 
 @code {
 
-    public string nomsolicitud { get; set; }
+    public string tipvisa { get; set; }
 
     public List<Renovacion> Renovaciones { get; set; }
 
-    public List<Solicitud> Solicitudes { get; set; }
+    public List<TipoVisa> TipoVisas { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
@@ -103,8 +115,9 @@
         }
         Renovaciones = responseHttp.Response;
 
-        var response2HTTP = await Repository.GetAsync<List<Solicitud>>("/api/solicitudes");
-        Solicitudes = response2HTTP.Response!;
+
+        var response3HTTP = await Repository.GetAsync<List<TipoVisa>>("/api/tipovisas");
+        TipoVisas = response3HTTP.Response!;
     }
 
 
@@ -155,5 +168,19 @@
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Renovacion borrada con éxito.");
         }
     }
+
+    private void TipVisa(int? selection2)
+    {
+        tipvisa = "";
+        foreach (var tipovisa in TipoVisas!)
+        {
+            if (selection2 == tipovisa.Id)
+            {
+                tipvisa = tipovisa.Tipo;
+            }
+
+        }
+    }
+
 }
 
