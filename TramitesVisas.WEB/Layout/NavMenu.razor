@@ -7,46 +7,54 @@
     </div>
 </div>
 
+
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
     <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
+        <AuthorizeView>
+            <NotAuthorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                        <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Inicio
+                    </NavLink>
+                </div>
+
+            </NotAuthorized>
+        </AuthorizeView>
         
         <AuthorizeView Roles="Admin">
             <Authorized>
+
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="personas">
-                        <span aria-hidden="true">
-                            <i class="" bi bi-person-circle""></i>
-                        </span>Persona
+                        <span <i class="bi bi-people-fill" aria-hidden="true"></i> </span>Clientes
                     </NavLink>
+                    
                 </div>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="tipovisas">
-                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Tipo de Visas
+                        <span <i class="bi bi-file-earmark-bar-graph-fill" aria-hidden="true"></i> </span> Tipos de Visa
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="renovaciones">
-                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Renovaciones
+                        <span <i class="bi bi-file-earmark-bar-graph" aria-hidden="true"></i></span>Renovaciones
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="solicitudes">
-                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Solicitud
+                        <span <i class="bi bi-calendar-plus" aria-hidden="true"></i> </span>Solicitudes
                     </NavLink>
+                    
                 </div>
+
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="documentos">
-                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Documentos
+                    <NavLink class="nav-link" href="documentoss">
+                        <span <i class="bi bi-file-earmark-diff" aria-hidden="true"></i></span>Documentos
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="pagos">
-                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Pagos
+                        <span <i class="bi bi-currency-dollar" aria-hidden="true"></i></span>Pagos
                     </NavLink>
                 </div>
             </Authorized>
@@ -57,17 +65,17 @@
             <Authorized>
                 <div class="nav-item px-3">
                     <a class="nav-link" href="solicitudesUser/@context.User.Claims.FirstOrDefault(x=> x.Type.Equals("Document"))!.Value">
-                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Solicitud
+                        <span <i class="bi bi-calendar-plus" aria-hidden="true"></i> </span>Solicitudes
                     </a>
                 </div>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="documentos">
-                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Documentos
+                        <span <i class="bi bi-file-earmark-diff" aria-hidden="true"></i></span>Documentos
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="pagos">
-                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Pagos
+                        <span <i class="bi bi-currency-dollar" aria-hidden="true"></i></span>Pagos
                     </NavLink>
                 </div>
             </Authorized>

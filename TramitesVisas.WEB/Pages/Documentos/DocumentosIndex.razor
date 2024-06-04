@@ -1,4 +1,4 @@
-﻿ @page "/documentos"
+﻿@page "/documentos"
 @using CurrieTechnologies.Razor.SweetAlert2
 @using TramitesVisas.Shared.Entidades
 @using TramitesVisas.WEB.Repositories
@@ -14,7 +14,7 @@
 <div class="card">
     <div class="card-header">
         <span>
-           
+
             <a class="btn btn-primary btn-sm float-start" href="/documentos/create"><i class="bi bi-plus-circle" /> Nuevo Documento </a>
 
         </span>
@@ -43,15 +43,15 @@
                             <td>
                                 <b>URL</b>
                             </td>
-                             <td>
+                            <td>
                                 <b>Solicitud</b>
                             </td>
-                          
-                        </tr> 
+
+                        </tr>
                         @foreach (var documento in Documentos!)
                         {
-                          @*    NomSolicitud(documento.SolicitudId); *@
-                            
+                            @*    NomSolicitud(documento.SolicitudId); *@
+
                             <tr>
                                 <td>
                                     @documento.Id
@@ -68,11 +68,11 @@
                                 <td>
                                     @documento.SolicitudId
                                 </td>
-                              @*   <td>
-                                    @GetSolicitudName(documento.SolicitudId)
-                                </td> *@
+                                @*   <td>
+                            @GetSolicitudName(documento.SolicitudId)
+                            </td> *@
                                 <td>
-                                    <a href="/documentos/edit/@documento.Id" class="btn btn-warning"><i class="bi bi-pencil-square">Editar</i></a>
+                                    <a href="/Documentos/edit/@documento.Id" class="btn btn-warning"><i class="bi bi-pencil-square">Editar</i></a>
                                     <button class="btn btn-danger" @onclick=@(() => Delete(documento))><i class="bi bi-trash3">Borrar</i></button>
 
                                 </td>
@@ -120,7 +120,7 @@
 
         // var response2HTTP = await Repository.GetAsync<List<Solicitud>>("/api/Solicitudes");
         // Solicitudes = response2HTTP.Response!;
-  
+
     }
 
 
@@ -169,7 +169,7 @@
                     Timer = 3000,
                     Position = SweetAlertPosition.BottomEnd
                 });
-           await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Documento borrado con éxito.");
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Documento borrado con éxito.");
         }
     }
 
