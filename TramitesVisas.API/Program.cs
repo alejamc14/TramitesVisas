@@ -48,7 +48,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 
-builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name =DefaultConnection"));
+builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name =WindowsSecurity"));
 
 
 
@@ -66,7 +66,7 @@ builder.Services.AddIdentity<User, IdentityRole>(x =>
     x.Password.RequireUppercase = false;
     x.Password.RequireLowercase = false;
     x.Password.RequireNonAlphanumeric = false;
-    x.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1); //TODO: 5 min
+    x.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5); 
     x.Lockout.MaxFailedAccessAttempts = 3;
     x.Lockout.AllowedForNewUsers = true;
 

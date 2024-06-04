@@ -52,8 +52,8 @@ namespace TramitesVisas.API.Controllers
             }, HttpContext.Request.Scheme, _configuration["UrlWEB"]);
 
             var response = _mailHelper.SendMail(user.FullName, user.Email!,
-                $"Sales - Recuperación de contraseña",
-                $"<h1>Sales - Recuperación de contraseña</h1>" +
+                $"TramitesVisas - Recuperación de contraseña",
+                $"<h1>TramitesVisas - Recuperación de contraseña</h1>" +
                 $"<p>Para recuperar su contraseña, por favor hacer clic 'Recuperar Contraseña':</p>" +
                 $"<b><a href ={tokenLink}>Recuperar Contraseña</a></b>");
 
