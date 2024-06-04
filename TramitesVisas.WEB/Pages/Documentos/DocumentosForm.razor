@@ -1,14 +1,9 @@
 @using CurrieTechnologies.Razor.SweetAlert2 
 @using TramitesVisas.Shared.Entidades
-
 @inject IRepository Repository
-@* @inject IRepository Repository  *@
 @inject SweetAlertService swal
 
 
-@* new sara *@
-@* <NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"></NavigationLock> *@
-              @* new cambio sara *@
 <EditForm Model="Documento" OnValidSubmit="OnValidSubmit">
 
     <DataAnnotationsValidator />
@@ -37,6 +32,7 @@
             <ValidationMessage For="@(() => Documento.URL)" />
         </div>
     </div>
+
 
 
     <div class="mb-3">
@@ -70,15 +66,11 @@
     <button class="btn btn-primary" type="submit">Guardar <i class="bi bi-floppy2"></i></button>
     <button class="btn btn-info" type="reset">Limpiar <i class="bi bi-x-octagon"></i></button>
     <button class="btn btn-secondary" @onclick="ReturnAction">Regresar <i class="bi bi-arrow-clockwise"></i></button>
-   @*  <button class="btn btn-primary" type="submit">Guardar</button>
-    <button class="btn btn-info" type="reset">Limpiar</button>
-    <button class="btn btn-success" @onclick="ReturnAction">Regresar</button>
- *@
+
 </EditForm>
 
 
 @code {
-
 
     // public List<Solicitud> Solicitudes { get; set; }
 

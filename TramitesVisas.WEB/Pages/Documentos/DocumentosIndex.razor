@@ -6,7 +6,7 @@
 @inject IRepository Repository
 @inject SweetAlertService sweetAlertService
 @inject NavigationManager navigationManager
-@attribute [Authorize(Roles = "Admin")]
+@* @attribute [Authorize(Roles = "Admin")] *@
 
 
 <h3>Documentos</h3>
@@ -72,7 +72,7 @@
                                     @GetSolicitudName(documento.SolicitudId)
                                 </td> *@
                                 <td>
-                                    <a href="/documentos/edit/@documento.Id" class="btn btn-warning"><i class="bi bi-pencil-square">Editar</i></a>
+                                    <a href="/Documentos/edit/@documento.Id" class="btn btn-warning"><i class="bi bi-pencil-square">Editar</i></a>
                                     <button class="btn btn-danger" @onclick=@(() => Delete(documento))><i class="bi bi-trash3">Borrar</i></button>
 
                                 </td>
