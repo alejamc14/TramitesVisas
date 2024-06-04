@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using TramitesVisas.Shared.DTOs;
 
 
 namespace TramitesVisas.API.Controllers
@@ -33,7 +34,7 @@ namespace TramitesVisas.API.Controllers
 
 
 
-          // Método Get- por Id
+        // Método Get- por Id
         [HttpGet("{id:int}")]
         public async Task<ActionResult> GetAsync(int id)
         {

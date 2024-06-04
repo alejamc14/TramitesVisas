@@ -17,9 +17,15 @@ else
         <div class="card">
             <div class="card-header">
                 <span>
-                    <i class="oi oi-key" /> Cambiar Contraseña
+                    <i class="oi oi-person" /> Editar Usuario 
+
                     <a class="btn btn-sm btn-success float-end" href="/"><i class="oi oi-arrow-thick-left" /> Regresar</a>
+                  
+                    <a class="btn btn-sm btn-secondary float-end" href="/changePassword"><i class="oi oi-key" /> Cambiar Contraseña</a>
+                    
                     <button class="btn btn-sm btn-primary float-end mx-2" type="submit"><i class="oi oi-check" /> Guardar Cambios</button>
+
+                    
                 </span>
 
             </div>
@@ -63,9 +69,9 @@ else
                                 <ValidationMessage For="@(() => user.Address)" />
                             </div>
                         </div>
-                        @* <div class="mb-3">
+                        <div class="mb-3">
                     <InputImg Label="Foto" ImageSelected="ImageSelected" ImageURL="@imageUrl" />
-                    </div> *@
+                    </div>
                     </div>
 
 
