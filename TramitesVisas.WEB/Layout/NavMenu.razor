@@ -13,7 +13,7 @@
        
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span  <i class="bi bi-house" aria-hidden="true"></i> </span> Inicio
+                <span style="font-size: 22px;"> <i class="bi bi-house" aria-hidden="true"></i> </span> Inicio
                     </NavLink>
                 </div>
 
@@ -24,36 +24,36 @@
 
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="personas">
-                        <span <i class="bi bi-people-fill" aria-hidden="true"></i> </span>Clientes
+                        <span style="font-size: 22px;"><i class="bi bi-people-fill" aria-hidden="true"></i> </span>Clientes
                     </NavLink>
                     
                 </div>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="tipovisas">
-                        <span <i class="bi bi-file-earmark-bar-graph-fill" aria-hidden="true"></i> </span> Tipos de Visa
+                        <span style="font-size: 22px;"><i class="bi bi-file-earmark-bar-graph-fill" aria-hidden="true"></i> </span> Tipos de Visa
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="renovaciones">
-                        <span <i class="bi bi-file-earmark-bar-graph" aria-hidden="true"></i></span>Renovaciones
+                        <span style="font-size: 22px;"><i class="bi bi-file-earmark-bar-graph" aria-hidden="true"></i></span>Renovaciones
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="solicitudes">
-                        <span <i class="bi bi-calendar-plus" aria-hidden="true"></i> </span>Solicitudes
+                        <span style ="font-size: 22px;"> <i class="bi bi-calendar-plus" aria-hidden="true"></i> </span>Solicitudes
                     </NavLink>
                     
                 </div>
 
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="documentoss">
-                        <span style="font-size: 50px;"><i class="bi bi-file-earmark-diff" aria-hidden="true"></i></span>Documentos
+                        <span style="font-size: 22px;"><i class="bi bi-file-earmark-diff" aria-hidden="true"></i></span>Documentos
 
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="pagos">
-                        <span style="font-size: 40px;"><i class="bi bi-currency-dollar" aria-hidden="true"></i></span>Pagos
+                        <span style="font-size: 22px;"><i class="bi bi-currency-dollar" aria-hidden="true"></i></span>Pagos
 
 
                     </NavLink>
@@ -66,66 +66,32 @@
             <Authorized>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="tipovisas">
-                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Tipo de Visas
+                        <span style="font-size: 22px;"><i class="bi bi-file-earmark-bar-graph-fill" aria-hidden="true"></i> </span> Tipos de Visa
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="renovaciones">
-                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Renovaciones
+                        <span style="font-size: 22px;"><i class="bi bi-file-earmark-bar-graph" aria-hidden="true"></i></span>Renovaciones
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
                     <a class="nav-link" href="solicitudesUser/@context.User.Claims.FirstOrDefault(x=> x.Type.Equals("Document"))!.Value">
-                        <span <i class="bi bi-calendar-plus" aria-hidden="true"></i> </span>Solicitudes
+                        <span style="font-size: 22px;"> <i class="bi bi-calendar-plus" aria-hidden="true"></i> </span>Solicitudes
                     </a>
                 </div>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="documentos">
-                        <span <i class="bi bi-file-earmark-diff" aria-hidden="true"></i></span>Documentos
+                        <span style="font-size: 22px;"><i class="bi bi-file-earmark-diff" aria-hidden="true"></i></span>Documentos
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="pagos">
-                        <span <i class="bi bi-currency-dollar" aria-hidden="true"></i></span>Pagos
+                        <span style="font-size: 22px;"><i class="bi bi-currency-dollar" aria-hidden="true"></i></span>Pagos
                     </NavLink>
                 </div>
             </Authorized>
         </AuthorizeView>
 
-        
-                    @* <AuthorizeView>
-                        <Authorized>
-                            <div class="d-flex justify-content-end">
-                                @if (!string.IsNullOrEmpty(photoUser))
-                                {
-                                    <div class="btn-group dropstart">
-                                        <button class="dropdown-toggle rounded-circle" data-bs-toggle="dropdown" aria-expanded="false" style=" border: 0px; background: transparent;">
-                                            <img src="@photoUser" width="55" height="55" class="rounded-circle" />
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="">@context.User.Identity!.Name</a></li>
-                                            <li><button class="dropdown-item" @onclick=@(() => ShowModal()) type="button"><i class="bi bi-person-slash"></i>&nbsp; &nbsp; Edit User</button></li>
-                                            <li><button class="dropdown-item" @onclick="Logout" type="button"><i class="bi bi-box-arrow-left"></i>&nbsp; &nbsp; Logout</button></li>
-                                        </ul>
-                                    </div>
-                                }
-
-                                @if (string.IsNullOrEmpty(photoUser))
-                                {
-                                    <div class="btn-group dropstart">
-                                        <button class="dropdown-toggle rounded-circle" data-bs-toggle="dropdown" aria-expanded="false" style=" border: 0px; background: transparent;">
-                                            <img src="https://tradingjournalphotos.blob.core.windows.net/users/c5f44e7e-474f-4f15-b3f0-105908d56df7.jpg" width="55" height="55" class="rounded-circle" />
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="">@context.User.Identity!.Name</a></li>
-                                            <li><button class="dropdown-item" @onclick=@(() => ShowModal()) type="button"><i class="bi bi-person-slash"></i>&nbsp; &nbsp; Edit User</button></li>
-                                            <li><button class="dropdown-item" @onclick="Logout" type="button"><i class="bi bi-box-arrow-left"></i>&nbsp; &nbsp; Logout</button></li>
-                                        </ul>
-                                    </div>
-                                }
-                            </div>
-                        </Authorized>
-                    </AuthorizeView> *@
     </nav>
 </div>
 

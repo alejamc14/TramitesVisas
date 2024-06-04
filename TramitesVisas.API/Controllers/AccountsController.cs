@@ -9,7 +9,6 @@ using TramitesVisas.Shared.Entidades;
 using TramitesVisas.API.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
 
 namespace TramitesVisas.API.Controllers
 {
@@ -36,53 +35,53 @@ namespace TramitesVisas.API.Controllers
 
         }
 
-        //[HttpPost("RecoverPassword")]
-        //public async Task<ActionResult> RecoverPassword([FromBody] EmailDTO model)
-        //{
-        //    User user = await _userHelper.GetUserAsync(model.Email);
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpPost("RecoverPassword")]
+        public async Task<ActionResult> RecoverPassword([FromBody] EmailDto model)
+        {
+            User user = await _userHelper.GetUserAsync(model.Email);
+            if (user == null)
+            {
+                return NotFound();
+            }
 
-        //    var myToken = await _userHelper.GeneratePasswordResetTokenAsync(user);
-        //    var tokenLink = Url.Action("ResetPassword", "accounts", new
-        //    {
-        //        userid = user.Id,
-        //        token = myToken
-        //    }, HttpContext.Request.Scheme, _configuration["UrlWEB"]);
+            var myToken = await _userHelper.GeneratePasswordResetTokenAsync(user);
+            var tokenLink = Url.Action("ResetPassword", "accounts", new
+            {
+                userid = user.Id,
+                token = myToken
+            }, HttpContext.Request.Scheme, _configuration["UrlWEB"]);
 
-        //    var response = _mailHelper.SendMail(user.FullName, user.Email!,
-        //        $"Sales - Recuperación de contraseña",
-        //        $"<h1>Sales - Recuperación de contraseña</h1>" +
-        //        $"<p>Para recuperar su contraseña, por favor hacer clic 'Recuperar Contraseña':</p>" +
-        //        $"<b><a href ={tokenLink}>Recuperar Contraseña</a></b>");
+            var response = _mailHelper.SendMail(user.FullName, user.Email!,
+                $"Sales - Recuperación de contraseña",
+                $"<h1>Sales - Recuperación de contraseña</h1>" +
+                $"<p>Para recuperar su contraseña, por favor hacer clic 'Recuperar Contraseña':</p>" +
+                $"<b><a href ={tokenLink}>Recuperar Contraseña</a></b>");
 
-        //    if (response.IsSuccess)
-        //    {
-        //        return NoContent();
-        //    }
+            if (response.IsSuccess)
+            {
+                return NoContent();
+            }
 
-        //    return BadRequest(response.Message);
-        //}
+            return BadRequest(response.Message);
+        }
 
-        //[HttpPost("ResetPassword")]
-        //public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordDTO model)
-        //{
-        //    User user = await _userHelper.GetUserAsync(model.Email);
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpPost("ResetPassword")]
+        public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordDTO model)
+        {
+            User user = await _userHelper.GetUserAsync(model.Email);
+            if (user == null)
+            {
+                return NotFound();
+            }
 
-        //    var result = await _userHelper.ResetPasswordAsync(user, model.Token, model.Password);
-        //    if (result.Succeeded)
-        //    {
-        //        return NoContent();
-        //    }
+            var result = await _userHelper.ResetPasswordAsync(user, model.Token, model.Password);
+            if (result.Succeeded)
+            {
+                return NoContent();
+            }
 
-        //    return BadRequest(result.Errors.FirstOrDefault()!.Description);
-        //}
+            return BadRequest(result.Errors.FirstOrDefault()!.Description);
+        }
 
 
         [HttpPost("changePassword")]
