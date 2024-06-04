@@ -9,6 +9,7 @@ using TramitesVisas.Shared.Entidades;
 using TramitesVisas.API.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace Sales.API.Controllers
 {
@@ -97,19 +98,6 @@ namespace Sales.API.Controllers
             var result = await _userHelper.AddUserAsync(user, model.Password);
             if (result.Succeeded)
             {
-                await _dataContext.Personas.AddAsync(new Persona
-                {
-                    Documento = model.Document,
-                    Nombre = model.FirstName,
-                    Apellido = model.LastName,
-                    FechaNacimiento = model.FechaNacimiento,
-                    Nacionalidad = model.Nacionalidad,
-                    Email = model.Email,
-                    Telefono = model.Telefono,
-
-                });
-                await _dataContext.SaveChangesAsync();
-
                 await _userHelper.AddUserToRoleAsync(user, user.UserType.ToString());
 
                 var myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
@@ -124,6 +112,19 @@ namespace Sales.API.Controllers
                     $"<h1>TramitesVisas - Confirmación de cuenta</h1>" +
                     $"<p>Para habilitar el usuario, por favor hacer clic 'Confirmar Email':</p>" +
                     $"<b><a href ={tokenLink}>Confirmar Email</a></b>");
+
+                await _dataContext.Personas.AddAsync(new Persona
+                {
+                    Documento = model.Document,
+                    Nombre = model.FirstName,
+                    Apellido = model.LastName,
+                    FechaNacimiento = model.FechaNacimiento,
+                    Nacionalidad = model.Nacionalidad,
+                    Email = model.Email,
+                    Telefono = model.Telefono,
+
+                });
+                await _dataContext.SaveChangesAsync();
 
                 if (response.IsSuccess)
                 {
@@ -210,5 +211,20 @@ namespace Sales.API.Controllers
                 Expiration = expiration
             };
         }
+
+
+        //[HttpGet("totalPages")]
+        //public async Task<ActionResult> GetPages([FromQuery] UserDTO pagination)
+
+        //{
+        //    var queryable = _context.Accounts.AsQueryable();
+        //    if (!string.IsNullOrWhiteSpace(pagination.Filter))
+        //    {
+        //        queryable = queryable.Where(x => x.AccNumber.ToString().Contains(pagination.Filter.ToLower()));
+        //    }
+        //    double count = await queryable.CountAsync();
+        //    double totalPages = Math.Ceiling(count / pagination.RecordsNumber);
+        //    return Ok(totalPages);
+        //}
     }
 }

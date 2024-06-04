@@ -5,11 +5,6 @@
 
     <DataAnnotationsValidator />
     <div class="mb-3">
-        <label>Fecha</label>
-        <div>
-            <InputDate width="10" @bind-Value="@Renovacion.FechaRenovacion"></InputDate>
-            <ValidationMessage For="@(() => @Renovacion.FechaRenovacion)" />
-        </div>
         <label>Costo</label>
         <div>
             <InputNumber width="10" @bind-Value="@Renovacion.Costo"></InputNumber>

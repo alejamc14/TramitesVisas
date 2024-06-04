@@ -12,10 +12,6 @@ namespace TramitesVisas.Shared.Entidades
     {
         public int Id { get; set; } 
 
-        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd HH:mm}", ApplyFormatInEditMode = true)]
-        [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        public DateTime FechaRenovacion { get; set; }
-
         [Display(Name = "Costo de Renovacion ")]
         [Range(0.01, double.MaxValue, ErrorMessage = "La cantidad requerida debe ser mayor que 0")]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
