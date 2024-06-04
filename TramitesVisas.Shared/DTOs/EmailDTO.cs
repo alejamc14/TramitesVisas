@@ -6,8 +6,8 @@ namespace TramitesVisas.Shared.DTOs
     {
 
         [Display(Name = "Email")]
-        [Required(ErrorMessage = "The field {0} is mandatory.")]
-        [EmailAddress(ErrorMessage = "You must enter a valid email.")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        [EmailAddress(ErrorMessage = "Debes ingresar un Email valido.")]
         public string Email { get; set; } = null!;
     }
 }
