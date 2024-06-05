@@ -5,6 +5,6 @@ INTEGRANTES
 
 -Alejandra Madrid Calderon 
 
-API: https://tramitesvisasapi2024.azurewebsites.net
+WEB: https://tramitesvisasweb.azurewebsites.net/
 
-WEB: https://tramitesvisasapi2024.azurewebsites.net/swagger/
+API: https://tramitesvisasapi2024.azurewebsites.net/swagger
