@@ -1,5 +1,6 @@
 # TramitesVisas
-Integrantes
+INTEGRANTES
+
 -Paula Andrea Calderon Quintero 
 
 -Alejandra Madrid Calderon 
