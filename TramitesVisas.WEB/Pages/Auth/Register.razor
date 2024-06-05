@@ -46,20 +46,21 @@
                     </div> *@
 
                     <div>
-                    <label>Pais de nacimiento</label>
+                        <label>Pais de nacimiento</label>
 
-                    <Dropdown TItem="string" OnSelected="@OnSelected4">
-                        <InitialTip>Escoja el pais</InitialTip>
-                        <ChildContent>
-                                <DropdownListItem Context="dropContext" Item="select[0] ">Peru</DropdownListItem>
-                                <DropdownListItem Context="dropContext" Item="select[1] ">Ecuador</DropdownListItem>
-                                <DropdownListItem Context="dropContext" Item="select[2] ">Panama</DropdownListItem>
-                                <DropdownListItem Context="dropContext" Item="select[3] ">Mexico</DropdownListItem>
-                                <DropdownListItem Context="dropContext" Item="select[4] ">Argentina</DropdownListItem>
+                        <Dropdown TItem="string" OnSelected="@OnSelected4">
+                            <InitialTip>Escoja el país</InitialTip>
+                            <ChildContent>
+                                <DropdownListItem Context="dropContext" Item="select[0] ">Argentina</DropdownListItem>
+                                <DropdownListItem Context="dropContext" Item="select[1] ">Colombia</DropdownListItem>
+                                <DropdownListItem Context="dropContext" Item="select[2] ">Ecuador</DropdownListItem>
+                                <DropdownListItem Context="dropContext" Item="select[3] ">Panamá</DropdownListItem>
+                                <DropdownListItem Context="dropContext" Item="select[4] ">México</DropdownListItem>
+                                <DropdownListItem Context="dropContext" Item="select[5] ">Perú</DropdownListItem>
+                            </ChildContent>
+                        </Dropdown>
+                    </div>
 
-                        </ChildContent>
-                    </Dropdown>
-                </div>
 
                 </div>
                 <div class="col-md-6">
@@ -107,7 +108,7 @@
 
 @code {
 
-    public List<string> select = new List<string> { "Peru", "Ecuador", "Panama", "Mexico", "Argentina" };
+    public List<string> select = new List<string> {"Argentina", "Colombia", "Ecuador", "México", "Panamá", "Perú"};
     private UserDTO userDTO = new();
 
     private string? imageUrl;

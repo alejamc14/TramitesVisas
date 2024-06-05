@@ -47,8 +47,8 @@
                             </td>
                         </tr>
                         @foreach (var pago in Pagos!)
-                        {
-                            NomSolicitud(pago.SolicitudId);
+                        {@* 
+                            NomSolicitud(pago.SolicitudId); *@
 
                             <tr>
                                 <td>
@@ -65,12 +65,8 @@
                                     @pago.FechaPago
                                 </td>
                                 <td>
-                                    @nomsolicitud
+                                    @pago.SolicitudId
                                 </td>
-                                 <td>
-                                    @nomsolicitud
-                                 </td>
-
                                     <td>
                                         <a href="/pagos/edit/@pago.Id" class="btn btn-warning">Editar<i class="bi bi-pencil-square"></i></a>
                                         <button class="btn btn-danger" @onclick=@(() => Delete(pago))>Borrar<i class="bi bi-trash3"></i></button>
@@ -93,7 +89,7 @@
 
 @code {
 
-    public string nomsolicitud { get; set; }
+    // public string nomsolicitud { get; set; }
 
     public List<Solicitud> Solicitudes { get; set; }
 
@@ -171,17 +167,17 @@
         }
     }
 
-    private void NomSolicitud(int? selection)
-    {
-        nomsolicitud = "";
-        foreach (var solicitud in Solicitudes!)
-        {
-            if (selection == solicitud.Id)
-            {
-                nomsolicitud = solicitud.TipoSolicitud;
-            }
+    // private void NomSolicitud(int? selection)
+    // {
+    //     nomsolicitud = "";
+    //     foreach (var solicitud in Solicitudes!)
+    //     {
+    //         if (selection == solicitud.Id)
+    //         {
+    //             nomsolicitud = solicitud.TipoSolicitud;
+    //         }
 
-        }
-    }
+    //     }
+    // }
 }
 
